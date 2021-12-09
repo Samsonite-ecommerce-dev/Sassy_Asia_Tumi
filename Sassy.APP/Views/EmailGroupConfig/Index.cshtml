@@ -1,0 +1,134 @@
+﻿@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<div class="main" v-cloak>
+    <div class="main-top" v-html="navMenu.html"></div>
+    <div class="main-search">
+        <form id="searchForm" method="post">
+            <div class="search-condition">
+                <ul>
+                    <li>
+                        <el-input size="small" prefix-icon="el-icon-search" class="input-xlarge" v-model="searchParams.keyword" placeholder="搜索关键字" clearable></el-input>
+                    </li>
+                    <li>
+                        <el-button size="mini" type="primary" :loading="searchBar.searchBtn.loading" v-on:click="search">查询<i class="el-icon-search el-icon--right"></i></el-button>
+                    </li>
+                </ul>
+            </div>
+        </form>
+    </div>
+    <div class="main-list">
+        <div class="main-list-toolbar">
+            <a href="javascript:void(0)" v-if="toolbar.operate.add" v-on:click="add"><i class="el-icon-plus text-success"></i>添加</a>
+            <a href="javascript:void(0)" v-if="toolbar.operate.edit" v-on:click="edit"><i class="el-icon-edit text-warning"></i>编辑</a>
+            <a href="javascript:void(0)" v-if="toolbar.operate.delete" v-on:click="del"><i class="el-icon-delete text-danger"></i>删除</a>
+            <span class="toolbar-separator"></span>
+            <a href="javascript:void(0)" v-on:click="refresh"><i class="el-icon-refresh text-info"></i>刷新</a>
+        </div>
+        <div class="main-list-grid">
+            <el-table :data="grid.data"
+                      :height="grid.height"
+                      ref="mainGrid"
+                      v-loading="grid.loading"
+                      stripe
+                      size="small"
+                      style="width:100%"
+                      v-on:row-click="clickRow">
+                <el-table-column type="selection" prop="ck" width="50"></el-table-column>
+                <el-table-column prop="s1" label="邮件组名" width="150"></el-table-column>
+                <el-table-column prop="s2" label="FTP邮件地址"></el-table-column>
+                <el-table-column prop="s3" label="备注"></el-table-column>
+        </div>
+        <div class="main-list-pagination">
+            <el-pagination v-on:size-change="pageSizeChange"
+                           v-on:current-change="pageCurrentChange"
+                           :current-page="pagination.currentPage"
+                           :page-sizes="pagination.pageList"
+                           :page-size="pagination.pageSize"
+                           layout="sizes, prev, pager, next, jumper,total"
+                           :total="pagination.totalCount">
+            </el-pagination>
+        </div>
+    </div>
+    <partial name="~/Views/Shared/_ElSubmitDailog.cshtml">
+</div>
+@section scripts {
+    <script type="text/javascript">
+        var appVue = new Vue({
+            el: '.main',
+            mixins:[elementExtend.Grid.MixinVue()],
+            data: {
+                toolbar: {
+                    operate: {
+                        add: false,
+                        edit: false,
+                        delete:false
+                    }
+                },
+                grid: {
+                    url:'@Url.Action("Index_Message", "EmailGroupConfig")'
+                },
+                searchParams: {
+                    keyword: ''
+                }
+            },
+            created: function () {
+                this.initData();
+            },
+            mounted: function(){
+            },
+            methods: {
+                initData() {
+                    let $vue = this;
+                    elementExtend.Base.ParseData({
+                        url: '@Url.Action("Initialize_Info", "EmailGroupConfig")',
+                        params: {
+                            type:'index'
+                        },
+                        success: function (data) {
+                            //导航栏
+                            $vue.navMenu.html = data.navMenu;
+                            //工具栏
+                            $vue.permission.permissionTools = data.userAuthorization;
+                            elementExtend.Grid.Toolbar({
+                                vue: $vue
+                            });
+                            //查询信息
+                            $vue.getGridList();
+                        }
+                    });
+                },
+                search: function () {
+                    elementExtend.Grid.Search({
+                        vue:this
+                    });
+                },
+                add: function () {
+                    elementExtend.Grid.SaveDialog({
+                        vue: this,
+                        url: '@Url.Action("Add", "EmailGroupConfig")',
+                        title: '添加信息',
+                        width: '99%',
+                        saveUrl: '@Url.Action("Add_Message", "EmailGroupConfig")'
+                    });
+                },
+                edit: function() {
+                    elementExtend.Grid.EditDialog({
+                        vue: this,
+                        url: '@Url.Action("Edit", "EmailGroupConfig")?id=$',
+                        title: '编辑信息',
+                        width: '99%',
+                        saveUrl: '@Url.Action("Edit_Message", "EmailGroupConfig")'
+                    });
+                },
+                del: function() {
+                    elementExtend.Grid.ComplexOper(this,'@Url.Action("Delete_Message", "EmailGroupConfig")');
+                },
+                refresh: function() {
+                    this.getGridList();
+                }
+            }
+        });
+    </script>
+}
+

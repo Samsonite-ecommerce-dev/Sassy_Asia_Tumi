@@ -1,0 +1,171 @@
+﻿@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<div class="main" v-cloak>
+    <div class="main-edit">
+        <el-form ref="form" :model="subForm"
+                 v-loading.fullscreen.lock="fullScreenLoading"
+                 element-loading-text="Loading"
+                 element-loading-spinner="el-icon-loading">
+            <div class="form-horizontal">
+                <ul>
+                    <li class="form-group">
+                        <div class="col-3 group-label">
+                            <span class="text-danger">*</span>{{languagePack.role_edit_rolename}}
+                        </div>
+                        <div class="col-9 group-text">
+                            <el-input type="input" size="small" class="input-xlarge" v-model="subForm.roleName"></el-input>
+                        </div>
+                        <div class="form-line-dashed"></div>
+                    </li>
+                    <li class="form-group">
+                        <div class="col-3 group-label">
+                            <span class="text-danger">*</span>{{languagePack.role_edit_roleweight}}
+                        </div>
+                        <div class="col-9 group-text">
+                            <el-input-number size="small" controls-position="right" :min="1" :max="99" v-model="subForm.roleWeight"></el-input-number>
+                        </div>
+                        <div class="form-line-dashed"></div>
+                    </li>
+                    <li class="form-group">
+                        <div class="col-3 group-label">
+                            <span class="text-danger">*</span>{{languagePack.role_edit_select_function}}
+                        </div>
+                        <div class="col-9 group-text">
+                            <ul class="permission_list">
+                                <li v-for="gp in custom.roleFuncionOptions">
+                                    <dl>
+                                        <dt>{{gp.groupName}}</dt>
+                                        <dd v-for="fc in gp.functions">
+                                            <el-checkbox v-model="fc.selected" v-on:change="handleCheckAllChange(fc.funcID)">{{fc.funcName}}</el-checkbox>
+                                            <span class="detail-permission" v-for="item in fc.funcPermissions">
+                                                <el-checkbox :label="item.value" v-model="subForm.roleFunctions" v-on:change="handleCheckedChange(item.value)">{{item.label}}</el-checkbox>
+                                            </span>
+                                        </dd>
+                                    </dl>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="form-line-dashed"></div>
+                    </li>
+                    <li class="form-group">
+                        <div class="col-3 group-label">
+                            {{languagePack.role_edit_order}}
+                        </div>
+                        <div class="col-9 group-text">
+                            <el-input-number size="small" controls-position="right" :min="1" v-model="subForm.seqNumber"></el-input-number>
+                        </div>
+                        <div class="form-line-dashed"></div>
+                    </li>
+                    <li class="form-group">
+                        <div class="col-3 group-label">
+                            {{languagePack.role_edit_remark}}
+                        </div>
+                        <div class="col-9 group-text">
+                            <el-input type="textarea" :rows="5" class="input-xlarge" v-model="subForm.roleMemo"></el-input>
+                        </div>
+                        <div class="form-line-dashed"></div>
+                    </li>
+                </ul>
+            </div>
+        </el-form>
+    </div>
+</div>
+@section scripts {
+    <script type="text/javascript">
+        var appVue = new Vue({
+            el: '.main',
+            mixins: [elementExtend.Base.MixinVue()],
+            data: {
+                languagePack: JSON.parse(window.parent.parent.frames.appFrame.languagePackCache),
+                subForm: {
+                    id: '',
+                    roleName: '',
+                    roleWeight: '',
+                    roleFunctions: '',
+                    seqNumber: '',
+                    roleMemo: ''
+                },
+                custom: {
+                    roleFuncionOptions: []
+                }
+            },
+            created: function(){
+                this.initData();
+            },
+            methods: {
+                initData() {
+                    let $vue = this;
+                    elementExtend.Base.ParseData({
+                        url: '@Url.Action("Initialize_Info", "Roles")',
+                        params: {
+                            type: 'edit',
+                            id: $.requestQueryString('id')
+                        },
+                        success: function (data) {
+                            $vue.custom.roleFuncionOptions = data.roleFuncionList;
+                            $vue.subForm = data.model;
+                            //是否全选中
+                            for (var i = 0; i < $vue.custom.roleFuncionOptions.length; i++) {
+                                for (var j = 0; j < $vue.custom.roleFuncionOptions[i].functions.length; j++) {
+                                    $vue.isCheckedMethod(i, j);
+                                }
+                            }
+                        }
+                    });
+                },
+                handleCheckAllChange: function (id) {
+                    var isChecked = false;
+                    for (var i = 0; i < this.custom.roleFuncionOptions.length; i++) {
+                        for (var j = 0; j < this.custom.roleFuncionOptions[i].functions.length; j++) {
+                            if (this.custom.roleFuncionOptions[i].functions[j].funcID == id) {
+                                isChecked = this.custom.roleFuncionOptions[i].functions[j].selected;
+                                for (var k = 0; k < this.custom.roleFuncionOptions[i].functions[j].funcPermissions.length;k++) {
+                                    this.checkAllMethod(this.custom.roleFuncionOptions[i].functions[j].funcPermissions[k].value,isChecked);
+                                }
+                                break;
+                            }
+                        }
+                    }
+                },
+                handleCheckedChange(value) {
+                    for (var i = 0; i < this.custom.roleFuncionOptions.length; i++) {
+                        for (var j = 0; j < this.custom.roleFuncionOptions[i].functions.length; j++) {
+                            for (var k = 0; k < this.custom.roleFuncionOptions[i].functions[j].funcPermissions.length;k++) {
+                                if (this.custom.roleFuncionOptions[i].functions[j].funcPermissions[k].value == value) {
+                                    this.isCheckedMethod(i,j);
+                                    break;
+                                }
+                            }
+                        }
+                    }
+                },
+                checkAllMethod: function (val,isChecked) {
+                    var _result = this.subForm.roleFunctions;
+                    if (isChecked) {
+                        if (_result.indexOf(val) == -1) {
+                            _result.push(val);
+                        }
+                    }
+                    else {
+                        var i = _result.indexOf(val);
+                        if (i > -1) {
+                            _result.splice(i, 1);
+                        }
+                    }
+                },
+                isCheckedMethod: function (groupIndex, funcIndex) {
+                    var isChecked = true;
+                    for (var k = 0; k < this.custom.roleFuncionOptions[groupIndex].functions[funcIndex].funcPermissions.length; k++) {
+                        if(this.subForm.roleFunctions.indexOf(this.custom.roleFuncionOptions[groupIndex].functions[funcIndex].funcPermissions[k].value) == -1)
+                        {
+                            isChecked = false;
+                            break;
+                        }
+                    }
+                    this.custom.roleFuncionOptions[groupIndex].functions[funcIndex].selected = isChecked;
+                }
+            }
+        });
+    </script>
+}

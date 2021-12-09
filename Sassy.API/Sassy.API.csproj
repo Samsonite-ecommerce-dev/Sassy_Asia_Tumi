@@ -1,0 +1,17 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Swashbuckle.AspNetCore" Version="6.2.3" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Samsonite.Library\Samsonite.Library.DependencyInjection\Samsonite.Library.DependencyInjection.csproj" />
+    <ProjectReference Include="..\Samsonite.Library\Samsonite.Library.Utility\Samsonite.Library.Utility.csproj" />
+    <ProjectReference Include="..\Samsonite.Library\Samsonite.Library.WebApi\Samsonite.Library.WebApi.csproj" />
+  </ItemGroup>
+
+</Project>

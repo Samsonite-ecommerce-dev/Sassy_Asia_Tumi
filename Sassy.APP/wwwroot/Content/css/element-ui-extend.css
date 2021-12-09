@@ -1,0 +1,26 @@
+/* CSS Document @charset "utf-8"; */
+/**element-ui-extend**/
+.el_dialog_extend{
+    height:99% !important;
+}
+
+.el_dialog_extend .el-dialog__header{
+    padding:10px 20px;
+}
+
+.el_dialog_extend .el-dialog__header .el-dialog__headerbtn {
+    top: 10px;
+}
+
+.el_dialog_extend .el-dialog__body {
+    padding: 10px 20px;
+    height:80%;
+}
+
+.el_dialog_extend .el-dialog__footer {
+    padding: 10px 20px;
+}
+
+.el_dialog_extend .el-dialog__footer button{
+    margin-right:10px;
+}

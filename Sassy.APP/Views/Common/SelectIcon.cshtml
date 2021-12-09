@@ -1,0 +1,46 @@
+﻿@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<div class="main">
+    <div class="infor_file">
+        <div class="select_icon">
+            <dl v-for="item in iconsOptions">
+                <dt>{{item.type}} ICONS</dt>
+                <dd v-for="item1 in item.icons"><a href="javascript:void(0);" v-on:click="selectIcon(item1.css)" v-bind:title="iconTitle(item1.css)"><i v-bind:class="iconClass(item1.css)"></i></a></dd>
+            </dl>
+        </div>
+    </div>
+</div>
+@section scripts {
+    <script type="text/javascript">
+        var appBox = new Vue({
+            el: '.main',
+            data: {
+                iconsOptions:[]
+            },
+            created: function(){
+                this.initData();
+            },
+            methods: {
+                initData() {
+                    let $vue = this;
+                    elementExtend.Base.ParseData({
+                        url: '@Url.Action("SelectIcon_Info", "Common")',
+                        success: function (data) {
+                            $vue.iconsOptions = data.iconList;
+                        }
+                    });
+                },
+                iconTitle: function (css) {
+                    return css;
+                },
+                iconClass: function (css) {
+                    return "fa " + css;
+                },
+                selectIcon: function (css) {
+                    window.parent.appVue.doIconMessage(css);
+                }
+            }
+        });
+    </script>
+}

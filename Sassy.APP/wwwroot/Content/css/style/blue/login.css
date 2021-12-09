@@ -1,0 +1,170 @@
+/* CSS Document @charset "utf-8"; */
+body {
+    font-size: 12px;
+    background-color: #4c7ec9;
+    overflow: hidden;
+    padding: 0px;
+    margin: 0px;
+}
+
+/*login*/
+.login-body {
+    width: 100%;
+    overflow: hidden;
+    text-align: left;
+}
+
+.login-body .left-body {
+    width: 55%;
+    float: left;
+}
+
+.login-body .left-body .login-msg {
+    padding-left:18%;
+    padding-right:50px;
+    margin-top: 20%;
+}
+
+.login-body .left-body .login-msg h1{
+    font-size:42px;
+    color:#fff;
+}
+
+.login-body .left-body .login-msg .info {
+    font-size:16px;
+    line-height:16px;
+    color: #fff;
+}
+
+.login-body .left-body .login-msg .support {
+    padding-top:20px;
+    margin-top: 30px;
+    border-top: 1px #fff solid;
+    font-size: 18px;
+    line-height: 18px;
+    color: #fff;
+}
+
+.login-body .left-body .login-msg .support i{
+    padding-right:10px;
+}
+
+.login-body .left-body .login-msg .support a {
+    color: #dbeb16;
+}
+
+.login-body .left-body .login-msg .support a:hover {
+    color: #ffeb80;
+}
+
+.login-body .right-body {
+    width: 43%;
+    float: left;
+}
+
+.login-body .right-body .login-box {
+    width: 420px;
+    height: 575px;
+    margin-top: 13%;
+    background-color: #fff;
+    border-radius: 5px;
+    text-align:left;
+}
+
+.login-body .right-body .login-box ul {
+    padding: 20px 0 0 45px;
+}
+
+.login-body .right-body .login-box ul li {
+    margin-bottom: 22px;
+    list-style-type: none;
+}
+
+.login-body .right-body .login-box ul li label {
+    color: #687f92;
+}
+
+.login-body .right-body .login-box ul li label a {
+    color: #687f92;
+}
+
+.login-body .right-body .login-box ul li label a:hover {
+    color: #3d96c9;
+}
+
+.login-body .right-body .login-box ul li label input {
+    margin-right: 5px;
+}
+
+.login-body .right-body .login-box .login-input input {
+    width: 300px;
+    height: 42px;
+    border:1px #ccc solid;
+    border-radius:5px;
+    line-height: 48px;
+    padding-left: 32px;
+    font-size: 14px;
+    color: #333;
+}
+
+.login-body .right-body .login-box .login-input i {
+    padding: 13px 0 0 10px;
+    font-size: 20px;
+    position: absolute;
+    z-index: 99;
+}
+
+.login-body .right-body .login-box .login-btn {
+    width: 332px;
+    height: 42px;
+    line-height: 42px;
+    background-color: #3cabff;
+    font-size: 14px;
+    border: 1px #3cabff solid;
+    font-weight: bold;
+    color: #fff;
+    cursor: pointer;
+    border-radius: 3px;
+    border: none;
+}
+
+.login-body .right-body .login-box .login-btn:hover {
+    background-color: #3eafe0;
+}
+
+.login-body .right-body .login-box .login-btn:disabled {
+    background-color: #3eafe0;
+}
+
+.login-body .right-body .login-box ul li a.forgot {
+    font-size: 14px;
+    color: #2f9ee2;
+}
+
+.login-body .right-body .login-box ul li.success {
+    width: 327px;
+    color: #fff;
+    line-height: 28px;
+    background-color: #67c23a;
+    padding-left: 5px;
+    margin-bottom: 8px;
+    border: 1px #67c23a solid;
+    border-radius: 3px;
+}
+
+.login-body .right-body .login-box ul li.error {
+    width: 327px;
+    color: #fff;
+    line-height: 28px;
+    background-color: #ef5352;
+    padding-left: 5px;
+    margin-bottom: 8px;
+    border: 1px #ef5352 solid;
+    border-radius: 3px;
+}
+
+/*spin*/
+.btn-icon-spin {
+    -webkit-animation: icon-spin 2s infinite linear;
+    animation: icon-spin 2s infinite linear;
+}

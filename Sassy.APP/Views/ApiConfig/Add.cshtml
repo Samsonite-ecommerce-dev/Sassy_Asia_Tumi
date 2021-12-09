@@ -1,0 +1,197 @@
+﻿@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<div class="main" v-cloak>
+    <div class="main-edit">
+        <el-form ref="form" :model="subForm"
+                 v-loading.fullscreen.lock="fullScreenLoading"
+                 element-loading-text="Loading"
+                 element-loading-spinner="el-icon-loading">
+            <div class="form-horizontal">
+                <ul>
+                    <li class="form-group">
+                        <div class="col-3 group-label">
+                            <span class="text-danger">*</span>名称
+                        </div>
+                        <div class="col-9 group-text">
+                            <el-input type="input" size="small" class="input-xlarge" v-model="subForm.appID"></el-input>
+                        </div>
+                        <div class="form-line-dashed"></div>
+                    </li>
+                    <li class="form-group">
+                        <div class="col-3 group-label">
+                            <span class="text-danger">*</span>Token
+                        </div>
+                        <div class="col-9 group-text">
+                            <el-input type="input" size="small" class="input-xxlarge" v-model="subForm.token">
+                                <el-button size="mini" type="success" slot="append" v-on:click="createToken">生成Token</el-button>
+                            </el-input>
+                        </div>
+                        <div class="form-line-dashed"></div>
+                    </li>
+                    <li class="form-group">
+                        <div class="col-3 group-label">
+                            <span class="text-danger">*</span>IP限制
+                        </div>
+                        <div class="col-9 group-text">
+                            <ul class="common-list">
+                                <li v-for="item in subForm.ips">
+                                    <el-input type="input" size="small" class="input-xlarge" placeholder="IP" v-model="item.value">
+                                        <el-button slot="prepend" icon="el-icon-close" v-on:click="removeIps(item.index)"></el-button>
+                                    </el-input>
+                                </li>
+                                <li>
+                                    <el-button size="mini" type="primary" icon="el-icon-plus" v-on:click="addIps">添加IP</el-button>
+                                    <span class="label-info">允许添加类似192.168.*.*来限制IP段</span>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="form-line-dashed"></div>
+                    </li>
+                    <li class="form-group">
+                        <div class="col-3 group-label">
+                            <span class="text-danger">*</span>接口权限
+                        </div>
+                        <div class="col-9 group-text">
+                            <ul class="permission_list">
+                                <li v-for="g in custom.interfaceOptions">
+                                    <dl>
+                                        <dt><el-checkbox :indeterminate="g.indeterminate" v-model="g.selected" v-on:change="handleCheckAllChange(g.groupID)">{{g.groupName}}</el-checkbox></dt>
+                                        <dd v-for="item in g.interfaces">
+                                            <el-checkbox :label="item.value" v-model="subForm.interfaces" v-on:change="handleCheckedChange(item.value)">{{item.label}}</el-checkbox>
+                                        </dd>
+                                    </dl>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="form-line-dashed"></div>
+                    </li>
+                    <li class="form-group">
+                        <div class="col-3 group-label">
+                            有效
+                        </div>
+                        <div class="col-9 group-text">
+                            <el-switch v-model="subForm.isUsed"></el-switch>
+                        </div>
+                        <div class="form-line-dashed"></div>
+                    </li>
+                    <li class="form-group">
+                        <div class="col-3 group-label">
+                            备注
+                        </div>
+                        <div class="col-9 group-text">
+                            <el-input type="textarea" :rows="5" class="input-xlarge" v-model="subForm.remark"></el-input>
+                        </div>
+                        <div class="form-line-dashed"></div>
+                    </li>
+                </ul>
+            </div>
+        </el-form>
+    </div>
+</div>
+@section scripts {
+    <script type="text/javascript">
+        var appVue = new Vue({
+            el: '.main',
+            mixins: [elementExtend.Base.MixinVue()],
+            data: {
+                subForm: {
+                    appID: '',
+                    token: '',
+                    ips: [
+                        {
+                            index: 0,
+                            value: ''
+                        }
+                    ],
+                    interfaces: [],
+                    isUsed: true,
+                    remark: ''
+                },
+                custom: {
+                    interfaceOptions: []
+                }
+            },
+            created: function () {
+                this.initData();
+            },
+            methods: {
+                initData() {
+                    let $vue = this;
+                    elementExtend.Base.ParseData({
+                        url: '@Url.Action("Initialize_Info", "ApiConfig")',
+                        params: {
+                            type: 'add'
+                        },
+                        success: function (data) {
+                            $vue.custom.interfaceOptions = data.interfaceList;
+                        }
+                    });
+                },
+                createToken: function () {
+                    this.subForm.token = vueExtend.createKey(32);
+                },
+                addIps: function () {
+                    this.subForm.ips.push({ index: this.subForm.ips.length, value: '' });
+                },
+                removeIps: function (index) {
+                    //至少留一个输入框
+                    if (this.subForm.ips.length > 1) {
+                        this.subForm.ips.splice(index, 1);
+                        for (let i in this.subForm.ips) {
+                            this.subForm.ips[i].index = i;
+                        }
+                    }
+                    else {
+                        elementExtend.Tips.Alert(this, '请至少输入一条信息', 5);
+                    }
+                },
+                handleCheckAllChange: function (id) {
+                    var isChecked = false;
+                    for (let i = 0; i < this.custom.interfaceOptions.length; i++) {
+                        if (id == this.custom.interfaceOptions[i].groupID) {
+                            isChecked = this.custom.interfaceOptions[i].selected;
+                            for (let j = 0; j < this.custom.interfaceOptions[i].interfaces.length; j++) {
+                                let val = this.custom.interfaceOptions[i].interfaces[j].value;
+                                if (isChecked) {
+                                    if (this.subForm.interfaces.indexOf(val) == -1) {
+                                        this.subForm.interfaces.push(val);
+                                    }
+                                }
+                                else {
+                                    let index = this.subForm.interfaces.indexOf(val);
+                                    if (index > -1) {
+                                        this.subForm.interfaces.splice(index, 1);
+                                    }
+                                }
+                            }
+                            this.custom.interfaceOptions[i].indeterminate = false;
+                            break;
+                        }
+                    }
+                },
+                handleCheckedChange(value) {
+                    for (let i = 0; i < this.custom.interfaceOptions.length; i++) {
+                        for (let j = 0; j < this.custom.interfaceOptions[i].interfaces.length; j++) {
+                            if (this.custom.interfaceOptions[i].interfaces[j].value == value) {
+                                this.isCheckedMethod(i);
+                                break;
+                            }
+                        }
+                    }
+                },
+                isCheckedMethod: function (groupIndex) {
+                    //组中选中数
+                    var checkedNum = 0;
+                    for (let j = 0; j < this.custom.interfaceOptions[groupIndex].interfaces.length; j++) {
+                        if (this.subForm.interfaces.indexOf(this.custom.interfaceOptions[groupIndex].interfaces[j].value) > -1) {
+                            checkedNum++;
+                        }
+                    }
+                    this.custom.interfaceOptions[groupIndex].indeterminate = (checkedNum < this.custom.interfaceOptions[groupIndex].interfaces.length && checkedNum > 0);
+                    this.custom.interfaceOptions[groupIndex].selected = (checkedNum == this.custom.interfaceOptions[groupIndex].interfaces.length);
+                }
+            }
+        });
+    </script>
+}

@@ -1,0 +1,84 @@
+﻿@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<div class="main" v-cloak>
+    <div class="main-edit">
+        <el-form ref="form" :model="subForm">
+            <div class="form-horizontal">
+                <ul>
+                    <li class="form-group">
+                        <div class="col-3 group-label">
+                            <span class="text-danger">*</span>{{languagePack.home_languageconfig_select}}
+                        </div>
+                        <div class="col-9 group-text">
+                            <el-radio-group v-model="subForm.id">
+                                <el-radio :label="item.value" v-for="item in custom.languageArr">{{item.label}}</el-radio>
+                            </el-radio-group>
+                        </div>
+                        <div class="form-line-dashed"></div>
+                    </li>
+                    <li class="form-group">
+                        <div class="col-3 group-operate">&nbsp;</div>
+                        <div class="col-9 group-operate">
+                            <el-button size="mini" type="primary" :loading="searchButton.loading" v-on:click="submit">{{languagePack.common_save}}</el-button>
+                        </div>
+                        <div class="form-line-dashed"></div>
+                    </li>
+                </ul>
+            </div>
+        </el-form>
+    </div>
+</div>
+@section scripts {
+    <script type="text/javascript">
+        var appVue = new Vue({
+            el: '.main',
+            mixins: [elementExtend.Base.MixinVue()],
+            data: {
+                languagePack: JSON.parse(window.parent.frames.appFrame.languagePackCache),
+                subForm: {
+                     id:''
+                },
+                custom: {
+                    languageArr: []
+                }
+            },
+            created: function(){
+                this.initData();
+            },
+            methods: {
+                initData() {
+                    let $vue = this;
+                    elementExtend.Base.ParseData({
+                        url: '@Url.Action("LanguageConfig_Info", "Home")',
+                        params: {
+                            type:'index'
+                        },
+                        success: function (data) {
+                            $vue.custom.languageArr = data.languageList;
+                            $vue.subForm.id = data.languageType;
+                        }
+                    });
+                },
+                submit: function () {
+                    let $vue = this;
+                    elementExtend.Base.PostForm({
+                        vue: $vue,
+                        url: '@Url.Action("LanguageConfig_Message", "Home")',
+                        params: $vue.subForm,
+                        success: function (data) {
+                            if (data.result) {
+                                elementExtend.Tips.Success($vue,data.msg, 3, function () {
+                                    window.parent.location.href = window.parent.location.href;
+                                });
+                            }
+                            else {
+                                elementExtend.Tips.Alert($vue,data.msg, 5);
+                            }
+                        }
+                    });
+                }
+            }
+        });
+    </script>
+}

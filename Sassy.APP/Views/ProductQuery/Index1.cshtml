@@ -1,0 +1,376 @@
+﻿@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@section style{
+    <style type="text/css">
+        .el-tag {
+            margin: 0 3px;
+        }
+
+        .el-cascader-menu__wrap {
+            height: 500px;
+        }
+    </style>
+}
+<div class="main" v-cloak>
+    <div class="main-top" v-html="navMenu.html"></div>
+    <div class="main-search">
+        <form id="searchForm" method="post" asp-antiforgery="false">
+            <div class="search-condition" style="height:125px;">
+                <ul>
+                    <li>
+                        <el-input size="small" class="input-xxxlarge" :placeholder="languagePack.product_index_search_product" v-model="custom.keyword">
+                            <el-select slot="prepend" class="input-medium" v-model="searchParams.searchType" placeholder="">
+                                <el-option v-for="item in custom.searchTypeOptions"
+                                           :key="item.value"
+                                           :label="item.label"
+                                           :value="item.value">
+                                </el-option>
+                            </el-select>
+                            <el-button slot="append" size="mini" type="primary" icon="el-icon-search" :loading="searchBar.searchBtn.loading" v-on:click="search">{{languagePack.common_search}}</el-button>
+                        </el-input>
+                        <br />
+                        <el-tag size="medium" v-for="item in custom.searchCategoryOptions"
+                                :key="item.name"
+                                disable-transitions
+                                closable
+                                :type="item.type"
+                                v-on:close="closeSearchCategory(item)">
+                            {{item.name}}
+                        </el-tag>
+                    </li>
+                </ul>
+            </div>
+        </form>
+    </div>
+    <div class="main-cascader" v-show="custom.panel.isCategoryPanel">
+        <div class="cascader-title">
+            <el-input size="small" :placeholder="languagePack.product_index_search_line" class="input-large" v-model="custom.searchLineKey">
+                <el-button slot="prepend" icon="el-icon-search" v-on:click="searchLine"></el-button>
+            </el-input>
+        </div>
+        <div class="cascader-panel">
+            <el-cascader-panel :props="custom.categoryOptions"
+                               size="small"
+                               ref="mainCascader"
+                               v-on:change="changeSearchCategory">
+                <template slot-scope="{ node, data }">
+                    <span v-if="node.level==1"><label class="text-primary">{{data.value}}</label>-{{data.label}}</span>
+                    <span v-if="node.level==2"><label class="text-warning">{{data.value}}</label>-{{data.label}}</span>
+                    <span v-if="node.level==3"><label class="text-success">{{data.value}}</label>-{{data.label}}</span>
+                </template>
+            </el-cascader-panel>
+        </div>
+    </div>
+    <div class="main-list" v-show="custom.panel.isSparePartPanel">
+        <div class="main-list-toolbar">
+            <a href="javascript:void(0)" v-if="toolbar.operate.delete" v-on:click="del"><i class="el-icon-delete text-danger"></i>{{languagePack.common_delete}}</a>
+            <span class="toolbar-separator"></span>
+            <a href="javascript:void(0)" v-on:click="refresh"><i class="el-icon-refresh text-info"></i>{{languagePack.common_refresh}}</a>
+        </div>
+        <div class="main-list-grid">
+            <el-table :data="grid.data"
+                      :height="grid.height"
+                      ref="mainGrid"
+                      v-loading="grid.loading"
+                      stripe
+                      size="small"
+                      style="width:100%"
+                      v-on:row-click="clickRow">
+                <el-table-column type="selection" prop="ck" width="50"></el-table-column>
+                <el-table-column prop="s1" :label="languagePack.product_index_colorid"></el-table-column>
+                <el-table-column prop="s2" :label="languagePack.product_index_color_desc"></el-table-column>
+                <el-table-column prop="s3" :label="languagePack.product_index_sparepart_id">
+                    <template slot-scope="scope">
+                        <span v-html="scope.row.s3"></span>
+                    </template>
+                </el-table-column>
+                <el-table-column prop="s4" :label="languagePack.product_index_sparepart_desc"></el-table-column>
+                <el-table-column prop="s5" :label="languagePack.product_index_image">
+                    <template slot-scope="scope">
+                        <span v-html="scope.row.s5"></span>
+                    </template>
+                </el-table-column>
+                <el-table-column prop="s6" :label="languagePack.product_index_version"></el-table-column>
+                <el-table-column prop="s7" :label="languagePack.product_index_price"></el-table-column>
+                <el-table-column prop="s8" :label="languagePack.product_index_unit"></el-table-column>
+                <el-table-column prop="s9" :label="languagePack.product_index_status"></el-table-column>
+                <el-table-column prop="s10" :label="languagePack.product_index_inventory"></el-table-column>
+            </el-table>
+        </div>
+        <div class="main-list-pagination">
+            <el-pagination v-on:size-change="pageSizeChange"
+                           v-on:current-change="pageCurrentChange"
+                           :current-page="pagination.currentPage"
+                           :page-sizes="pagination.pageList"
+                           :page-size="pagination.pageSize"
+                           layout="sizes, prev, pager, next, jumper,total"
+                           :total="pagination.totalCount">
+            </el-pagination>
+        </div>
+    </div>
+    <partial name="~/Views/Shared/_ElSubmitDailog.cshtml">
+</div>
+@section scripts {
+    <script type="text/javascript">
+        var appVue = new Vue({
+            el: '.main',
+            mixins:[elementExtend.Grid.MixinVue()],
+            data: {
+                languagePack: JSON.parse(window.parent.frames.appFrame.languagePackCache),
+                toolbar: {
+                    operate: {
+                        delete:false
+                    }
+                },
+                grid: {
+                    url:'@Url.Action("Index_Message", "ProductQuery")'
+                },
+                searchParams: {
+                    searchType: '',
+                    keyword: '',
+                    lineID: '',
+                    colorID:'',
+                    sizeID: '',
+                    groupID: '',
+                },
+                custom: {
+                    searchLineKey:'',
+                    searchTypeOptions: [],
+                    searchCategoryOptions:[],
+                    panel: {
+                        isCategoryPanel: true,
+                        isSparePartPanel:false
+                    },
+                    categoryOptions: []
+                }
+            },
+            created: function () {
+                this.initData();
+                //初始化级联菜单
+                this.custom.categoryOptions = this.initCategoryPanel();
+            },
+            mounted: function(){
+            },
+            methods: {
+                initData() {
+                    let $vue = this;
+                    elementExtend.Base.ParseData({
+                        url: '@Url.Action("Initialize_Info", "ProductQuery")',
+                        params: {
+                            type:'index'
+                        },
+                        success: function (data) {
+                            //导航栏
+                            $vue.navMenu.html = data.navMenu;
+                            //工具栏
+                            $vue.permission.permissionTools = data.userAuthorization;
+                            elementExtend.Grid.Toolbar({
+                                vue: $vue
+                            });
+                            //数据集合
+                            $vue.custom.searchTypeOptions = data.searchTypeList;
+                            //默认查询sku
+                            $vue.searchParams.searchType = 0;
+                        }
+                    });
+                },
+                initCategoryPanel: function () {
+                    let $vue = this;
+                    return {
+                        lazy: true,
+                        lazyLoad(node, resolve) {
+                            const { level } = node;
+                            //line
+                            if (level == 0) {
+                                vueExtend.Ajax.Post({
+                                    url: '@Url.Action("Line_Message", "ProductQuery")',
+                                    params: {
+                                        searchKey: $vue.custom.searchLineKey,
+                                        rows: 20,
+                                        page: 1
+                                    },
+                                    loading: true,
+                                    success: function (data) {
+                                        const nodes = [];
+                                        for (let t = 0; t < data.rows.length; t++) {
+                                            nodes.push({
+                                                value: data.rows[t].s1,
+                                                label: data.rows[t].s2
+                                            });
+                                        }
+                                        //通过调用resolve将子节点数据返回，通知组件数据加载完成
+                                        resolve(nodes);
+                                    }
+                                });
+                            }
+                            else if (level == 1) {
+                                vueExtend.Ajax.Post({
+                                    url: '@Url.Action("Size_Message", "ProductQuery")',
+                                    params: {
+                                        lineid: node.value
+                                    },
+                                    loading: true,
+                                    success: function (data) {
+                                        //记录当前选中LineID
+                                        $vue.selectSearchCategory(node,null,null);
+                                        //读取Size集合
+                                        const nodes = [];
+                                        for (let t = 0; t < data.rows.length; t++) {
+                                            nodes.push({
+                                                value: data.rows[t].s1,
+                                                label: data.rows[t].s2
+                                            });
+                                        }
+                                        //通过调用resolve将子节点数据返回，通知组件数据加载完成
+                                        resolve(nodes);
+                                    }
+                                });
+                            }
+                            else if (level == 2) {
+                                vueExtend.Ajax.Post({
+                                    url: '@Url.Action("Group_Message", "ProductQuery")',
+                                    params: {
+                                        lineid: node.parent.value,
+                                        sizeid: node.value
+                                    },
+                                    loading: true,
+                                    success: function (data) {
+                                        //记录当前选中SizeID
+                                        $vue.selectSearchCategory(node.parent, node, null);
+                                        //读取Size集合
+                                        const nodes = [];
+                                        for (let t = 0; t < data.rows.length; t++) {
+                                            nodes.push({
+                                                value: data.rows[t].s1,
+                                                label: data.rows[t].s2,
+                                                leaf:true
+                                            });
+                                        }
+                                        //通过调用resolve将子节点数据返回，通知组件数据加载完成
+                                        resolve(nodes);
+                                    }
+                                });
+                            }
+                        }
+                    }
+                },
+                changeSearchCategory: function (valueArray) {
+                    var nodes = this.$refs.mainCascader.getCheckedNodes();
+                    //单选所以只会选中一个
+                    var $checkedNode = nodes[0];
+                    var $pathNodes = $checkedNode.pathNodes;
+                    if ($pathNodes.length>0) {
+                        if ($pathNodes.length == 1) {
+                            this.selectSearchCategory($pathNodes[0], null, null);
+                        }
+                        else if ($pathNodes.length == 2) {
+                            this.selectSearchCategory($pathNodes[0], $pathNodes[1], null);
+                        }
+                        else {
+                            this.selectSearchCategory($pathNodes[0], $pathNodes[1], $pathNodes[2]);
+                        }
+                    }
+                },
+                //级联分类选择器信息
+                //注:1.如果lineid为空,则全部为空
+                //2.如果lineid不为空,size为空,则groupid为空
+                selectSearchCategory: function (lineNode, sizeNode, groupNode) {
+                    var lineID = (lineNode!=null)?lineNode.value:null;
+                    var sizeID = (sizeNode!= null)?sizeNode.value : null;
+                    var groupID = (groupNode!= null)?groupNode.value : null;
+                    if (lineID == null) {
+                        sizeID = null;
+                        groupID = null;
+                    }
+                    else {
+                        if (sizeID == null)
+                            groupID = null;
+                    }
+                    this.searchParams.lineID = (lineID != null) ? lineID:'';
+                    this.searchParams.sizeID = (sizeID != null) ? sizeID : '';
+                    this.searchParams.groupID = (groupID != null) ? groupID : '';
+                    //显示信息
+                    this.custom.searchCategoryOptions = [];
+                    if (lineID != null) {
+                        this.custom.searchCategoryOptions.push({
+                            name: 'Line:'+lineID + '-' + lineNode.label,
+                            type:''
+                        });
+                    }
+                    if (sizeID != null) {
+                        this.custom.searchCategoryOptions.push({
+                            name: 'Size:' +sizeID + '-' + sizeNode.label,
+                            type: 'warning'
+                        });
+                    }
+                    if (groupID != null) {
+                        this.custom.searchCategoryOptions.push({
+                            name: 'Group:' +groupID + '-' + groupNode.label,
+                            type: 'success'
+                        });
+                    }
+                },
+                closeSearchCategory: function (tag) {
+                    var i = this.custom.searchCategoryOptions.indexOf(tag);
+                    if (i == 0) {
+                        this.searchParams.lineID = '';
+                        this.searchParams.sizeID = '';
+                        this.searchParams.groupID = '';
+                        this.custom.searchCategoryOptions.splice(i, 3);
+                        //显示级联选择器
+                        this.custom.panel.isCategoryPanel = true;
+                        this.custom.panel.isSparePartPanel = false;
+                    }
+                    else if (i == 1) {
+                        this.searchParams.sizeID = '';
+                        this.searchParams.groupID = '';
+                        this.custom.searchCategoryOptions.splice(i, 2);
+                        //刷新列表
+                        elementExtend.Grid.Search({
+                            vue: this
+                        });
+                    }
+                    else if (i == 2) {
+                        this.searchParams.groupID = '';
+                        this.custom.searchCategoryOptions.splice(i, 1);
+                        //刷新列表
+                        elementExtend.Grid.Search({
+                            vue: this
+                        });
+                    }
+                    else { }
+                },
+                searchLine: function () {
+                    this.$refs.mainCascader.lazyLoad();
+                    //清空选择
+                    this.selectSearchCategory(null,null, null);
+                },
+                search: function () {
+                    elementExtend.Grid.Search({
+                        vue: this
+                    });
+                    this.custom.panel.isCategoryPanel = false;
+                    this.custom.panel.isSparePartPanel = true;
+                },
+                del: function() {
+                    elementExtend.Grid.ComplexOper(this,'@Url.Action("Delete_Message", "ProductQuery")');
+                },
+                refresh: function() {
+                    this.getGridList();
+                },
+                sparepartDetail: function (id) {
+                    elementExtend.Grid.OpenDialog({
+                        vue: this,
+                        url: '@Url.Action("Detail", "SparePartQuery")?id=' + id,
+                        title: this.languagePack.common_detail
+                    });
+                },
+                previewImage: function (src) {
+                    elementExtend.previewImage(this, src);
+                },
+            }
+        });
+    </script>
+}
+

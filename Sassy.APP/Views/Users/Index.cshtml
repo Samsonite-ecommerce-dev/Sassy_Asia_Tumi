@@ -1,0 +1,204 @@
+﻿@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<div class="main" v-cloak>
+    <div class="main-top" v-html="navMenu.html"></div>
+    <div class="main-search">
+        <form id="searchForm" method="post" asp-antiforgery="false">
+            <div class="search-condition">
+                <ul>
+                    <li>
+                        <el-input size="small" prefix-icon="el-icon-search" class="input-xlarge" v-model="searchParams.keyword" :placeholder="languagePack.common_search_key" clearable></el-input>
+                    </li>
+                    <li>
+                        <el-select size="small" v-model="searchParams.userType" :placeholder="languagePack.users_index_type" v-on:change="changeStatus" clearable>
+                            <el-option v-for="item in custom.userTypeOptions"
+                                       :key="item.value"
+                                       :label="item.label"
+                                       :value="item.value">
+                            </el-option>
+                        </el-select>
+                    </li>
+                    <li>
+                        <el-select size="small" v-model="searchParams.status" v-on:change="changeStatus">
+                            <el-option v-for="item in custom.statusOptions"
+                                       :key="item.value"
+                                       :label="item.label"
+                                       :value="item.value">
+                            </el-option>
+                        </el-select>
+                    </li>
+                    <li>
+                        <el-button size="mini" type="primary" :loading="searchBar.searchBtn.loading" v-on:click="search">{{languagePack.common_search}}<i class="el-icon-search el-icon--right"></i></el-button>
+                    </li>
+                </ul>
+            </div>
+        </form>
+    </div>
+    <div class="main-list">
+        <div class="main-list-toolbar">
+            <a href="javascript:void(0)" v-if="toolbar.operate.add" v-on:click="add"><i class="el-icon-plus text-success"></i>{{languagePack.common_add}}</a>
+            <a href="javascript:void(0)" v-if="toolbar.operate.edit" v-on:click="edit"><i class="el-icon-edit text-warning"></i>{{languagePack.common_edit}}</a>
+            <a href="javascript:void(0)" v-if="toolbar.operate.delete" v-on:click="del"><i class="el-icon-lock text-danger"></i>{{languagePack.common_lock}}</a>
+            <a href="javascript:void(0)" v-if="toolbar.operate.restore" v-on:click="restore"><i class="el-icon-unlock text-info"></i>{{languagePack.common_recover}}</a>
+            <a href="javascript:void(0)" v-if="toolbar.operate.editpassword" v-on:click="editPwd"><i class="el-icon-user text-info"></i>{{languagePack.users_index_edit_password}}</a>
+            <span class="toolbar-separator"></span>
+            <a href="javascript:void(0)" v-on:click="refresh"><i class="el-icon-refresh text-info"></i>{{languagePack.common_refresh}}</a>
+        </div>
+        <div class="main-list-grid">
+            <el-table :data="grid.data"
+                      :height="grid.height"
+                      ref="mainGrid"
+                      v-loading="grid.loading"
+                      stripe
+                      size="small"
+                      style="width:100%"
+                      v-on:row-click="clickRow">
+                <el-table-column type="selection" prop="ck" width="50"></el-table-column>
+                <el-table-column prop="s1" :label="languagePack.users_index_username"></el-table-column>
+                <el-table-column prop="s2" :label="languagePack.users_index_realname"></el-table-column>
+                <el-table-column prop="s3" :label="languagePack.users_index_email"></el-table-column>
+                <el-table-column prop="s4" :label="languagePack.users_index_type">
+                    <template slot-scope="scope">
+                        <span v-html="scope.row.s4"></span>
+                    </template>
+                </el-table-column>
+                <el-table-column prop="s5" :label="languagePack.users_index_remark"></el-table-column>
+                <el-table-column prop="s6" :label="languagePack.users_index_status">
+                    <template slot-scope="scope">
+                        <span v-html="scope.row.s6"></span>
+                    </template>
+                </el-table-column>
+            </el-table>
+        </div>
+        <div class="main-list-pagination">
+            <el-pagination v-on:size-change="pageSizeChange"
+                           v-on:current-change="pageCurrentChange"
+                           :current-page="pagination.currentPage"
+                           :page-sizes="pagination.pageList"
+                           :page-size="pagination.pageSize"
+                           layout="sizes, prev, pager, next, jumper,total"
+                           :total="pagination.totalCount">
+            </el-pagination>
+        </div>
+    </div>
+    <partial name="~/Views/Shared/_ElSubmitDailog.cshtml">
+</div>
+@section scripts {
+    <script type="text/javascript">
+        var appVue = new Vue({
+            el: '.main',
+            mixins:[elementExtend.Grid.MixinVue()],
+            data: {
+                languagePack: JSON.parse(window.parent.frames.appFrame.languagePackCache),
+                toolbar: {
+                        operate: {
+                            add: false,
+                            edit: false,
+                            delete: false,
+                            restore: false,
+                            editpassword: false
+                        }
+                },
+                grid: {
+                    url:'@Url.Action("Index_Message", "Users")'
+                },
+                searchParams: {
+                    keyword: '',
+                    userType: '',
+                    status:0
+                },
+                custom: {
+                    userTypeOptions: [],
+                    statusOptions: []
+                }
+            },
+            created: function () {
+                this.initData();
+            },
+            mounted: function(){
+            },
+            methods: {
+                initData() {
+                    let $vue = this;
+                    elementExtend.Base.ParseData({
+                        url: '@Url.Action("Initialize_Info", "Users")',
+                        params: {
+                            type:'index'
+                        },
+                        success: function (data) {
+                            //导航栏
+                            $vue.navMenu.html = data.navMenu;
+                            //工具栏
+                            $vue.permission.permissionTools = data.userAuthorization;
+                            $vue.permission.hideTools = $vue.getHideToolBar();
+                            elementExtend.Grid.Toolbar({
+                                vue: $vue
+                            });
+                            //数据集合
+                            $vue.custom.userTypeOptions = data.userTypeList;
+                            $vue.custom.statusOptions = data.statusList;
+                            //查询信息
+                            $vue.getGridList();
+                        }
+                    });
+                },
+                search: function () {
+                    elementExtend.Grid.Search({
+                        vue: this
+                    });
+                },
+                add: function () {
+                    elementExtend.Grid.SaveDialog({
+                        vue: this,
+                        url: '@Url.Action("Add", "Users")',
+                        title: this.languagePack.common_add,
+                        width: '99%',
+                        saveUrl: '@Url.Action("Add_Message", "Users")'
+                    });
+                },
+                edit: function() {
+                    elementExtend.Grid.EditDialog({
+                        vue: this,
+                        url: '@Url.Action("Edit", "Users")?id=$',
+                        title: this.languagePack.common_edit,
+                        width: '99%',
+                        saveUrl: '@Url.Action("Edit_Message", "Users")'
+                    });
+                },
+                del: function() {
+                    elementExtend.Grid.ComplexOper(this,'@Url.Action("Delete_Message", "Users")');
+                },
+                restore: function() {
+                    elementExtend.Grid.ComplexOper(this,'@Url.Action("Restore_Message", "Users")');
+                },
+                editPwd: function () {
+                    elementExtend.Grid.EditDialog({
+                        vue: this,
+                        url: '@Url.Action("EditPassword", "Users")?id=$',
+                        title: this.languagePack.common_edit,
+                        width: '99%',
+                        saveUrl: '@Url.Action("EditPassword_Message", "Users")'
+                    });
+                },
+                refresh: function() {
+                    this.getGridList();
+                },
+                changeStatus: function () {
+                    this.permission.hideTools = this.getHideToolBar();
+                },
+                getHideToolBar: function () {
+                    var _result;
+                    if (this.searchParams.status == 1) {
+                        _result = new Array('delete');
+                    }
+                    else {
+                        _result = new Array('restore');
+                    }
+                    return _result;
+                }
+            }
+        });
+    </script>
+}
+

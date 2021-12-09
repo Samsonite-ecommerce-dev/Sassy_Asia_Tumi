@@ -1,0 +1,52 @@
+﻿@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="home" v-cloak>
+    <div class="main-panel panel-33" style="height: 345px;">
+        <div class="head">{{languagePack.home_main_title_userinfo}}</div>
+        <div class="content">
+            <p><i class="el-icon-user"></i>{{userInfo.userName}}</p>
+            <p><i class="el-icon-help"></i>{{userInfo.type}}</p>
+            <p><i class="el-icon-message"></i>{{userInfo.email}}</p>
+            <p><i class="el-icon-key"></i><a asp-controller="Home" asp-action="EditPassword" class="href-blue-line">{{languagePack.home_index_editpassword}}</a></p>
+            <p><i class="el-icon-alarm-clock"></i>{{userInfo.lastLoginTime}}</p>
+        </div>
+    </div>
+</div>
+@section scripts {
+    <script type="text/javascript">
+        var appVue = new Vue({
+            el: '.home',
+            data: {
+                languagePack: JSON.parse(window.parent.appFrame.languagePackCache),
+                userInfo: {
+                    userName: '',
+                    type:'',
+                    email: '',
+                    lastLoginTime:''
+                },
+                custom: {
+                    dialogVisible: false
+                }
+            },
+            created: function () {
+                this.initData();
+            },
+            methods: {
+                initData() {
+                    let $vue = this;
+                    elementExtend.Base.ParseData({
+                        url: '@Url.Action("Main_Info", "Home")',
+                        success: function (data) {
+                            $vue.userInfo.userName = data.userInfo.userName;
+                            $vue.userInfo.type = data.userInfo.type;
+                            $vue.userInfo.email = data.userInfo.email;
+                            $vue.userInfo.lastLoginTime = data.userInfo.lastLoginTime;
+                        }
+                    });
+                }
+            }
+        });
+    </script>
+}

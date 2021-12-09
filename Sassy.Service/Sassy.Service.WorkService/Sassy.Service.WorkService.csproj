@@ -1,0 +1,18 @@
+<Project Sdk="Microsoft.NET.Sdk.Worker">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <UserSecretsId>dotnet-Sassy.Service.WorkService-485322E2-1239-489B-993F-D38E10BFCF69</UserSecretsId>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.Extensions.Hosting" Version="3.1.3" />
+    <PackageReference Include="Microsoft.Extensions.Hosting.WindowsServices" Version="3.1.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\Samsonite.Library\Samsonite.Library.Business\Samsonite.Library.Business.csproj" />
+    <ProjectReference Include="..\..\Samsonite.Library\Samsonite.Library.DependencyInjection\Samsonite.Library.DependencyInjection.csproj" />
+    <ProjectReference Include="..\..\Samsonite.Library\Samsonite.Library.Service.Core\Samsonite.Library.Service.Core.csproj" />
+  </ItemGroup>
+</Project>

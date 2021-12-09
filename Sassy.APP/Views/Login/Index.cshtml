@@ -1,0 +1,136 @@
+﻿
+@{
+    Layout = null;
+    @inject Samsonite.Library.Core.IBaseService _baseService;
+    string _skinStyle = _baseService.CurrentApplicationConfig().SysConfig.SkinStyle;
+}
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Tumi Sassy System</title>
+    <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+    <meta name="Description" content="Tumi B2B management system" />
+    <meta name="Keywords" content="Tumi B2B management system" />
+    <link rel="bookmark" type="image/x-icon" href="/favicon.ico" />
+    <link rel="shortcut icon" href="/favicon.ico">
+    <!--web-->
+    <link rel="stylesheet" href="~/Content/css/style/@_skinStyle/login.css" />
+    <link rel="stylesheet" href="~/Content/fonts/awesome/css/font-awesome.css" />
+    <style type="text/css">
+        [v-cloak] {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div id="appLogin" v-cloak>
+        <div class="login-body">
+            <div class="left-body">
+                <div class="login-msg">
+                    <h1>@ViewBag.LanguagePack["login_index_welcome"]</h1>
+                    <div class="info">@ViewBag.LanguagePack["login_index_info"]</div>
+                    <div class="support">
+                        <p><i class="fa fa-envelope-o"></i>@ViewBag.LanguagePack["login_index_support"]</p>
+                        <p><a href="#">@ViewBag.LanguagePack["login_index_support_email"]</a></p>
+                    </div>
+                </div>
+            </div>
+            <div class="right-body">
+                <div class="login-box">
+                    <ul>
+                        <li><h1>@ViewBag.LanguagePack["login_index_login_title"]</h1></li>
+                        <li class="error fa fa-exclamation-triangle" v-if="message.show">{{message.text}}</li>
+                        <li class="login-input">
+                            <i class="fa fa-user"></i><input type="text" v-model="subForm.userName" placeholder="@ViewBag.LanguagePack["login_index_username"]" autocomplete="off" />
+                        </li>
+                        <li class="login-input">
+                            <i class="fa fa-key"></i><input type="password" v-model="subForm.password" placeholder="@ViewBag.LanguagePack["login_index_password"]" autocomplete="new-password" />
+                        </li>
+                        <li>
+                            <label for="IsRemember"><input id="IsRemember" type="checkbox" checked="checked" value="1" v-model="subForm.isRemember" />@ViewBag.LanguagePack["login_index_remember_password"]</label>
+                        </li>
+                        <li>
+                            <button class="login-btn" type="button" v-html="button.saveBtn.value" v-bind:disabled="button.saveBtn.disabled" v-on:click="saveLogin"></button>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--script-->
+    <script src="~/Content/js/libs/jquery/2.1.1/jquery.min.js"></script>
+    <script src="~/Content/js/custom/jquery-extend.js"></script>
+    <script src="~/Content/js/libs/vueJS/2.6.10/vue.min.js"></script>
+    <script language="javascript">
+        var app = new Vue({
+            el: '#appLogin',
+            data: {
+                subForm: {
+                    userName: '',
+                    password: '',
+                    isRemember:true
+                },
+                button: {
+                    saveBtn: {
+                        str: '@ViewBag.LanguagePack["login_index_login"]',
+                        value: '',
+                        disabled: false
+                    }
+                },
+                loginButton: '@ViewBag.LanguagePack["login_index_login"]',
+                message: {
+                    show: false,
+                    text: ''
+                }
+            },
+            created: function () {
+                let $vue = this;
+                $(document).keypress(function (e) {
+                //回车键事件
+                    if (e.which == 13) {
+                        $vue.saveLogin();
+                    }
+                });
+                //初始化信息
+                this.initData();
+            },
+            methods: {
+                initData: function () {
+                    //按钮值
+                    this.button.saveBtn.value = this.button.saveBtn.str;
+                },
+                saveLogin: function () {
+                    let $vue = this;
+                    $.ajaxPost(
+                    {
+                        url: '@Url.Action("Index_Message", "Login")',
+                        params: this.subForm,
+                        beforeSend: function () {
+                            $vue.button.saveBtn.value = '<i class="fa fa-refresh btn-icon-spin"></i>' + $vue.button.saveBtn.str;
+                            $vue.button.saveBtn.disabled = true;
+                        },
+                        error: function () {
+                            $vue.button.saveBtn.value = $vue.button.saveBtn.str;
+                            $vue.button.saveBtn.disabled = false;
+                        },
+                        success: function (data) {
+                            $vue.button.saveBtn.value = $vue.button.saveBtn.str;
+                            $vue.button.saveBtn.disabled = false;
+                            if (data.result) {
+                                $vue.message.text = '';
+                                $vue.message.show = false;
+                                window.location.href = '@Url.Action("Index", "Home")';
+                            }
+                            else {
+                                $vue.message.text = data.msg;
+                                $vue.message.show = true;
+                            }
+                        }
+                    });
+                }
+            }
+        });
+    </script>
+</body>
+</html>
+

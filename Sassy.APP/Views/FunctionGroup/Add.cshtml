@@ -1,0 +1,79 @@
+﻿@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<div class="main" v-cloak>
+    <div class="main-edit">
+        <el-form ref="form" :model="subForm"
+                 v-loading.fullscreen.lock="fullScreenLoading"
+                 element-loading-text="Loading"
+                 element-loading-spinner="el-icon-loading">
+            <div class="form-horizontal">
+                <ul>
+                    <li class="form-group">
+                        <div class="col-3 group-label">
+                            <span class="text-danger">*</span>栏目名称
+                        </div>
+                        <div class="col-9 group-text">
+                            <el-input type="input" size="small" class="input-xlarge" v-model="subForm.groupName"></el-input>
+                        </div>
+                        <div class="form-line-dashed"></div>
+                    </li>
+                    <li class="form-group">
+                        <div class="col-3 group-label">
+                            栏目图标
+                        </div>
+                        <div class="col-9 group-text">
+                            <el-input size="small" class="input-xlarge" :prefix-icon="custom.iconInfo" placeholder="请选择图标" readonly v-model="subForm.groupIcon">
+                                <el-button slot="append" icon="el-icon-thumb" v-on:click="selectIcon">选择</el-button>
+                            </el-input>
+                        </div>
+                        <div class="form-line-dashed"></div>
+                    </li>
+                    <li class="form-group">
+                        <div class="col-3 group-label">
+                            简要描述
+                        </div>
+                        <div class="col-9 group-text">
+                            <el-input type="textarea" :rows="5" class="input-xlarge" v-model="subForm.groupMemo"></el-input>
+                        </div>
+                        <div class="form-line-dashed"></div>
+                    </li>
+                </ul>
+            </div>
+        </el-form>
+    </div>
+    <partial name="~/Views/Shared/_ElDailog.cshtml">
+</div>
+@section scripts {
+    <script type="text/javascript">
+        var appVue = new Vue({
+            el: '.main',
+            mixins: [elementExtend.Base.MixinVue()],
+            data: {
+                subForm: {
+                    groupName: '',
+                    groupIcon: '',
+                    groupMemo: ''
+                },
+                custom: {
+                    iconInfo: ''
+                }
+            },
+            methods: {
+                selectIcon: function () {
+                    elementExtend.Base.OpenDialog({
+                        vue: this,
+                        url:'@Url.Action("SelectIcon","Common")',
+                        title: '选择图标',
+                        width: '99%'
+                    });
+                },
+                doIconMessage: function (css) {
+                    this.subForm.groupIcon = css;
+                    this.custom.iconInfo = 'fa ' + css;
+                    elementExtend.Base.CloseDialog(this);
+                }
+            }
+        });
+    </script>
+}

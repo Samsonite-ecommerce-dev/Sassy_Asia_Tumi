@@ -1,0 +1,147 @@
+﻿@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<div class="main" v-cloak>
+    <div class="main-edit">
+        <el-form ref="form" :model="subForm"
+                 v-loading.fullscreen.lock="fullScreenLoading"
+                 element-loading-text="Loading"
+                 element-loading-spinner="el-icon-loading">
+            <div class="form-horizontal">
+                <ul>
+                    <li class="form-group">
+                        <div class="col-3 group-label">
+                            <span class="text-danger">*</span>名称
+                        </div>
+                        <div class="col-9 group-text">
+                            <el-input type="input" size="small" class="input-xlarge" v-model="subForm.uploadName"></el-input>
+                        </div>
+                        <div class="form-line-dashed"></div>
+                    </li>
+                    <li class="form-group">
+                        <div class="col-3 group-label">
+                            <span class="text-danger">*</span>标识
+                        </div>
+                        <div class="col-9 group-text">
+                            <el-input type="input" size="small" class="input-xlarge" v-model="subForm.modelMark"></el-input>
+                        </div>
+                        <div class="form-line-dashed"></div>
+                    </li>
+                    <li class="form-group">
+                        <div class="col-3 group-label">
+                            <span class="text-danger">*</span>类型
+                        </div>
+                        <div class="col-9 group-text">
+                            <el-radio-group v-for="item in custom.uploadTypeOptions" v-model="subForm.fileType">
+                                <el-radio :label="item.value">{{item.label}}</el-radio>
+                            </el-radio-group>
+                        </div>
+                        <div class="form-line-dashed"></div>
+                    </li>
+                    <li class="form-group">
+                        <div class="col-3 group-label">
+                            <span class="text-danger">*</span>文件上传数限制
+                        </div>
+                        <div class="col-9 group-text">
+                            <el-input-number size="small" controls-position="right" :min="1" :max="100" v-model="subForm.maxFileCount"></el-input-number>
+                        </div>
+                        <div class="form-line-dashed"></div>
+                    </li>
+                    <li class="form-group">
+                        <div class="col-3 group-label">
+                            <span class="text-danger">*</span>文件大小限制
+                        </div>
+                        <div class="col-9 group-text">
+                            <el-input-number size="small" class="input-small" :controls="false" :min="0" v-model="subForm.maxFileSize"></el-input-number>&nbsp;KB
+                        </div>
+                        <div class="form-line-dashed"></div>
+                    </li>
+                    <li class="form-group">
+                        <div class="col-3 group-label">
+                            <span class="text-danger">*</span>文件后缀名限制
+                        </div>
+                        <div class="col-9 group-text">
+                            <el-input type="input" size="small" class="input-xlarge" v-model="subForm.allowFile"></el-input>
+                            <span class="label-info">格式如:jpg,gif,png</span>
+                        </div>
+                        <div class="form-line-dashed"></div>
+                    </li>
+                    <li class="form-group">
+                        <div class="col-3 group-label">
+                            <span class="text-danger">*</span>保存文件夹方式
+                        </div>
+                        <div class="col-9 group-text">
+                            <el-radio-group v-model="subForm.saveStyle">
+                                <el-radio label="dateorder">按时间</el-radio>
+                                <el-radio label="fileorder">按文件夹</el-radio>
+                            </el-radio-group>
+                        </div>
+                        <div class="form-line-dashed"></div>
+                    </li>
+                    <li class="form-group">
+                        <div class="col-3 group-label">
+                            <span class="text-danger">*</span>保存文件夹名称
+                        </div>
+                        <div class="col-9 group-text">
+                            <el-input type="input" size="small" class="input-xlarge" v-model="subForm.saveCatalog"></el-input>
+                        </div>
+                        <div class="form-line-dashed"></div>
+                    </li>
+                    <li class="form-group">
+                        <div class="col-3 group-label">
+                            <span class="text-danger">*</span>是否重命名
+                        </div>
+                        <div class="col-9 group-text">
+                            <el-switch v-model="subForm.isRename"></el-switch>
+                        </div>
+                        <div class="form-line-dashed"></div>
+                    </li>
+                </ul>
+            </div>
+        </el-form>
+    </div>
+</div>
+@section scripts {
+    <script type="text/javascript">
+        var appVue = new Vue({
+            el: '.main',
+            mixins: [elementExtend.Base.MixinVue()],
+            data: {
+                subForm: {
+                    uploadName: '',
+                    modelMark: '',
+                    fileType: '',
+                    maxFileCount: 1,
+                    maxFileSize: 0,
+                    allowFile: '',
+                    saveStyle: 'dateorder',
+                    saveCatalog: '',
+                    isRename: false
+                },
+                custom: {
+                    uploadTypeOptions: []
+                }
+            },
+            created: function () {
+                this.initData();
+            },
+            methods: {
+                initData: function () {
+                    let $vue = this;
+                    elementExtend.Base.ParseData({
+                        url: '@Url.Action("Initialize_Info", "UploadConfig")',
+                        params: {
+                            type: 'add'
+                        },
+                        success: function (data) {
+                            $vue.custom.uploadTypeOptions = data.uploadTypeList;
+                            if ($vue.custom.uploadTypeOptions.length > 0) {
+                                $vue.subForm.fileType = $vue.custom.uploadTypeOptions[0].value;
+                            }
+                        }
+                    });
+                }
+            }
+        });
+    </script>
+}

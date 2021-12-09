@@ -1,0 +1,145 @@
+﻿@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<div class="main" v-cloak>
+    <div class="main-top" v-html="navMenu.html"></div>
+    <div class="main-search">
+        <form id="searchForm" method="post" asp-antiforgery="false">
+            <div class="search-condition">
+                <ul>
+                    <li>
+                        <el-input size="small" prefix-icon="el-icon-search" class="input-xlarge" v-model="searchParams.keyword" placeholder="搜索关键字" clearable></el-input>
+                    </li>
+                    <li>
+                        <el-button size="mini" type="primary" :loading="searchBar.searchBtn.loading" v-on:click="search">查询<i class="el-icon-search el-icon--right"></i></el-button>
+                    </li>
+                </ul>
+            </div>
+        </form>
+    </div>
+    <div class="main-list">
+        <div class="main-list-toolbar">
+            <a href="javascript:void(0)" v-if="toolbar.operate.add" v-on:click="add"><i class="el-icon-plus text-success"></i>添加</a>
+            <a href="javascript:void(0)" v-if="toolbar.operate.edit" v-on:click="edit"><i class="el-icon-edit text-warning"></i>编辑</a>
+            <a href="javascript:void(0)" v-if="toolbar.operate.delete" v-on:click="del"><i class="el-icon-delete text-danger"></i>删除</a>
+            <span class="toolbar-separator"></span>
+            <a href="javascript:void(0)" v-on:click="refresh"><i class="el-icon-refresh text-info"></i>刷新</a>
+        </div>
+        <div class="main-list-grid">
+            <el-table :data="grid.data"
+                      :height="grid.height"
+                      ref="mainGrid"
+                      v-loading="grid.loading"
+                      stripe
+                      size="small"
+                      style="width:100%"
+                      v-on:row-click="clickRow">
+                <el-table-column type="selection" prop="ck" width="50"></el-table-column>
+                <el-table-column prop="s1" label="名称"></el-table-column>
+                <el-table-column prop="s2" label="标识"></el-table-column>
+                <el-table-column prop="s3" label="类型"></el-table-column>
+                <el-table-column prop="s4" label="文件上传数限制"></el-table-column>
+                <el-table-column prop="s5" label="文件大小限制"></el-table-column>
+                <el-table-column prop="s6" label="文件后缀名限制"></el-table-column>
+                <el-table-column prop="s7" label="保存文件夹方式"></el-table-column>
+                <el-table-column prop="s8" label="保存文件夹名称"></el-table-column>
+                <el-table-column prop="s9" label="文件是否重命名">
+                    <template slot-scope="scope">
+                        <span v-html="scope.row.s9"></span>
+                    </template>
+                </el-table-column>
+            </el-table>
+        </div>
+        <div class="main-list-pagination">
+            <el-pagination v-on:size-change="pageSizeChange"
+                           v-on:current-change="pageCurrentChange"
+                           :current-page="pagination.currentPage"
+                           :page-sizes="pagination.pageList"
+                           :page-size="pagination.pageSize"
+                           layout="sizes, prev, pager, next, jumper,total"
+                           :total="pagination.totalCount">
+            </el-pagination>
+        </div>
+    </div>
+    <partial name="~/Views/Shared/_ElSubmitDailog.cshtml">
+</div>
+@section scripts {
+    <script type="text/javascript">
+        var appVue = new Vue({
+            el: '.main',
+            mixins:[elementExtend.Grid.MixinVue()],
+            data: {
+                toolbar: {
+                    operate: {
+                        add: false,
+                        edit: false,
+                        delete:false
+                    }
+                },
+                grid: {
+                    url:'@Url.Action("Index_Message", "UploadConfig")'
+                },
+                searchParams: {
+                    keyword: ''
+                }
+            },
+            created: function () {
+                this.initData();
+            },
+            mounted: function(){
+            },
+            methods: {
+                initData() {
+                    let $vue = this;
+                    elementExtend.Base.ParseData({
+                        url: '@Url.Action("Initialize_Info", "UploadConfig")',
+                        params: {
+                            type:'index'
+                        },
+                        success: function (data) {
+                            //导航栏
+                            $vue.navMenu.html = data.navMenu;
+                            //工具栏
+                            $vue.permission.permissionTools = data.userAuthorization;
+                            elementExtend.Grid.Toolbar({
+                                vue: $vue
+                            });
+                            //查询信息
+                            $vue.getGridList();
+                        }
+                    });
+                },
+                search: function () {
+                    elementExtend.Grid.Search({
+                        vue:this
+                    });
+                },
+                add: function () {
+                    elementExtend.Grid.SaveDialog({
+                        vue: this,
+                        url: '@Url.Action("Add", "UploadConfig")',
+                        title: '添加信息',
+                        width: '99%',
+                        saveUrl: '@Url.Action("Add_Message", "UploadConfig")'
+                    });
+                },
+                edit: function() {
+                    elementExtend.Grid.EditDialog({
+                        vue: this,
+                        url: '@Url.Action("Edit", "UploadConfig")?id=$',
+                        title: '编辑信息',
+                        width: '99%',
+                        saveUrl: '@Url.Action("Edit_Message", "UploadConfig")'
+                    });
+                },
+                del: function() {
+                    elementExtend.Grid.ComplexOper(this,'@Url.Action("Delete_Message", "UploadConfig")');
+                },
+                refresh: function() {
+                    this.getGridList();
+                }
+            }
+        });
+    </script>
+}
+

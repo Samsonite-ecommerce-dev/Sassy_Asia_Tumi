@@ -1,0 +1,134 @@
+﻿@{
+    Layout = null;
+    @inject Samsonite.Library.Core.IBaseService _baseService;
+    string _skinStyle = _baseService.CurrentApplicationConfig().SysConfig.SkinStyle;
+    var _defineMenuList = (List<Samsonite.Library.Core.Models.DefineMenu>)Model;
+}
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Tumi Sassy System</title>
+    <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="Description" content="Tumi B2B management system" />
+    <meta name="Keywords" content="Tumi B2B management system" />
+    <link rel="bookmark" type="image/x-icon" href="/favicon.ico" />
+    <link rel="shortcut icon" href="/favicon.ico">
+    <!--custom-->
+    <link rel="stylesheet" href="~/Content/css/style/@_skinStyle/iframe.css?v=20191106" />
+    <link rel="stylesheet" href="~/Content/css/style.css" />
+    <!--font-->
+    <link rel="stylesheet" href="~/Content/fonts/awesome/css/font-awesome.css" />
+    <style type="text/css">
+        [v-cloak] {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div id="frame-app" v-cloak>
+        <div class="frame-left">
+            <nav class="navbar">
+                <div id="nav" class="navbar-collapse">
+                    <div class="nav-header">
+                        <div class="profile-element"></div>
+                        <div class="logo-element"></div>
+                    </div>
+                    <div class="nav" ref="nav">
+                        <ul>
+                            @foreach (var _m in _defineMenuList)
+                            {
+                                <li>
+                                    <div class="nav-first-level">
+                                        <a href="javascript:void(0);">
+                                            <i class="fa @_m.Icon"></i>
+                                            @_m.Name
+                                            <span class="fa fa-angle-left nav-first-arrow"></span>
+                                        </a>
+                                    </div>
+                                    <div class="nav-line"></div>
+                                    <ul class="nav-second-level">
+                                        @foreach (var _c in @_m.Children)
+                                        {
+                                            <li>
+                                                <a href="javascript:void(0);" rel="/@_c.Url">@_c.Name</a>
+                                            </li>
+                                        }
+                                    </ul>
+                                </li>
+                            }
+                        </ul>
+                    </div>
+                </div>
+            </nav>
+        </div>
+        <div class="frame-right">
+            <div class="header">
+                <div class="header-right">
+                    <ul>
+                        <li class="user-control-panel">
+                            <i class="fa fa-user-circle-o"></i><a href="javascript:void(0);">{{userName}}</a>
+                            <div class="header-right-droplist">
+                                <a asp-controller="Home" asp-action="Index"><i class="fa fa-home text-success"></i>{{languagePack.home_index_index}}</a>
+                                 <a href="javascript:void(0);" v-on:click="openUrl('@Url.Action("LanguageConfig","Home")')"><i class="fa fa-retweet text-warning"></i>{{languagePack.home_index_select_language}}</a>
+                                 <a href="javascript:void(0);" v-on:click="openUrl('@Url.Action("EditPassword","Home")')"><i class="fa fa-key text-danger"></i>{{languagePack.home_index_editpassword}}</a>
+                                @*<a href="#"><i class="fa fa-hand-paper-o text-info"></i>{{languagePack.home_index_help}}</a>*@
+                            </div>
+                        </li>
+                        <li><i class="fa fa-sign-out"></i><a asp-controller="Login" asp-action="LoginOut">{{languagePack.home_index_logout}}</a></li>
+                    </ul>
+                </div>
+                <div class="header-minimalize"><a href="javascript:void(0);"><i class="fa fa-bars"></i></a></div>
+                <div class="header-center">{{languagePack.home_index_title}}</div>
+            </div>
+            <div class="frame">
+                <iframe id="mainFrame" src="" scrolling="auto" style="width:100%;height:99%;" frameborder="0"></iframe>
+            </div>
+        </div>
+    </div>
+    <!--jquery-->
+    <script src="~/Content/js/libs/jquery/2.1.1/jquery.min.js"></script>
+    <!--vue.js-->
+    <script src="~/Content/js/libs/vueJS/2.6.10/vue.min.js"></script>
+    <!--axios.js-->
+    <script src="~/Content/js/libs/axios/0.21.1/axios.min.js"></script>
+    <!--custom-->
+    <script src="~/Content/js/custom/frame.js"></script>
+    <script src="~/Content/js/custom/vue-extend.js"></script>
+    <script type="text/javascript">
+        var appFrame = new Vue({
+            el: '#frame-app',
+            data: {
+                languagePack: [],
+                languagePackCache: [],
+                userName: '',
+                defaultPage: ''
+            },
+            created: function () {
+                this.initData();
+            },
+            methods: {
+                initData() {
+                    let $vue = this;
+                    vueExtend.Ajax.Get({
+                        url: '@Url.Action("Index_Info", "Home")',
+                        dataType: 'json',
+                        success: function (data) {
+                            $vue.languagePack = data.languagePack;
+                            $vue.languagePackCache = JSON.stringify(data.languagePack);
+                            //登入信息
+                            $vue.userName = data.userName;
+                            //初始页
+                            $vue.openUrl(data.defaultPage);
+                        }
+                    });
+                },
+                openUrl: function (url) {
+                    $('#mainFrame').attr("src", url);
+                }
+            }
+        });
+    </script>
+</body>
+</html>
+

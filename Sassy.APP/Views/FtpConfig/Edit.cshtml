@@ -1,0 +1,137 @@
+﻿@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<div class="main" v-cloak>
+    <div class="main-edit">
+        <el-form ref="form" :model="subForm"
+                 v-loading.fullscreen.lock="fullScreenLoading"
+                 element-loading-text="Loading"
+                 element-loading-spinner="el-icon-loading">
+            <div class="form-horizontal">
+                <ul>
+                    <li class="form-group">
+                        <div class="col-3 group-label">
+                            <span class="text-danger">*</span>名称
+                        </div>
+                        <div class="col-9 group-text">
+                            <el-input type="input" size="small" class="input-xlarge" v-model="subForm.ftpName"></el-input>
+                        </div>
+                        <div class="form-line-dashed"></div>
+                    </li>
+                    <li class="form-group">
+                        <div class="col-3 group-label">
+                            <span class="text-danger">*</span>标识
+                        </div>
+                        <div class="col-9 group-text">
+                            <el-input type="input" size="small" class="input-xlarge" v-model="subForm.ftpIdentify"></el-input>
+                        </div>
+                        <div class="form-line-dashed"></div>
+                    </li>
+                    <li class="form-group">
+                        <div class="col-3 group-label">
+                            <span class="text-danger">*</span>FTP主机
+                        </div>
+                        <div class="col-9 group-text">
+                            <el-input type="input" size="small" class="input-xlarge" v-model="subForm.ip"></el-input>
+                        </div>
+                        <div class="form-line-dashed"></div>
+                    </li>
+                    <li class="form-group">
+                        <div class="col-3 group-label">
+                            <span class="text-danger">*</span>FTP端口
+                        </div>
+                        <div class="col-9 group-text">
+                            <el-input-number size="small" class="input-small" :controls="false" :min="0" :max="65535" v-model="subForm.port"></el-input-number>
+                        </div>
+                        <div class="form-line-dashed"></div>
+                    </li>
+                    <li class="form-group">
+                        <div class="col-3 group-label">
+                            <span class="text-danger">*</span>FTP用户
+                        </div>
+                        <div class="col-9 group-text">
+                            <el-input type="input" size="small" class="input-xlarge" v-model="subForm.userName"></el-input>
+                        </div>
+                        <div class="form-line-dashed"></div>
+                    </li>
+                    <li class="form-group">
+                        <div class="col-3 group-label">
+                            <span class="text-danger">*</span>FTP密码
+                        </div>
+                        <div class="col-9 group-text">
+                            <el-input type="input" size="small" class="input-xlarge" v-model="subForm.password" show-password></el-input>
+                        </div>
+                        <div class="form-line-dashed"></div>
+                    </li>
+                    <li class="form-group">
+                        <div class="col-3 group-label">
+                            远程路径
+                        </div>
+                        <div class="col-9 group-text">
+                            <el-input type="input" size="small" class="input-xlarge" v-model="subForm.filePath"></el-input>
+                        </div>
+                        <div class="form-line-dashed"></div>
+                    </li>
+                    <li class="form-group">
+                        <div class="col-3 group-label">
+                            排序
+                        </div>
+                        <div class="col-9 group-text">
+                            <el-input-number size="small" controls-position="right" :min="1" v-model="subForm.sort"></el-input-number>
+                        </div>
+                        <div class="form-line-dashed"></div>
+                    </li>
+                    <li class="form-group">
+                        <div class="col-3 group-label">
+                            简要描述
+                        </div>
+                        <div class="col-9 group-text">
+                            <el-input type="textarea" :rows="5" class="input-xlarge" v-model="subForm.remark"></el-input>
+                        </div>
+                        <div class="form-line-dashed"></div>
+                    </li>
+                </ul>
+            </div>
+        </el-form>
+    </div>
+</div>
+@section scripts {
+    <script type="text/javascript">
+        var appVue = new Vue({
+            el: '.main',
+            mixins: [elementExtend.Base.MixinVue()],
+            data: {
+                subForm: {
+                    id: '',
+                    ftpName: '',
+                    ftpIdentify:'',
+                    ip: '',
+                    port: '',
+                    userName: '',
+                    password: '',
+                    filePath: '',
+                    sort: '',
+                    remark: ''
+                }
+            },
+             created: function(){
+                this.initData();
+            },
+            methods: {
+                initData() {
+                    let $vue = this;
+                    elementExtend.Base.ParseData({
+                        url: '@Url.Action("Initialize_Info", "FtpConfig")',
+                        params: {
+                            type: 'edit',
+                            id: $.requestQueryString('id')
+                        },
+                        success: function (data) {
+                            $vue.subForm = data.model;
+                        }
+                    });
+                }
+            }
+        });
+    </script>
+}

@@ -1,0 +1,123 @@
+﻿@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<div class="main" v-cloak>
+    <div class="main-edit">
+        <el-form ref="form" :model="subForm"
+                 v-loading.fullscreen.lock="fullScreenLoading"
+                 element-loading-text="Loading"
+                 element-loading-spinner="el-icon-loading">
+            <div class="form-horizontal">
+                <ul>
+                    <li class="form-group">
+                        <div class="col-2 group-label">
+                            {{languagePack.sparepartquery_edit_sparepart_id}}
+                        </div>
+                        <div class="col-4 group-text">
+                            {{subForm.id}}
+                        </div>
+                        <div class="col-2 group-label">
+                            {{languagePack.sparepartquery_edit_sparepart_name}}
+                        </div>
+                        <div class="col-4 group-text">
+                            {{subForm.sparepartDesc}}
+                        </div>
+                        <div class="form-line-dashed"></div>
+                    </li>
+                    <li class="form-group">
+                        <div class="col-2 group-label">
+                            {{languagePack.sparepartquery_edit_imageurl}}
+                        </div>
+                        <div class="col-10 group-text" v-html="subForm.imageUrl">
+                        </div>
+                        <div class="form-line-dashed"></div>
+                    </li>
+                    <li class="form-group">
+                        <div class="col-2 group-label">
+                            {{languagePack.sparepartquery_edit_price}}
+                        </div>
+                        <div class="col-4 group-text">
+                            {{subForm.price}}
+                        </div>
+                        <div class="col-2 group-label">
+                            {{languagePack.sparepartquery_edit_unit}}
+                        </div>
+                        <div class="col-4 group-text">
+                            {{subForm.unit}}
+                        </div>
+                        <div class="form-line-dashed"></div>
+                    </li>
+                    <li class="form-group">
+                        <div class="col-2 group-label">
+                            {{languagePack.sparepartquery_edit_stock}}
+                        </div>
+                        <div class="col-4 group-text">
+                            {{subForm.inventory}}
+                        </div>
+                        <div class="col-2 group-label">
+                            {{languagePack.sparepartquery_edit_stock_date}}
+                        </div>
+                        <div class="col-4 group-text">
+                            {{subForm.inventoryUpdateDate}}
+                        </div>
+                        <div class="form-line-dashed"></div>
+                    </li>
+                    <li class="form-group">
+                        <div class="col-2 group-label">
+                            {{languagePack.sparepartquery_edit_status}}
+                        </div>
+                        <div class="col-10 group-text">
+                            {{subForm.status}}
+                        </div>
+                        <div class="form-line-dashed"></div>
+                    </li>
+                </ul>
+            </div>
+        </el-form>
+    </div>
+</div>
+@section scripts {
+    <script type="text/javascript">
+        var appVue = new Vue({
+            el: '.main',
+            mixins: [elementExtend.Base.MixinVue()],
+            data: {
+                languagePack: JSON.parse(window.parent.parent.frames.appFrame.languagePackCache),
+                subForm: {
+                    id: '',
+                    sparepartDesc: '',
+                    imageUrl: '',
+                    price: '',
+                    unit: '',
+                    inventory: '',
+                    inventoryUpdateDate: '',
+                    status:''
+                },
+                custom: {
+
+                }
+            },
+            created: function(){
+                this.initData();
+            },
+            methods: {
+                initData() {
+                    let $vue = this;
+                    elementExtend.Base.ParseData({
+                        url: '@Url.Action("Initialize_Info", "SparePartQuery")',
+                        params: {
+                            type: 'detail',
+                            id: $.requestQueryString('id')
+                        },
+                        success: function (data) {
+                            $vue.subForm = data.model;
+                        }
+                    });
+                },
+                previewImage: function (src) {
+                    elementExtend.previewImage(this, src);
+                }
+            }
+        });
+    </script>
+}

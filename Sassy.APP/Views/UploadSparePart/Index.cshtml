@@ -1,0 +1,153 @@
+﻿@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<div class="main" v-cloak>
+    <div class="main-top" v-html="navMenu.html"></div>
+    <div class="main-operate">
+        <ul>
+            <li>
+                <el-input type="input" prefix-icon="el-icon-upload" size="small" class="input-xxlarge" v-model="searchParams.fileName">
+                    <el-button size="mini" type="success" slot="append" v-on:click="uploadfile">...</el-button>
+                </el-input>
+            </li>
+            <li>
+                <i class="el-icon-download text-success"></i><a href="~/Document/Template/SparePart/SpareParts-Template.xlsx" class="href-blue-line">{{languagePack.common_importexcel_model}}</a>
+            </li>
+        </ul>
+    </div>
+    <div class="main-list">
+        <div class="main-list-toolbar">
+            <a href="javascript:void(0)" v-on:click="save"><i class="el-icon-upload2 text-success"></i>{{languagePack.common_save}}</a>
+        </div>
+        <div class="main-list-grid">
+            <el-table :data="grid.data"
+                      :height="grid.height"
+                      ref="mainGrid"
+                      v-loading="grid.loading"
+                      stripe
+                      size="small"
+                      style="width:100%"
+                      v-on:row-click="clickRow"
+                      v-on:sort-change="sortChange">
+                <el-table-column type="index" :index="indexFormat"></el-table-column>
+                <el-table-column prop="s1" :label="languagePack.uploadsparepart_index_sparepareid"></el-table-column>
+                <el-table-column prop="s2" :label="languagePack.uploadsparepart_index_desc"></el-table-column>
+                <el-table-column prop="s3" :label="languagePack.uploadsparepart_index_skus"></el-table-column>
+                <el-table-column prop="s4" :label="languagePack.uploadsparepart_index_active">
+                    <template slot-scope="scope">
+                        <span v-html="scope.row.s4"></span>
+                    </template>
+                </el-table-column>
+                <el-table-column prop="s5" :label="languagePack.uploadsparepart_index_message">
+                    <template slot-scope="scope">
+                        <span v-html="scope.row.s5"></span>
+                    </template>
+                </el-table-column>
+            </el-table>
+        </div>
+        <div class="main-list-pagination">
+            <el-pagination v-on:size-change="pageSizeChange"
+                           v-on:current-change="pageCurrentChange"
+                           :current-page="pagination.currentPage"
+                           :page-sizes="pagination.pageList"
+                           :page-size="pagination.pageSize"
+                           layout="sizes, prev, pager, next, jumper,total"
+                           :total="pagination.totalCount"
+                           :hide-on-single-page="pagination.hideOnSinglePage">
+            </el-pagination>
+        </div>
+    </div>
+    <partial name="~/Views/Shared/_ElDailog.cshtml">
+</div>
+@section scripts {
+    <script type="text/javascript">
+        var appVue = new Vue({
+            el: '.main',
+            mixins:[elementExtend.Grid.MixinVue()],
+            data: {
+                languagePack: JSON.parse(window.parent.frames.appFrame.languagePackCache),
+                searchParams: {
+                    fileName: ''
+                },
+                pagination: {
+                    pageSize: 30
+                }
+            },
+            created: function () {
+                this.initData();
+            },
+            mounted: function(){
+            },
+            methods: {
+                initData() {
+                    let $vue = this;
+                    elementExtend.Base.ParseData({
+                        url: '@Url.Action("Initialize_Info", "UploadSparePart")',
+                        params: {
+                            type:'index'
+                        },
+                        success: function (data) {
+                            //导航栏
+                            $vue.navMenu.html = data.navMenu;
+                            //查询信息
+                            $vue.getGridList();
+                        }
+                    });
+                },
+                getGridList: function () {
+                    elementExtend.Grid.List({
+                        vue: this,
+                        url: '@Url.Action("Index_Message", "UploadSparePart")'
+                    });
+                },
+                save: function () {
+                    let $vue = this;
+                    if (this.searchParams.fileName == '') {
+                        elementExtend.Tips.Alert($vue,this.languagePack.upload_index_at_least_one_file, 5);
+                    }
+                    else {
+                        vueExtend.Ajax.Post({
+                            url: '@Url.Action("Index_SaveUpload", "UploadSparePart")',
+                            params: this.searchParams,
+                            loading: true,
+                            success: function (data) {
+                                if (data.result) {
+                                    elementExtend.Tips.Success($vue,data.msg, 3, function () {
+                                        if (data.rows.length > 0) {
+                                            //绑定返回数据
+                                            $vue.grid.data = data.rows;
+                                            $vue.pagination.totalCount = data.total;
+                                            //设置每页数,使其只会出现一页,然后使用hideOnSinglePage进行隐藏
+                                            $vue.pagination.pageSize = data.total + 1;
+                                            $vue.pagination.hideOnSinglePage = true;
+                                        }
+                                        else {
+                                            window.location.href = "@Url.Action("Index", "UploadSparePart")";
+                                        }
+                                    });
+                                }
+                                else {
+                                    elementExtend.Tips.Alert($vue,data.msg, 5);
+                                }
+                            }
+                        });
+                    }
+                },
+                uploadfile: function () {
+                    vueExtend.openFileView({
+                        vue: this,
+                        width:'90%',
+                        model: 'M002',
+                        catalog: 'SparePartRelation'
+                    });
+                },
+                gl_SelectUploadFile: function (path) {
+                    this.searchParams.fileName = path;
+                    //查询信息
+                    this.getGridList();
+                }
+            }
+        });
+    </script>
+}
+

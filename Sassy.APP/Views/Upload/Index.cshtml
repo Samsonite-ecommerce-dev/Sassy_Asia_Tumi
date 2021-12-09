@@ -1,0 +1,236 @@
+﻿@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    @inject Samsonite.Library.Core.IAntiforgeryService _antiforgeryService;
+}
+<div class="main" style="padding:10px" v-cloak>
+    <el-tabs type="border-card" v-model="custom.activeName">
+        <el-tab-pane label="文件浏览" name="fileTab">
+            <div class="main_upload_dir" v-html="custom.navInfo"></div>
+            <div class="main_upload_view">
+                <div class="main-list">
+                    <div class="main-list-toolbar">
+                        <a href="javascript:void(0)" v-on:click="refresh"><i class="el-icon-refresh text-info"></i>刷新</a>
+                    </div>
+                    <div class="main-list-grid">
+                        <el-table :data="grid.data"
+                                  :height="grid.height"
+                                  ref="mainGrid"
+                                  v-loading="grid.loading"
+                                  stripe
+                                  size="small"
+                                  style="width:100%">
+                            <el-table-column prop="s1" label="文件名">
+                                <template slot-scope="scope">
+                                    <span v-html="scope.row.s1"></span>
+                                </template>
+                            </el-table-column>
+                            <el-table-column prop="s2" label="文件类型"></el-table-column>
+                            <el-table-column prop="s3" label="文件大小"></el-table-column>
+                            <el-table-column prop="s4" label="修改时间"></el-table-column>
+                        </el-table>
+                    </div>
+                    <div class="main-list-pagination">
+                        <el-pagination v-on:size-change="pageSizeChange"
+                                       v-on:current-change="pageCurrentChange"
+                                       :current-page="pagination.currentPage"
+                                       :page-sizes="pagination.pageList"
+                                       :page-size="pagination.pageSize"
+                                       layout="sizes, prev, pager, next, jumper,total"
+                                       :total="pagination.totalCount">
+                        </el-pagination>
+                    </div>
+                </div>
+            </div>
+        </el-tab-pane>
+        <el-tab-pane label="文件上传" name="uploadTab">
+            <div class="main_upload_file">
+                <div class="upload_input">
+                    <el-upload ref="upload"
+                               class="upload-demo"
+                               drag
+                               :action="custom.uploadAction"
+                               :headers="custom.uploadHeaders"
+                               :data="custom.uploadParams"
+                               :list-type="custom.uploadListType"
+                               multiple="false"
+                               :accept="custom.uploadAllowFile"
+                               :on-remove="handleRemove"
+                               :on-success="handleSuccess"
+                               :on-error="handleError"
+                               :on-change="handleChange"
+                               :on-exceed="handleExceed"
+                               :file-list="custom.fileList"
+                               :limit="custom.uploadMaxFileLimit"
+                               :auto-upload="false">
+                        <i class="el-icon-upload"></i>
+                        <div class="el-upload__text">Drag the file here,or<em>Click to upload</em></div>
+                        <div class="el-upload__tip" slot="tip">Supported file formats:<label class="text-danger">{{custom.uploadAllowFile}}</label>,maximum size of file:<label class="text-danger">{{custom.uploadMaxFileSize}}</label></div>
+                    </el-upload>
+                </div>
+                <div class="upload_message">
+                    <el-button size="small" type="success" v-on:click="submitUpload">文件上传</el-button>
+                </div>
+            </div>
+        </el-tab-pane>
+    </el-tabs>
+</div>
+
+@section scripts {
+    <script type="text/javascript">
+        var appUpload = new Vue({
+            el: '.main',
+            mixins: [elementExtend.Grid.MixinVue()],
+            data: {
+                searchParams: {
+                    filepath: '',
+                },
+                grid: {
+                    height: $(window.parent.frames).height() - 272
+                },
+                custom: {
+                    navInfo: '<i class="fa fa-folder-open"></i><a href="javascript:appUpload.searchNextPath();" class="href-blue">Root</a>',
+                    activeName:'fileTab',
+                    uploadAction: '@Url.Action("Save_Message", "Upload")',
+                    uploadHeaders: {__RequestVerificationToken:'@Html.Raw(_antiforgeryService.AntiForgeryTokenValue())'},
+                    uploadParams: {
+                        model: '',
+                        catalog:''
+                    },
+                    uploadListType: '',
+                    uploadMaxFileLimit: '',
+                    uploadMaxFileSize: '',
+                    uploadAllowFile:'',
+                    fileList: []
+                }
+            },
+            created: function () {
+                this.initData();
+            },
+            methods: {
+                initData() {
+                    let $vue = this;
+                    elementExtend.Base.ParseData({
+                        url: '@Url.Action("Initialize_Info", "Upload")',
+                        params:{
+                            model: $.requestQueryString('model'),
+                            catalog: $.requestQueryString('catalog')
+                        },
+                        success: function (data) {
+                            $vue.custom.uploadParams = {
+                                model: data.model,
+                                catalog: data.catalog
+                            };
+                            $vue.custom.uploadParams.model = data.model;
+                            $vue.custom.uploadParams.catalog = data.catalog;
+                            $vue.custom.uploadListType = data.listType;
+                            $vue.custom.uploadMaxFileLimit = data.maxFileCount;
+                            $vue.custom.uploadMaxFileSize = data.maxFileSize;
+                            $vue.custom.uploadAllowFile = data.allowFile;
+                            //查询信息
+                            $vue.getGridList();
+                        }
+                    });
+                },
+                getGridList: function () {
+                    elementExtend.Grid.List({
+                        vue: this,
+                        url: '@Url.Action("Index_Message", "Upload")'
+                    });
+                },
+                search: function () {
+                    elementExtend.Grid.Search({
+                        vue: this
+                    });
+                },
+                refresh: function() {
+                    this.getGridList();
+                },
+                searchNextPath: function (path) {
+                    var _s = "<i class=\"fa fa-folder-open\"></i>";
+                    _s += "<a href=\"javascript:appUpload.searchNextPath();\" class=\"href-blue\">Root</a>";
+                    if (path == undefined) path = '';
+                    var _dirs = path.split('/');
+                    for (var t = 0; t < _dirs.length; t++) {
+                        if (_dirs[t] != '') {
+                            if (t == _dirs.length - 1) {
+                                _s += "<span>" + _dirs[t] + "</span>";
+                            }
+                            else {
+                                _s += "<a href=\"javascript:appUpload.searchNextPath('" + _dirs[t] + "')\" class=\"href-blue\">" + _dirs[t] + "</a>";
+                            }
+                        }
+                    }
+                    this.custom.navInfo = _s;
+                    //重新查询
+                    this.searchParams.filepath = path;
+                    this.search();
+                },
+                selectFile: function (path) {
+                    //返回参数
+                    var _winVue = window.parent.appVue;
+                    if (_winVue) {
+                        _winVue.gl_SelectUploadFile(path);
+                        elementExtend.Grid.CloseDialog(_winVue);
+                    }
+                },
+                submitUpload() {
+                    if (this.custom.fileList.length > 0) {
+                        this.$refs.upload.submit();
+                    }
+                    else {
+                        elementExtend.Tips.Alert(this,'Select at least one file!', 5);
+                    }
+                },
+                handleRemove: function (file, fileList) {
+                    var _tmpfile = this.custom.fileList;
+                    for (var i = 0, len = _tmpfile.length; i < len; i++) {
+                        if (_tmpfile[i].name = file.name) {
+                            _tmpfile.splice(i, 1);
+                            break;
+                        }
+                    }
+                    this.custom.fileList = _tmpfile;
+                },
+                handleSuccess: function (response, file, fileList) {
+                    let $vue = this;
+                    if (response.result) {
+                        elementExtend.Tips.Success($vue,'File upload Succesful:' + response.filename, 2, function () {
+                            //清空列表
+                            $vue.custom.fileList = [];
+                            $vue.$refs.upload.clearFiles();
+                            //显示上传的文件
+                            $vue.searchNextPath(response.filepath);
+                            //切换
+                            $vue.custom.activeName = 'fileTab';
+                        });
+                    } else {
+                        elementExtend.Tips.Error($vue,'File upload fail:' + response.msg, 5);
+                    }
+                },
+                handleError: function (err, file, fileList) {
+                    let $vue = this;
+                    elementExtend.Tips.Error($vue,err, 5, function () {
+                        //清空列表
+                        $vue.custom.fileList = [];
+                        $vue.$refs.upload.clearFiles();
+                    });
+                },
+                handleChange: function (file, fileList) {
+                    var isExist = false;
+                    for (var i = 0, len = this.custom.fileList.length; i < len; i++) {
+                        if (this.custom.fileList[i].name = file.name) {
+                            isExist = true;
+                            break;
+                        }
+                    }
+                    if (!isExist) {
+                        this.custom.fileList.push(file);
+                    }
+                },
+                handleExceed: function (files, fileList) {
+                    elementExtend.Tips.Alert($vue,'Number of files exceeded ' + this.custom.uploadMaxFileLimit,5);
+                }
+            }
+        });
+    </script>
+}

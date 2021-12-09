@@ -1,0 +1,171 @@
+﻿@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<div class="main" v-cloak>
+    <div class="main-edit">
+        <el-form ref="form" :model="subForm"
+                 v-loading.fullscreen.lock="fullScreenLoading"
+                 element-loading-text="Loading"
+                 element-loading-spinner="el-icon-loading">
+            <div class="form-horizontal">
+                <ul>
+                    <li class="form-group">
+                        <div class="col-3 group-label">
+                            <span class="text-danger">*</span>{{languagePack.language_edit_function}}
+                        </div>
+                        <div class="col-9 group-text">
+                            <el-select size="small" placeholder="--ALL--" class="input-large" v-model="subForm.functionId" v-on:change="selectFunction">
+                                <el-option-group v-for="group in custom.functionIdOptions"
+                                                 :key="group.label"
+                                                 :label="group.label">
+                                    <el-option v-for="item in group.options"
+                                               :key="item.value"
+                                               :label="item.label"
+                                               :value="item.value">
+                                    </el-option>
+                                </el-option-group>
+                            </el-select>
+                        </div>
+                        <div class="form-line-dashed"></div>
+                    </li>
+                    <li class="form-group">
+                        <div class="col-3 group-label">
+                            <span class="text-danger">*</span>{{languagePack.language_edit_sort}}
+                        </div>
+                        <div class="col-9 group-text">
+                            <el-select size="small" clearable filterable remote placeholder="--New--" class="input-xlarge" :remote-method="searchPackKey" v-model="subForm.keyID">
+                                <el-option v-for="item in custom.keyOptions"
+                                           :key="item.value"
+                                           :label="item.label"
+                                           :value="item.value">
+                                </el-option>
+                            </el-select>
+                            <span class="text-danger">*{{languagePack.language_edit_sort_message}}</span>
+                        </div>
+                        <div class="form-line-dashed"></div>
+                    </li>
+                    <li class="form-group">
+                        <div class="col-3 group-operate"></div>
+                        <div class="col-9 group-operate">
+                            <el-button size="mini" type="primary" v-on:click="addNew">{{languagePack.language_edit_add_button}}</el-button>
+                        </div>
+                        <div class="form-line-dashed"></div>
+                    </li>
+                </ul>
+            </div>
+            <br />
+            <div class="form-horizontal">
+                <ul>
+                    <li class="form-group" v-for="group in subForm.packKeys">
+                        <div class="col-3 group-label">
+                            <span class="text-danger">*</span>{{languagePack.language_edit_pack}}
+                        </div>
+                        <div class="col-9 group-text">
+                            <p>
+                                <el-input type="input" size="small" class="input-xxlarge" placeholder="Key" v-model="group.value">
+                                    <el-button slot="prepend" icon="el-icon-circle-close" v-on:click="removeKeys(group.index)">{{languagePack.language_edit_key}}</el-button>
+                                </el-input>
+                            </p>
+                            <p v-for="item in group.languages">
+                                <el-input type="input" size="small" class="input-xxlarge" placeholder="Language" v-model="item.value">
+                                    <el-button slot="prepend" v-on:click="removeKeys(item.index)">{{item.label}}</el-button>
+                                </el-input>
+                            </p>
+                        </div>
+                        <div class="form-line-dashed"></div>
+                    </li>
+                </ul>
+            </div>
+        </el-form>
+    </div>
+</div>
+@section scripts {
+    <script type="text/javascript">
+        var appVue = new Vue({
+            el: '.main',
+            mixins: [elementExtend.Base.MixinVue()],
+            data: {
+                languagePack: JSON.parse(window.parent.parent.frames.appFrame.languagePackCache),
+                subForm: {
+                    functionId: '',
+                    keyID: '',
+                    packKeys: []
+                },
+                custom: {
+                    functionIdOptions: [],
+                    languageOptions: [],
+                    keyOptions: []
+                }
+            },
+            created: function(){
+                this.initData();
+            },
+            methods: {
+                initData() {
+                    let $vue = this;
+                    elementExtend.Base.ParseData({
+                        url: '@Url.Action("Initialize_Info", "Language")',
+                        params: {
+                            type:'add'
+                        },
+                        success: function (data) {
+                            $vue.custom.functionIdOptions = data.languageFunctionList;
+                            $vue.custom.languageOptions = data.languageList;
+                        }
+                    });
+                },
+                selectFunction() {
+                    let $vue = this;
+                    vueExtend.Ajax.Get({
+                        url: '@Url.Action("LanguagePack_Message", "Language")',
+                        params: {
+                            key: '',
+                            functionId: $vue.subForm.functionId
+                        },
+                        loading:false,
+                        success: function (data) {
+                            $vue.custom.keyOptions = data.rows;
+                            $vue.custom.keyOptions.unshift({ label: '--New--', value: 0 });
+                            $vue.subForm.keyID = 0;
+                        }
+                    });
+                },
+                searchPackKey: function (val) {
+                    let $vue = this;
+                    vueExtend.Ajax.Get({
+                        url: '@Url.Action("LanguagePack_Message", "Language")',
+                        params: {
+                            key: val,
+                            functionId: $vue.subForm.functionId
+                        },
+                        loading:false,
+                        success: function (data) {
+                            $vue.custom.keyOptions = data.rows;
+                        }
+                    });
+                },
+                addNew() {
+                    var _languages = [];
+                    for (var i = 0; i < this.custom.languageOptions.length;i++) {
+                        _languages.push({
+                            id: this.custom.languageOptions[i].value,
+                            label: this.custom.languageOptions[i].label,
+                            value:''
+                        });
+                    }
+                    this.subForm.packKeys.push({
+                        index: this.subForm.packKeys.length,
+                        value: '',
+                        languages:_languages
+                    });
+                },
+                removeKeys: function (index) {
+                    this.subForm.packKeys.splice(index, 1);
+                    for (let i in this.subForm.packKeys) {
+                        this.subForm.packKeys[i].index = i
+                    }
+                }
+            }
+        });
+    </script>
+}

@@ -1,0 +1,189 @@
+﻿@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<div class="main" v-cloak>
+    <div class="main-top" v-html="navMenu.html"></div>
+    <div class="main-search">
+        <form id="searchForm" method="post" asp-antiforgery="false">
+            <div class="search-condition">
+                <ul>
+                    <li>
+                        <el-autocomplete size="small" class="input-xxxlarge" :fetch-suggestions="querySearch" :placeholder="languagePack.product_index_search_product" v-model="searchParams.keyword" v-on:select="handleQuerySearch">
+                            <el-select slot="prepend" class="input-medium" v-model="searchParams.searchType" placeholder="">
+                                <el-option v-for="item in custom.searchTypeOptions"
+                                           :key="item.value"
+                                           :label="item.label"
+                                           :value="item.value">
+                                </el-option>
+                            </el-select>
+                            <el-button slot="append" size="mini" type="primary" icon="el-icon-search" :loading="searchBar.searchBtn.loading" v-on:click="search">{{languagePack.common_search}}</el-button>
+                            <template slot-scope="{ item }">
+                                <span class="float-left">{{item.sku}}</span>
+                                <span class="float-right text-gray">{{item.code}}</span>
+                            </template>
+                        </el-autocomplete>
+                        <br />
+                        <el-tag size="medium" v-for="item in custom.searchCategoryOptions"
+                                :key="item.name"
+                                disable-transitions
+                                closable
+                                :type="item.type"
+                                v-on:close="closeSearchCategory(item)">
+                            {{item.name}}
+                        </el-tag>
+                    </li>
+                </ul>
+            </div>
+        </form>
+    </div>
+    <div class="main-list">
+        <div class="main-list-toolbar">
+            <a href="javascript:void(0)" v-if="toolbar.operate.delete" v-on:click="del"><i class="el-icon-delete text-danger"></i>{{languagePack.common_delete}}</a>
+            <span class="toolbar-separator"></span>
+            <a href="javascript:void(0)" v-on:click="refresh"><i class="el-icon-refresh text-info"></i>{{languagePack.common_refresh}}</a>
+        </div>
+        <div class="main-list-grid">
+            <el-table :data="grid.data"
+                      :height="grid.height"
+                      ref="mainGrid"
+                      v-loading="grid.loading"
+                      stripe
+                      size="small"
+                      style="width:100%"
+                      v-on:row-click="clickRow">
+                <el-table-column type="selection" prop="ck" width="50"></el-table-column>
+                <el-table-column prop="s1" :label="languagePack.product_index_sparepart_id">
+                    <template slot-scope="scope">
+                        <span v-html="scope.row.s1"></span>
+                    </template>
+                </el-table-column>
+                <el-table-column prop="s2" :label="languagePack.product_index_sparepart_desc" width="175"></el-table-column>
+                <el-table-column prop="s3" :label="languagePack.product_index_sparepart_image">
+                    <template slot-scope="scope">
+                        <span v-html="scope.row.s3"></span>
+                    </template>
+                </el-table-column>
+                <el-table-column prop="s4" :label="languagePack.product_index_sku"></el-table-column>
+                <el-table-column prop="s5" :label="languagePack.product_index_version"></el-table-column>
+                <el-table-column prop="s6" :label="languagePack.product_index_price"></el-table-column>
+                <el-table-column prop="s7" :label="languagePack.product_index_unit"></el-table-column>
+                <el-table-column prop="s8" :label="languagePack.product_index_status"></el-table-column>
+                <el-table-column prop="s9" :label="languagePack.product_index_inventory"></el-table-column>
+            </el-table>
+        </div>
+        <div class="main-list-pagination">
+            <el-pagination v-on:size-change="pageSizeChange"
+                           v-on:current-change="pageCurrentChange"
+                           :current-page="pagination.currentPage"
+                           :page-sizes="pagination.pageList"
+                           :page-size="pagination.pageSize"
+                           layout="sizes, prev, pager, next, jumper,total"
+                           :total="pagination.totalCount">
+            </el-pagination>
+        </div>
+    </div>
+    <partial name="~/Views/Shared/_ElSubmitDailog.cshtml">
+</div>
+@section scripts {
+    <script type="text/javascript">
+        var appVue = new Vue({
+            el: '.main',
+            mixins:[elementExtend.Grid.MixinVue()],
+            data: {
+                languagePack: JSON.parse(window.parent.frames.appFrame.languagePackCache),
+                toolbar: {
+                    operate: {
+                        delete:false
+                    }
+                },
+                grid: {
+                    url:'@Url.Action("Index_Message", "ProductQuery")'
+                },
+                searchParams: {
+                    searchType: '',
+                    keyword: ''
+                },
+                custom: {
+                    searchTypeOptions: [],
+                    skuOptions:[]
+                }
+            },
+            created: function () {
+                this.initData();
+            },
+            mounted: function(){
+            },
+            methods: {
+                initData() {
+                    let $vue = this;
+                    elementExtend.Base.ParseData({
+                        url: '@Url.Action("Initialize_Info", "ProductQuery")',
+                        params: {
+                            type:'index'
+                        },
+                        success: function (data) {
+                            //导航栏
+                            $vue.navMenu.html = data.navMenu;
+                            //工具栏
+                            $vue.permission.permissionTools = data.userAuthorization;
+                            elementExtend.Grid.Toolbar({
+                                vue: $vue
+                            });
+                            //数据集合
+                            $vue.custom.searchTypeOptions = data.searchTypeList;
+                            //默认查询sku
+                            $vue.searchParams.searchType = 0;
+                            //查询信息
+                            $vue.getGridList();
+                        }
+                    });
+                },
+                querySearch: function (queryString, cb) {
+                    let $vue = this;
+                    vueExtend.Ajax.Post({
+                        url: '@Url.Action("SearchProduct_Message", "Common")',
+                        params: {
+                            searchType: $vue.searchParams.searchType,
+                            keyword: queryString
+                        },
+                        success: function (data) {
+                            //数据集合
+                            $vue.custom.skuOptions = data.rows;
+                            cb($vue.custom.skuOptions);
+                        }
+                    });
+                },
+                handleQuerySearch: function (item) {
+                    if (this.searchParams.searchType == 1) {
+                        this.searchParams.keyword = item.code;
+                    }
+                    else {
+                        this.searchParams.keyword = item.sku;
+                    }
+                },
+                search: function () {
+                    elementExtend.Grid.Search({
+                        vue: this
+                    });
+                },
+                del: function() {
+                    elementExtend.Grid.ComplexOper(this,'@Url.Action("Delete_Message", "ProductQuery")');
+                },
+                refresh: function() {
+                    this.getGridList();
+                },
+                sparepartDetail: function (id) {
+                    elementExtend.Grid.OpenDialog({
+                        vue: this,
+                        url: '@Url.Action("Detail", "SparePartQuery")?id=' + id,
+                        title: this.languagePack.common_detail
+                    });
+                },
+                previewImage: function (src) {
+                    elementExtend.previewImage(this, src);
+                },
+            }
+        });
+    </script>
+}
+

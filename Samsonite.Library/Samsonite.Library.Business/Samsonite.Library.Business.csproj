@@ -1,0 +1,16 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Samsonite.Library.Core\Samsonite.Library.Core.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Models\Enum\" />
+    <Folder Include="Models\Request\SAP\" />
+  </ItemGroup>
+
+</Project>

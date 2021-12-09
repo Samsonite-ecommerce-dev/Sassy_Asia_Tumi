@@ -1,0 +1,154 @@
+﻿@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<div class="main" v-cloak>
+    <div class="main-top" v-html="navMenu.html"></div>
+    <div class="main-search">
+        <form id="SearchForm" method="post">
+            <div class="search-condition">
+                <ul>
+                    <li>
+                        <el-input size="small" prefix-icon="el-icon-search" class="input-xlarge" v-model="searchParams.keyword" placeholder="搜索IP或关键字" clearable></el-input>
+                    </li>
+                    <li>
+                        <el-date-picker size="small" type="date" placeholder="开始时间" value-format="yyyy-MM-dd" v-model="searchParams.time1"></el-date-picker>
+                        -
+                        <el-date-picker size="small" type="date" placeholder="结束时间" value-format="yyyy-MM-dd" v-model="searchParams.time2"></el-date-picker>
+                    </li>
+                    <li>
+                        <el-select size="small" clearable placeholder="--全部访问结果--" v-model="searchParams.state">
+                            <el-option v-for="item in custom.stateOptions"
+                                       :key="item.value"
+                                       :label="item.label"
+                                       :value="item.value">
+                            </el-option>
+                        </el-select>
+                    </li>
+                    <li>
+                        <el-button size="mini" type="primary" :loading="searchBar.searchBtn.loading" v-on:click="search">查询<i class="el-icon-search el-icon--right"></i></el-button>
+                    </li>
+                </ul>
+            </div>
+        </form>
+    </div>
+    <div class="main-list">
+        <div class="main-list-toolbar">
+            <a href="javascript:void(0)" v-on:click="refresh"><i class="el-icon-refresh text-info"></i>刷新</a>
+        </div>
+        <div class="main-list-grid">
+            <el-table :data="grid.data"
+                      :height="grid.height"
+                      ref="mainGrid"
+                      v-loading="grid.loading"
+                      stripe
+                      size="small"
+                      style="width:100%">
+                <el-table-column prop="s1" label="访问IP" width="120"></el-table-column>
+                <el-table-column prop="s2" label="访问信息"></el-table-column>
+                <el-table-column prop="s3" label="访问请求流水号" width="250"></el-table-column>
+                <el-table-column prop="s4" label="访问结果" width="80">
+                    <template slot-scope="scope">
+                        <span v-html="scope.row.s4"></span>
+                    </template>
+                </el-table-column>
+                <el-table-column prop="s5" label="备注信息"></el-table-column>
+                <el-table-column prop="s6" label="访问时间"></el-table-column>
+            </el-table>
+        </div>
+        <div class="main-list-pagination">
+            <el-pagination v-on:size-change="pageSizeChange"
+                           v-on:current-change="pageCurrentChange"
+                           :current-page="pagination.currentPage"
+                           :page-sizes="pagination.pageList"
+                           :page-size="pagination.pageSize"
+                           layout="sizes, prev, pager, next, jumper,total"
+                           :total="pagination.totalCount">
+            </el-pagination>
+        </div>
+    </div>
+</div>
+@section scripts {
+    <script type="text/javascript">
+        var appVue = new Vue({
+            el: '.main',
+            mixins:[elementExtend.Grid.MixinVue()],
+            data: {
+                grid: {
+                    url:'@Url.Action("Index_Message", "ApiLog")'
+                },
+                searchParams: {
+                    keyword: '',
+                    time1: '',
+                    time2: '',
+                    state: ''
+                },
+                custom:{
+                    stateOptions: [
+                        {
+                            label: '成功',
+                            value:2
+                        },
+                        {
+                            label: '失败',
+                            value:1
+                        }
+                    ]
+                }
+            },
+            created: function () {
+                this.initData();
+            },
+            mounted: function(){
+            },
+            watch: {
+                'searchParams.time1': {
+                    handler: function (newVal, oldVal) {
+                        if (newVal == null) {
+                            this.searchParams.time1 = '';
+                        }
+                    },
+                },
+                'searchParams.time2': {
+                    handler: function (newVal, oldVal) {
+                        if (newVal == null) {
+                            this.searchParams.time2 = '';
+                        }
+                    },
+                },
+                immediate: true,
+                deep: true
+            },
+            methods: {
+                initData() {
+                    let $vue = this;
+                    elementExtend.Base.ParseData({
+                        url: '@Url.Action("Initialize_Info", "ApiLog")',
+                        params: {
+                            type:'index'
+                        },
+                        success: function (data) {
+                            //导航栏
+                            $vue.navMenu.html = data.navMenu;
+                            //工具栏
+                            $vue.permission.permissionTools = data.userAuthorization;
+                            elementExtend.Grid.Toolbar({
+                                vue: $vue
+                            });
+                            //查询信息
+                            $vue.getGridList();
+                        }
+                    });
+                },
+                search: function () {
+                    elementExtend.Grid.Search({
+                        vue:this
+                    });
+                },
+                refresh: function() {
+                    this.getGridList();
+                }
+            }
+        });
+    </script>
+}
+

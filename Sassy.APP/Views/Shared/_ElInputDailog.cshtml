@@ -1,0 +1,11 @@
+﻿<template>
+    <el-dialog :title="dialog.title"
+               v-loading.fullscreen.lock="dialog.dialogLoading"
+               :visible.sync="dialog.dialogVisible"
+               destroy-on-close="true"
+               :width="dialog.width"
+               :top="dialog.top"
+               v-on:closed="dialogClosedCallback">
+        <el-input type="textarea" :rows="20" :readonly="dialog.textarea.readonly" style="width:99%;" v-model="dialog.textarea.text"></el-input>
+    </el-dialog>
+</template>

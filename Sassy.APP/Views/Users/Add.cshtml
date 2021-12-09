@@ -1,0 +1,145 @@
+﻿@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<div class="main" v-cloak>
+    <div class="main-edit">
+        <el-form ref="form" :model="subForm"
+                 v-loading.fullscreen.lock="fullScreenLoading"
+                 element-loading-text="Loading"
+                 element-loading-spinner="el-icon-loading">
+            <div class="form-horizontal">
+                <ul>
+                    <li class="form-group">
+                        <div class="col-3 group-label">
+                            <span class="text-danger">*</span>{{languagePack.users_edit_email}}
+                        </div>
+                        <div class="col-9 group-text">
+                            <el-input type="input" size="small" class="input-xlarge" v-model="subForm.userName"></el-input>
+                        </div>
+                        <div class="form-line-dashed"></div>
+                    </li>
+                    <li class="form-group">
+                        <div class="col-3 group-label">
+                            <span class="text-danger">*</span>{{languagePack.users_edit_password}}
+                        </div>
+                        <div class="col-9 group-text">
+                            <el-input type="password" size="small" class="input-xlarge" autocomplete="new-password" show-password v-model="subForm.password"></el-input>
+                        </div>
+                        <div class="form-line-dashed"></div>
+                    </li>
+                    <li class="form-group">
+                        <div class="col-3 group-label">
+                            {{languagePack.users_edit_realname}}
+                        </div>
+                        <div class="col-9 group-text">
+                            <el-input type="input" size="small" class="input-xlarge" v-model="subForm.realName"></el-input>
+                        </div>
+                        <div class="form-line-dashed"></div>
+                    </li>
+                    <li class="form-group">
+                        <div class="col-3 group-label">
+                            <span class="text-danger">*</span>{{languagePack.users_edit_roles}}
+                        </div>
+                        <div class="col-9 group-text">
+                            <el-checkbox v-model="custom.checkAllRole" v-on:change="handleCheckAllRoleChange">{{languagePack.common_select_all}}</el-checkbox>
+                            <el-checkbox-group v-model="subForm.roles" v-on:change="handleCheckedRoleChange">
+                                <el-checkbox :label="item.value" v-for="item in custom.roleOptions">{{item.label}}</el-checkbox>
+                            </el-checkbox-group>
+                        </div>
+                        <div class="form-line-dashed"></div>
+                    </li>
+                    <li class="form-group">
+                        <div class="col-3 group-label">
+                            <span class="text-danger">*</span>{{languagePack.users_edit_type}}
+                        </div>
+                        <div class="col-9 group-text">
+                            <el-radio-group v-model="subForm.userType">
+                                <el-radio :label="item.value" v-for="item in custom.userTypeOptions">{{item.label}}</el-radio>
+                            </el-radio-group>
+                        </div>
+                        <div class="form-line-dashed"></div>
+                    </li>
+                    <li class="form-group">
+                        <div class="col-3 group-label">
+                            <span class="text-danger">*</span>{{languagePack.users_edit_default_language}}
+                        </div>
+                        <div class="col-9 group-text">
+                            <el-radio-group v-model="subForm.defaultLanguage">
+                                <el-radio :label="item.value" v-for="item in custom.languageOptions">{{item.label}}</el-radio>
+                            </el-radio-group>
+                        </div>
+                        <div class="form-line-dashed"></div>
+                    </li>
+                    <li class="form-group">
+                        <div class="col-3 group-label">
+                            {{languagePack.users_edit_remark}}
+                        </div>
+                        <div class="col-9 group-text">
+                            <el-input type="textarea" :rows="5" class="input-xlarge" v-model="subForm.memo"></el-input>
+                        </div>
+                        <div class="form-line-dashed"></div>
+                    </li>
+                </ul>
+            </div>
+        </el-form>
+    </div>
+</div>
+@section scripts {
+    <script type="text/javascript">
+        var appVue = new Vue({
+            el: '.main',
+            mixins: [elementExtend.Base.MixinVue()],
+            data: {
+                languagePack: JSON.parse(window.parent.parent.frames.appFrame.languagePackCache),
+                subForm: {
+                    userName: '',
+                    password: '',
+                    realName: '',
+                    roles: [],
+                    userType: '',
+                    defaultLanguage: '',
+                    memo: ''
+                },
+                custom: {
+                    roleOptions: [],
+                    checkedRoles: [],
+                    checkAllRole: false,
+                    userTypeOptions: [],
+                    languageOptions: [],
+                }
+            },
+            created: function(){
+                this.initData();
+            },
+            methods: {
+                initData() {
+                    let $vue = this;
+                    elementExtend.Base.ParseData({
+                        url: '@Url.Action("Initialize_Info", "Users")',
+                        params: {
+                            type:'add'
+                        },
+                        success: function (data) {
+                            $vue.custom.roleOptions = data.roleList;
+                            for (var i = 0; i < $vue.custom.roleOptions.length; i++) {
+                                $vue.custom.checkedRoles.push($vue.custom.roleOptions[i].value);
+                            }
+                            $vue.custom.userTypeOptions = data.userTypeList;
+                            $vue.custom.languageOptions = data.languageList;
+                            //默认选中
+                            $vue.subForm.userType = data.userTypeList[0].value;
+                            $vue.subForm.defaultLanguage = data.languageList[0].value;
+                        }
+                    });
+                },
+                handleCheckAllRoleChange: function (val) {
+                    this.subForm.roles = val ? this.custom.checkedRoles : [];
+                },
+                handleCheckedRoleChange(value) {
+                    let checkedCount = value.length;
+                    this.custom.checkAllRole = (checkedCount === this.custom.checkedRoles.length);
+                }
+            }
+        });
+    </script>
+}

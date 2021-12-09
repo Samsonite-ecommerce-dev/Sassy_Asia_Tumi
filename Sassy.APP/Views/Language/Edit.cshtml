@@ -1,0 +1,98 @@
+﻿@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<div class="main" v-cloak>
+    <div class="main-edit">
+        <el-form ref="form" :model="subForm"
+                 v-loading.fullscreen.lock="fullScreenLoading"
+                 element-loading-text="Loading"
+                 element-loading-spinner="el-icon-loading">
+            <div class="form-horizontal">
+                <ul>
+                    <li class="form-group">
+                        <div class="col-3 group-label">
+                            {{languagePack.language_edit_function}}
+                        </div>
+                        <div class="col-9 group-text">
+                            <el-select size="small" placeholder="--ALL--" class="input-large" v-model="subForm.functionId" disabled>
+                                <el-option-group v-for="group in custom.functionIdOptions"
+                                                 :key="group.label"
+                                                 :label="group.label">
+                                    <el-option v-for="item in group.options"
+                                               :key="item.value"
+                                               :label="item.label"
+                                               :value="item.value">
+                                    </el-option>
+                                </el-option-group>
+                            </el-select>
+                        </div>
+                        <div class="form-line-dashed"></div>
+                    </li>
+                    <li class="form-group">
+                        <div class="col-3 group-label">
+                            <span class="text-danger">*</span>{{languagePack.language_edit_key}}
+                        </div>
+                        <div class="col-9 group-text">
+                            <el-input type="input" size="small" class="input-xlarge" v-model="subForm.languageKey"></el-input>
+                        </div>
+                        <div class="form-line-dashed"></div>
+                    </li>
+                    <li class="form-group">
+                        <div class="col-3 group-label">
+                            <span class="text-danger">*</span>{{languagePack.language_edit_pack}}
+                        </div>
+                        <div class="col-9 group-text">
+                            <ul class="common-list">
+                                <li v-for="item in subForm.languageValue">
+                                    <el-input type="input" size="small" class="input-xxlarge" placeholder="" v-model="item.value">
+                                        <el-button slot="prepend">{{item.label}}</el-button>
+                                    </el-input>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="form-line-dashed"></div>
+                    </li>
+                </ul>
+            </div>
+        </el-form>
+    </div>
+</div>
+@section scripts {
+    <script type="text/javascript">
+        var appVue = new Vue({
+            el: '.main',
+            mixins: [elementExtend.Base.MixinVue()],
+            data: {
+                languagePack: JSON.parse(window.parent.parent.frames.appFrame.languagePackCache),
+                subForm: {
+                    id: '',
+                    functionId: '',
+                    languageKey: '',
+                    languageValue: ''
+                },
+                custom: {
+                    functionIdOptions: []
+                }
+            },
+            created: function(){
+                this.initData();
+            },
+            methods: {
+                initData() {
+                    let $vue = this;
+                    elementExtend.Base.ParseData({
+                        url: '@Url.Action("Initialize_Info", "Language")',
+                        params: {
+                            type: 'edit',
+                            id: $.requestQueryString('id')
+                        },
+                        success: function (data) {
+                            $vue.custom.functionIdOptions = data.languageFunctionList;
+                            $vue.subForm = data.model;
+                        }
+                    });
+                }
+            }
+        });
+    </script>
+}

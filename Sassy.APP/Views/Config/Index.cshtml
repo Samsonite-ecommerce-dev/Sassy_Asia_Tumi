@@ -1,0 +1,248 @@
+﻿@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<div class="main" v-cloak>
+    <div class="main-top" v-html="navMenu.html"></div>
+    <div class="main-edit" style="width:98%;margin:10px auto 0 auto;">
+        <el-form ref="form" :model="subForm">
+            <el-tabs type="border-card">
+                <el-tab-pane label="语言配置">
+                    <div class="form-horizontal">
+                        <ul>
+                            <li class="form-group">
+                                <div class="col-12 group-label textalign-center font-bold fontSize-14">
+                                    语言配置
+                                </div>
+                                <div class="form-line-dashed"></div>
+                            </li>
+                            <li class="form-group">
+                                <div class="col-3 group-label">
+                                    <span class="text-danger">*</span>选择语言：
+                                </div>
+                                <div class="col-9 group-text">
+                                    <el-checkbox-group v-model="subForm.languagePack">
+                                        <el-checkbox :label="item.value" v-for="item in custom.languageArr">{{item.label}}</el-checkbox>
+                                    </el-checkbox-group>
+                                </div>
+                                <div class="form-line-dashed"></div>
+                            </li>
+                        </ul>
+                    </div>
+                </el-tab-pane>
+                <el-tab-pane label="邮件配置">
+                    <div class="form-horizontal">
+                        <ul>
+                            <li class="form-group">
+                                <div class="col-12 group-label textalign-center font-bold fontSize-14">
+                                    邮件配置
+                                </div>
+                                <div class="form-line-dashed"></div>
+                            </li>
+                            <li class="form-group">
+                                <div class="col-3 group-label">
+                                    <span class="text-danger">*</span>Stmp服务器：
+                                </div>
+                                <div class="col-9 group-text">
+                                    <el-input type="input" size="small" class="input-large" v-model="subForm.mailStmp"></el-input>
+                                </div>
+                                <div class="form-line-dashed"></div>
+                            </li>
+                            <li class="form-group">
+                                <div class="col-3 group-label">
+                                    <span class="text-danger">*</span>端口号：
+                                </div>
+                                <div class="col-9 group-text">
+                                    <el-input-number size="small" class="input-small" :controls="false" :min="0" :max="65536" v-model="subForm.mailPort"></el-input-number>
+                                </div>
+                                <div class="form-line-dashed"></div>
+                            </li>
+                            <li class="form-group">
+                                <div class="col-3 group-label">
+                                    <span class="text-danger">*</span>邮件服务器用户名：
+                                </div>
+                                <div class="col-9 group-text">
+                                    <el-input type="input" size="small" class="input-large" v-model="subForm.mailUserName"></el-input>
+                                </div>
+                                <div class="form-line-dashed"></div>
+                            </li>
+                            <li class="form-group">
+                                <div class="col-3 group-label">
+                                    <span class="text-danger">*</span>邮件服务器密码：
+                                </div>
+                                <div class="col-9 group-text">
+                                    <el-input type="input" size="small" class="input-large" v-model="subForm.mailPassword" show-password></el-input>
+                                </div>
+                                <div class="form-line-dashed"></div>
+                            </li>
+                        </ul>
+                    </div>
+                </el-tab-pane>
+                <el-tab-pane label="短信配置">
+                    <div class="form-horizontal">
+                        <ul>
+                            <li class="form-group">
+                                <div class="col-12 group-label textalign-center font-bold fontSize-14">
+                                    短信配置
+                                </div>
+                                <div class="form-line-dashed"></div>
+                            </li>
+                            <li class="form-group">
+                                <div class="col-3 group-label">
+                                    <span class="text-danger">*</span>短信接口：
+                                </div>
+                                <div class="col-9 group-text">
+                                    <el-input type="input" size="small" class="input-large" v-model="subForm.smsHost"></el-input>
+                                </div>
+                                <div class="form-line-dashed"></div>
+                            </li>
+                            <li class="form-group">
+                                <div class="col-3 group-label">
+                                    <span class="text-danger">*</span>账号：
+                                </div>
+                                <div class="col-9 group-text">
+                                    <el-input type="input" size="small" class="input-xlarge" v-model="subForm.smsAccount" show-password></el-input>
+                                </div>
+                                <div class="form-line-dashed"></div>
+                            </li>
+                            <li class="form-group">
+                                <div class="col-3 group-label">
+                                    <span class="text-danger">*</span>授权Token：
+                                </div>
+                                <div class="col-9 group-text">
+                                    <el-input type="input" size="small" class="input-xlarge" v-model="subForm.smsAuthToken" show-password></el-input>
+                                </div>
+                                <div class="form-line-dashed"></div>
+                            </li>
+                            <li class="form-group">
+                                <div class="col-3 group-label">
+                                    <span class="text-danger">*</span>发送人：
+                                </div>
+                                <div class="col-9 group-text">
+                                    <el-input type="input" size="small" class="input-medium" v-model="subForm.smsSender"></el-input>
+                                </div>
+                                <div class="form-line-dashed"></div>
+                            </li>
+                        </ul>
+                    </div>
+                </el-tab-pane>
+                <el-tab-pane label="皮肤配置">
+                    <div class="form-horizontal">
+                        <ul>
+                            <li class="form-group">
+                                <div class="col-12 group-label textalign-center font-bold fontSize-14">
+                                    皮肤配置
+                                </div>
+                                <div class="form-line-dashed"></div>
+                            </li>
+                            <li class="form-group">
+                                <div class="col-3 group-label">
+                                    <span class="text-danger">*</span>选择皮肤：
+                                </div>
+                                <div class="col-9 group-text">
+                                    <el-radio-group v-model="subForm.skinStyle">
+                                        <el-radio label="blue">Blue</el-radio>
+                                        <el-radio label="black">Black</el-radio>
+                                    </el-radio-group>
+                                </div>
+                                <div class="form-line-dashed"></div>
+                            </li>
+                        </ul>
+                    </div>
+                </el-tab-pane>
+            </el-tabs>
+            <div class="form-horizontal">
+                <ul>
+                    <li class="form-group">
+                        <div class="col-3 group-operate">&nbsp;</div>
+                        <div class="col-9 group-operate">
+                            <el-button size="mini" type="primary" :loading="searchButton.loading" v-on:click="save">保存</el-button>
+                            <el-button size="mini" native-type="reset">重置</el-button>
+                            <el-button size="mini" type="success" :loading="searchButton.loading" v-on:click="update">更新系统配置</el-button>
+                        </div>
+                        <div class="form-line-dashed"></div>
+                    </li>
+                </ul>
+            </div>
+        </el-form>
+    </div>
+</div>
+@section scripts {
+    <script type="text/javascript">
+        var appVue = new Vue({
+            el: '.main',
+            mixins: [elementExtend.Base.MixinVue()],
+            data: {
+                navMenu: {
+                    html:''
+                },
+                subForm: {
+                    languagePack: [],
+                    mailStmp: '',
+                    mailPort: '',
+                    mailUserName: '',
+                    mailPassword: '',
+                    smsHost: '',
+                    smsAccount: '',
+                    smsAuthToken: '',
+                    smsSender: '',
+                    skinStyle: ''
+                },
+                custom: {
+                    languageArr: []
+                }
+            },
+            created: function(){
+                this.initData();
+            },
+            methods: {
+                 initData() {
+                    let $vue = this;
+                    elementExtend.Base.ParseData({
+                        url: '@Url.Action("Index_Info", "Config")',
+                        success: function (data) {
+                            //导航栏
+                            $vue.navMenu.html = data.navMenu;
+                            //数据集合
+                            $vue.custom.languageArr = data.languageList;
+                            $vue.subForm = data.model;
+                        }
+                    });
+                },
+                save: function () {
+                    let $vue = this;
+                    elementExtend.Base.PostForm({
+                        vue: $vue,
+                        url: '@Url.Action("Index_Message", "Config")',
+                        params: $vue.subForm,
+                        success: function (data) {
+                            if (data.result) {
+                                elementExtend.Tips.Success($vue, data.msg, 3);
+                            }
+                            else {
+                                elementExtend.Tips.Alert($vue, data.msg, 5);
+                            }
+                        }
+                    });
+                },
+                update: function () {
+                    let $vue = this;
+                    elementExtend.Base.PostForm({
+                        vue: $vue,
+                        url: '@Url.Action("Reset_Message", "Config")',
+                        params: $vue.subForm,
+                        success: function (data) {
+                            if (data.result) {
+                                elementExtend.Tips.Success($vue, data.msg, 3, function () {
+                                    window.parent.location.href = window.parent.location.href;
+                                });
+                            }
+                            else {
+                                elementExtend.Tips.Alert($vue, data.msg, 5);
+                            }
+                        }
+                    });
+                }
+            }
+        });
+    </script>
+}

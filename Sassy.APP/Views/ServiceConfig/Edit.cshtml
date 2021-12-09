@@ -1,0 +1,184 @@
+﻿@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<div class="main" v-cloak>
+    <div class="main-edit">
+        <el-form ref="form" :model="subForm"
+                 v-loading.fullscreen.lock="fullScreenLoading"
+                 element-loading-text="Loading"
+                 element-loading-spinner="el-icon-loading">
+            <div class="form-horizontal">
+                <ul>
+                    <li class="form-group">
+                        <div class="col-3 group-label">
+                            <span class="text-danger">*</span>服务名称
+                        </div>
+                        <div class="col-9 group-text">
+                            <el-input type="input" size="small" class="input-xlarge" v-model="subForm.moduleTitle"></el-input>
+                        </div>
+                        <div class="form-line-dashed"></div>
+                    </li>
+                    <li class="form-group">
+                        <div class="col-3 group-label">
+                            <span class="text-danger">*</span>服务工作流ID
+                        </div>
+                        <div class="col-9 group-text">
+                            <el-input type="input" size="small" class="input-xlarge" v-model="subForm.moduleWorkflowID"></el-input>
+                        </div>
+                        <div class="form-line-dashed"></div>
+                    </li>
+                    <li class="form-group">
+                        <div class="col-3 group-label">
+                            <span class="text-danger">*</span>服务标识
+                        </div>
+                        <div class="col-9 group-text">
+                            <el-input type="input" size="small" class="input-xlarge" v-model="subForm.moduleMark"></el-input>
+                        </div>
+                        <div class="form-line-dashed"></div>
+                    </li>
+                    <li class="form-group">
+                        <div class="col-3 group-label">
+                            <span class="text-danger">*</span>Assembly
+                        </div>
+                        <div class="col-9 group-text">
+                            <el-input type="input" size="small" class="input-xlarge" v-model="subForm.moduleAssembly"></el-input>
+                        </div>
+                        <div class="form-line-dashed"></div>
+                    </li>
+                    <li class="form-group">
+                        <div class="col-3 group-label">
+                            <span class="text-danger">*</span>Class
+                        </div>
+                        <div class="col-9 group-text">
+                            <el-input type="input" size="small" class="input-xlarge" v-model="subForm.moduleType"></el-input>
+                        </div>
+                        <div class="form-line-dashed"></div>
+                    </li>
+                    <li class="form-group">
+                        <div class="col-3 group-label">
+                            <span class="text-danger">*</span>BLL
+                        </div>
+                        <div class="col-9 group-text">
+                            <el-input type="input" size="small" class="input-xlarge" v-model="subForm.moduleBLL"></el-input>
+                        </div>
+                        <div class="form-line-dashed"></div>
+                    </li>
+                    <li class="form-group">
+                        <div class="col-3 group-label">
+                            <span class="text-danger">*</span>定时类型
+                        </div>
+                        <div class="col-9 group-text">
+                            <el-radio-group v-model="subForm.fixType" v-on:change="selectFixType">
+                                <el-radio label="1">间隔执行</el-radio>
+                                <el-radio label="2">定时执行</el-radio>
+                            </el-radio-group>
+                        </div>
+                        <div class="form-line-dashed"></div>
+                    </li>
+                    <li class="form-group" v-show="custom.fixType">
+                        <div class="col-3 group-label">
+                            <span class="text-danger">*</span>时间
+                        </div>
+                        <div class="col-9 group-text">
+                            <el-input-number size="small" controls-position="right" :min="600" v-model="subForm.fixTime"></el-input-number>
+                            <span class="label-info">*24小时制,时间单位秒</span>
+                        </div>
+                        <div class="form-line-dashed"></div>
+                    </li>
+                    <li class="form-group" v-show="!custom.fixType">
+                        <div class="col-3 group-label">
+                            <span class="text-danger">*</span>时间
+                        </div>
+                        <div class="col-9 group-text">
+                            <el-input type="input" size="small" class="input-xlarge" v-model="subForm.fixTime"></el-input>
+                            <span class="label-info">时间格式:01:30:00,08:30:00,14:30:00</span>
+                        </div>
+                        <div class="form-line-dashed"></div>
+                    </li>
+                    <li class="form-group">
+                        <div class="col-3 group-label">
+                            <span class="text-danger">*</span>是否有效
+                        </div>
+                        <div class="col-9 group-text">
+                            <el-switch v-model="subForm.isRun"></el-switch>
+                        </div>
+                        <div class="form-line-dashed"></div>
+                    </li>
+                    <li class="form-group">
+                        <div class="col-3 group-label">
+                            排序
+                        </div>
+                        <div class="col-9 group-text">
+                            <el-input-number size="small" controls-position="right" :min="1" v-model="subForm.sort"></el-input-number>
+                        </div>
+                        <div class="form-line-dashed"></div>
+                    </li>
+                    <li class="form-group">
+                        <div class="col-3 group-label">
+                            简要描述
+                        </div>
+                        <div class="col-9 group-text">
+                            <el-input type="textarea" :rows="5" class="input-xlarge" v-model="subForm.remark"></el-input>
+                        </div>
+                        <div class="form-line-dashed"></div>
+                    </li>
+                </ul>
+            </div>
+        </el-form>
+    </div>
+</div>
+@section scripts {
+    <script type="text/javascript">
+        var appVue = new Vue({
+            el: '.main',
+            mixins: [elementExtend.Base.MixinVue()],
+            data: {
+                subForm: {
+                    moduleTitle: '',
+                    moduleWorkflowID: '',
+                    moduleMark: '',
+                    moduleAssembly: '',
+                    moduleType: '',
+                    moduleBLL: '',
+                    fixType: '',
+                    fixTime: '',
+                    isRun: '',
+                    sort: '',
+                    remark: ''
+                },
+                custom: {
+                    fixType: true
+                }
+            },
+            created: function(){
+                this.initData();
+            },
+            methods: {
+                initData: function () {
+                    let $vue = this;
+                    elementExtend.Base.ParseData({
+                        url: '@Url.Action("Initialize_Info", "ServiceConfig")',
+                        params: {
+                            type: 'edit',
+                            id: $.requestQueryString('id')
+                        },
+                        success: function (data) {
+                            $vue.subForm = data.model;
+                            $vue.custom.fixType = (data.model.fixType == "1");
+                        }
+                    });
+                },
+                selectFixType: function (val) {
+                    if (val == '1') {
+                        this.subForm.fixTime = '600';
+                        this.custom.fixType = true;
+                    }
+                    else {
+                        this.subForm.fixTime = '00:00:00';
+                        this.custom.fixType = false;
+                    }
+                }
+            }
+        });
+    </script>
+}

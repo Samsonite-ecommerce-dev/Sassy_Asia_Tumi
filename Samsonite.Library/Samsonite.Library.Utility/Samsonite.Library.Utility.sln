@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30002.166
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Samsonite.Library.Utility", "Samsonite.Library.Utility.csproj", "{66E5F9CD-9D16-4C24-A102-C8A5E360AF57}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Samsonite.Library.Data.Tool", "..\Samsonite.Library.Data.Tool\Samsonite.Library.Data.Tool.csproj", "{01AC035A-8CD1-42F0-BF34-6F314DB8E1E1}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{66E5F9CD-9D16-4C24-A102-C8A5E360AF57}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{66E5F9CD-9D16-4C24-A102-C8A5E360AF57}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{66E5F9CD-9D16-4C24-A102-C8A5E360AF57}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{66E5F9CD-9D16-4C24-A102-C8A5E360AF57}.Release|Any CPU.Build.0 = Release|Any CPU
+		{01AC035A-8CD1-42F0-BF34-6F314DB8E1E1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{01AC035A-8CD1-42F0-BF34-6F314DB8E1E1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{01AC035A-8CD1-42F0-BF34-6F314DB8E1E1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{01AC035A-8CD1-42F0-BF34-6F314DB8E1E1}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {5E43FA05-25C1-40F4-AD49-D7DB99D3B003}
+	EndGlobalSection
+EndGlobal

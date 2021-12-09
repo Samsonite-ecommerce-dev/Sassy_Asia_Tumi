@@ -1,0 +1,13 @@
+﻿<template>
+    <el-dialog :title="dialog.title"
+               custom-class="el_dialog_extend"
+               v-loading.fullscreen.lock="dialog.dialogLoading"
+               :visible.sync="dialog.dialogVisible"
+               destroy-on-close="true"
+               :width="dialog.width"
+               :top="dialog.top"
+               v-on:open="dialogOpenCallback"
+               v-on:closed="dialogClosedCallback">
+        <iframe id="mainFrame" :src="dialog.url" scrolling="auto" style="width:100%;height:100%;" frameborder="0"></iframe>
+    </el-dialog>
+</template>
