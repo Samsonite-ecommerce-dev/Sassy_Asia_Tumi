@@ -33,15 +33,17 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "4.APP", "4.APP", "{FB8AA221
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Sassy.APP", "Sassy.APP\Sassy.APP.csproj", "{5B038CAB-0C19-4019-A71D-91B26C76635E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Samsonite.Library.Service.Core", "Samsonite.Library\Samsonite.Library.Service.Core\Samsonite.Library.Service.Core.csproj", "{B87FA553-0C77-4FD4-83D6-EFBD6A30D8B3}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Samsonite.Library.Service.Core", "Samsonite.Library\Samsonite.Library.Service.Core\Samsonite.Library.Service.Core.csproj", "{B87FA553-0C77-4FD4-83D6-EFBD6A30D8B3}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sassy.Service.WorkService", "Sassy.Service\Sassy.Service.WorkService\Sassy.Service.WorkService.csproj", "{3F1CAAB4-543E-46BC-9016-7FF3C59ABC55}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Sassy.Service.WorkService", "Sassy.Service\Sassy.Service.WorkService\Sassy.Service.WorkService.csproj", "{3F1CAAB4-543E-46BC-9016-7FF3C59ABC55}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sassy.Service.Application", "Sassy.Service\Sassy.Service.Application\Sassy.Service.Application.csproj", "{22CB45E7-3E68-4803-9986-AAB1168FDDEF}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Sassy.Service.Application", "Sassy.Service\Sassy.Service.Application\Sassy.Service.Application.csproj", "{22CB45E7-3E68-4803-9986-AAB1168FDDEF}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "5.Test", "5.Test", "{D30BEA69-BAB1-4DD6-9C37-78114DE0216D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sassy.Test", "Sassy.Test\Sassy.Test.csproj", "{CD3F5A25-FA8D-4507-8B15-2AF001F1ABC0}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Sassy.Test", "Sassy.Test\Sassy.Test.csproj", "{CD3F5A25-FA8D-4507-8B15-2AF001F1ABC0}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Samsonite.Library.Basic", "Samsonite.Library\Samsonite.Library.Basic\Samsonite.Library.Basic.csproj", "{0ADA5470-AAC7-46A6-9DC9-FDA6C9AE2313}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -101,6 +103,10 @@ Global
 		{CD3F5A25-FA8D-4507-8B15-2AF001F1ABC0}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{CD3F5A25-FA8D-4507-8B15-2AF001F1ABC0}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{CD3F5A25-FA8D-4507-8B15-2AF001F1ABC0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0ADA5470-AAC7-46A6-9DC9-FDA6C9AE2313}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0ADA5470-AAC7-46A6-9DC9-FDA6C9AE2313}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0ADA5470-AAC7-46A6-9DC9-FDA6C9AE2313}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0ADA5470-AAC7-46A6-9DC9-FDA6C9AE2313}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -121,6 +127,7 @@ Global
 		{3F1CAAB4-543E-46BC-9016-7FF3C59ABC55} = {9B3C94AA-078E-4E02-8192-B1A5B70F6B65}
 		{22CB45E7-3E68-4803-9986-AAB1168FDDEF} = {9B3C94AA-078E-4E02-8192-B1A5B70F6B65}
 		{CD3F5A25-FA8D-4507-8B15-2AF001F1ABC0} = {D30BEA69-BAB1-4DD6-9C37-78114DE0216D}
+		{0ADA5470-AAC7-46A6-9DC9-FDA6C9AE2313} = {A2AB7B97-186D-433D-83A2-261912F590E3}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {5E43FA05-25C1-40F4-AD49-D7DB99D3B003}

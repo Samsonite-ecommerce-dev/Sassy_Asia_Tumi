@@ -9,6 +9,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Samsonite.Library\Samsonite.Library.Basic\Samsonite.Library.Basic.csproj" />
     <ProjectReference Include="..\Samsonite.Library\Samsonite.Library.Business\Samsonite.Library.Business.csproj" />
     <ProjectReference Include="..\Samsonite.Library\Samsonite.Library.DependencyInjection\Samsonite.Library.DependencyInjection.csproj" />
     <ProjectReference Include="..\Samsonite.Library\Samsonite.Library.WebApi\Samsonite.Library.WebApi.csproj" />

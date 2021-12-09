@@ -132,7 +132,7 @@ namespace Samsonite.Library.Service.WorkService
                             ModuleID = objServiceModuleInfo.ModuleID,
                             ModuleInstance = o
                         });
-                        FileLogHelper.WriteLog($"->Run {objServiceModuleInfo.ModuleMark}.{objServiceModuleInfo.ModuleTitle}", $"{Config.ThreadPrefix}_Service");
+                        this.WriteLogger(LogLevel.Information, $"->Run {objServiceModuleInfo.ModuleMark}.{objServiceModuleInfo.ModuleTitle}", "Service");
                     }
                     isInit = true;
                 }
@@ -173,7 +173,7 @@ namespace Samsonite.Library.Service.WorkService
                 }
                 if (objWait_List.Count > 0)
                 {
-                    this.WriteLogger(LogLevel.Information, $"Loading the list of services job which is waiting.Total Job:{objServiceModuleJob_List.Count}", "Service_Job");
+                    this.WriteLogger(LogLevel.Information, $"Loading the list of services job which is waiting.Total Job:{objServiceModuleJob_List.Count}", "Service");
                 }
                 //循环工作流队列
                 foreach (var item in objWait_List)
@@ -212,7 +212,7 @@ namespace Samsonite.Library.Service.WorkService
                                                         ModuleID = objServiceModuleInfo.ModuleID,
                                                         ModuleInstance = N_o
                                                     });
-                                                    FileLogHelper.WriteLog($"->Run {objServiceModuleInfo.ModuleMark}.{objServiceModuleInfo.ModuleTitle}", $"{Config.ThreadPrefix}_Service");
+                                                    FileLogHelper.WriteLog($"->Run {objServiceModuleInfo.ModuleMark}.{objServiceModuleInfo.ModuleTitle}", "Service_Job");
                                                     //开始对象
                                                     N_o.CurrentJob(item.ID);
                                                     N_o.Start();

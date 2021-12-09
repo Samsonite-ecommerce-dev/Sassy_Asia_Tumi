@@ -1,4 +1,5 @@
-﻿using Samsonite.Library.Core.Models;
+﻿using Samsonite.Library.Basic.Models;
+using Samsonite.Library.Core.Models;
 using System.Collections.Generic;
 using System.Linq;
 

@@ -40,7 +40,7 @@ namespace Samsonite.Sassy.Test
                 objParams.Add("format", "json");
                 objParams.Add("timestamp", TimeHelper.DateTimeToUnixTimestamp(DateTime.Now).ToString());
                 //传递参数
-                //objParams.Add("sku", "I25*");
+                objParams.Add("sku", "I25*");
                 objParams.Add("groupid", "312");
                 //测试Key
                 string _sign = CreateSign(objParams, secret);
