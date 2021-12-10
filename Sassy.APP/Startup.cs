@@ -34,6 +34,7 @@ namespace Samsonite.Library.APP
             services.AddSession();
             //自定义DI注入
             CoreDI.Configure(services);
+            BasicDI.Configure(services);
             CustomDI.Configure(services);
             WebApiDI.Configure(services);
             //全局过滤器注入

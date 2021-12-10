@@ -24,9 +24,9 @@ namespace Samsonite.Sassy.Test
         #region SAS
         public static void TestSAS()
         {
-            APIGetRelatedSpareParts();
+            //APIGetRelatedSpareParts();
 
-            //APIGetSparePartGroups();
+            APIGetSparePartGroups();
         }
 
         public static void APIGetRelatedSpareParts()

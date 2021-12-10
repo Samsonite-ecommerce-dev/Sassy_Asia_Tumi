@@ -2,14 +2,6 @@
 
 namespace Samsonite.Library.Bussness.WebApi.Models
 {
-    public enum ApiType
-    {
-        /// <summary>
-        /// 售后系统
-        /// </summary>
-        SAS = 1
-    }
-
     public enum OrderSort
     {
         /// <summary>

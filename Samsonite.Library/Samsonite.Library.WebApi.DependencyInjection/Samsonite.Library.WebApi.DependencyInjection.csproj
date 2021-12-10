@@ -6,6 +6,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Samsonite.Library.Business.WebApi\Samsonite.Library.Business.WebApi.csproj" />
+    <ProjectReference Include="..\Samsonite.Library.WebApi.Core\Samsonite.Library.WebApi.Core.csproj" />
   </ItemGroup>
 
 </Project>

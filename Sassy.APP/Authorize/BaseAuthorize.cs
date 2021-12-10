@@ -22,81 +22,81 @@ public class BaseAuthorize : ActionFilterAttribute
     /// <summary>
     /// 跳转到登入页面
     /// </summary>
-    /// <param name="objActionType"></param>
-    /// <param name="objFilterContext"></param>
-    protected void GoLogin(Type objActionType, ActionExecutingContext objFilterContext)
+    /// <param name="actionType"></param>
+    /// <param name="filterContext"></param>
+    protected void GoLogin(Type actionType, ActionExecutingContext filterContext)
     {
-        if (objActionType == typeof(JsonResult))
+        if (actionType == typeof(JsonResult))
         {
-            objFilterContext.Result = new JsonResult(new { result = false, msg = _languagePack["common_alert_no_login"] });
+            filterContext.Result = new JsonResult(new { result = false, msg = _languagePack["common_alert_no_login"] });
         }
-        else if (objActionType == typeof(ContentResult))
+        else if (actionType == typeof(ContentResult))
         {
-            objFilterContext.Result = new ContentResult();
+            filterContext.Result = new ContentResult();
         }
-        else if (objActionType == typeof(FileResult))
+        else if (actionType == typeof(FileResult))
         {
-            objFilterContext.Result = null;
+            filterContext.Result = null;
         }
         //框架页专用
-        else if (objActionType == typeof(IActionResult))
+        else if (actionType == typeof(IActionResult))
         {
-            objFilterContext.Result = new RedirectResult("~/Login/Index");
+            filterContext.Result = new RedirectResult("~/Login/Index");
         }
         else
         {
-            objFilterContext.Result = new RedirectResult("~/Error/Index?Type=" + (int)ErrorType.LoginTimeOut);
+            filterContext.Result = new RedirectResult("~/Error/Index?Type=" + (int)ErrorType.LoginTimeOut);
         }
     }
 
     /// <summary>
     /// 跳转到修改密码页面
     /// </summary>
-    /// <param name="objActionType"></param>
-    /// <param name="objActionExecutingContext"></param>
-    protected void GoEditPassword(Type objActionType, ActionExecutingContext objFilterContext)
+    /// <param name="actionType"></param>
+    /// <param name="filterContext"></param>
+    protected void GoEditPassword(Type actionType, ActionExecutingContext filterContext)
     {
-        if (objActionType == typeof(JsonResult))
+        if (actionType == typeof(JsonResult))
         {
-            objFilterContext.Result = new JsonResult(new { result = false, msg = _languagePack["common_alert_first_editpassword"] });
+            filterContext.Result = new JsonResult(new { result = false, msg = _languagePack["common_alert_first_editpassword"] });
         }
-        else if (objActionType == typeof(ContentResult))
+        else if (actionType == typeof(ContentResult))
         {
-            objFilterContext.Result = new ContentResult();
+            filterContext.Result = new ContentResult();
         }
-        else if (objActionType == typeof(FileResult))
+        else if (actionType == typeof(FileResult))
         {
-            objFilterContext.Result = null;
+            filterContext.Result = null;
         }
         else
         {
-            objFilterContext.Result = new RedirectResult("~/Home/EditPassword");
+            filterContext.Result = new RedirectResult("~/Home/EditPassword");
         }
     }
 
     /// <summary>
     /// 跳转到错误页面
     /// </summary>
-    /// <param name="objActionType"></param>
-    /// <param name="objobjFilterContext"></param>
-    /// <param name="objMsg"></param>
-    protected void GoError(Type objActionType, ActionExecutingContext objFilterContext, string objMsg)
+    /// <param name="actionType"></param>
+    /// <param name="filterContext"></param>
+    /// <param name="msg"></param>
+    protected void GoError(Type actionType, ActionExecutingContext filterContext, string msg)
     {
-        if (objActionType == typeof(JsonResult))
+        if (actionType == typeof(JsonResult))
         {
-            objFilterContext.Result = new JsonResult(new { result = false, msg = objMsg });
+            filterContext.Result = new JsonResult(new { result = false, msg = msg });
         }
-        else if (objActionType == typeof(ContentResult))
+        else if (actionType == typeof(ContentResult))
         {
-            objFilterContext.Result = new ContentResult();
+            filterContext.Result = new ContentResult();
         }
-        else if (objActionType == typeof(FileResult))
+        else if (actionType == typeof(FileResult))
         {
-            objFilterContext.Result = null;
+            filterContext.Result = null;
         }
         else
         {
-            objFilterContext.Result = new RedirectResult("~/Error/Index?Type=" + (int)ErrorType.Other + "&Message=" + HttpUtility.UrlEncode(objMsg));
+            filterContext.Result = new RedirectResult("~/Error/Index?Type=" + (int)ErrorType.Other + "&Message=" + HttpUtility.UrlEncode(msg));
         }
     }
 

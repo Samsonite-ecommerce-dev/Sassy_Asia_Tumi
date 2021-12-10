@@ -1,9 +1,9 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Samsonite.Library.Utility;
 using Samsonite.Library.Bussness.WebApi;
 using Samsonite.Library.Bussness.WebApi.Models;
+using Samsonite.Library.Utility;
+using Samsonite.Library.WebApi.Core.Models;
 using System;
-using System.Collections.Generic;
 
 namespace Samsonite.Library.API.Controllers
 {

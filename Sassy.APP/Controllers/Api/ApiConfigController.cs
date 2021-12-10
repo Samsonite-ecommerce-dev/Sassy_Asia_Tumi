@@ -1,11 +1,11 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Samsonite.Library.Business.Basic;
 using Samsonite.Library.Business.Basic.Models;
-using Samsonite.Library.Bussness.WebApi;
 using Samsonite.Library.Data.Entity.Models;
 using Samsonite.Library.Utility;
 using Samsonite.Library.Web.Core;
 using Samsonite.Library.Web.Core.Models;
+using Samsonite.Library.WebApi.Core;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -13,12 +13,12 @@ namespace Samsonite.Library.APP.Controllers
 {
     public class ApiConfigController : BaseController
     {
-        private IApiService _apiService;
+        private IMenuService _menuService;
         private IApiConfigService _apiConfigService;
         private appEntities _appDB;
-        public ApiConfigController(IBaseService baseService, IApiService apiService, IApiConfigService apiConfigService, appEntities appEntities) : base(baseService)
+        public ApiConfigController(IBaseService baseService, IMenuService menuService, IApiConfigService apiConfigService, appEntities appEntities) : base(baseService)
         {
-            _apiService = apiService;
+            _menuService = menuService;
             _apiConfigService = apiConfigService;
             _appDB = appEntities;
         }
@@ -45,7 +45,7 @@ namespace Samsonite.Library.APP.Controllers
                 //返回数据
                 return Json(new
                 {
-                    interfaceList = from g in _apiService.InterfaceOptions()
+                    interfaceList = from g in _menuService.InterfaceOptions()
                                     select new
                                     {
                                         groupID = g.GroupID,
@@ -75,7 +75,7 @@ namespace Samsonite.Library.APP.Controllers
                     //返回数据
                     return Json(new
                     {
-                        interfaceList = from g in _apiService.InterfaceOptions()
+                        interfaceList = from g in _menuService.InterfaceOptions()
                                         select new
                                         {
                                             groupID = g.GroupID,

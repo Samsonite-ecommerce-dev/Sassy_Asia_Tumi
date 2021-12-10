@@ -1,4 +1,4 @@
-﻿using System;
+﻿using Samsonite.Library.WebApi.Core.Models;
 
 namespace Samsonite.Library.Bussness.WebApi.Models
 {

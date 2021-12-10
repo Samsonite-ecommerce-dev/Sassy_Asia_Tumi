@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
-using Samsonite.Library.Bussness.WebApi.Models;
+using Samsonite.Library.WebApi.Core.Models;
 
 namespace Samsonite.Library.API
 {
