@@ -1,13 +1,11 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Samsonite.Library.Data.Entity.Models;
-using Samsonite.Library.Service.Core.Enum;
-using Samsonite.Library.Service.Core.Interface;
 using Samsonite.Library.Service.Core.Model;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Samsonite.Library.Service.Core.Implments
+namespace Samsonite.Library.Service.Core
 {
 
     public class ApplicationService : IApplicationService

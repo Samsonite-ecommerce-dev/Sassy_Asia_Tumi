@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Samsonite.Library.Core;
-using Samsonite.Library.Core.Models;
 using Samsonite.Library.Utility;
+using Samsonite.Library.Web.Core;
+using Samsonite.Library.Web.Core.Models;
 using System.Web;
 
 namespace Samsonite.Library.APP.Controllers

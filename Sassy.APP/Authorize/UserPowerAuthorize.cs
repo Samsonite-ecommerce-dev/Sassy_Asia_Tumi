@@ -1,5 +1,5 @@
-﻿using Samsonite.Library.Core;
-using Samsonite.Library.Core.Models;
+﻿using Samsonite.Library.Web.Core;
+using Samsonite.Library.Web.Core.Models;
 using Samsonite.Library.Data.Entity.Models;
 using Microsoft.AspNetCore.Mvc.Filters;
 using System;

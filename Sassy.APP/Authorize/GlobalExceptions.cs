@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.Filters;
-using Samsonite.Library.Core;
+using Samsonite.Library.Web.Core;
 
 namespace Samsonite.Library.APP
 {

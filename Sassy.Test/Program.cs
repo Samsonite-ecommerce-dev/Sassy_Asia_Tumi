@@ -3,10 +3,11 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Hosting.Internal;
-using Samsonite.Library.Business;
-using Samsonite.Library.Core;
+using Samsonite.Library.Business.Custom;
+using Samsonite.Library.Web.Core;
 using Samsonite.Library.Data.Entity.Models;
-using Samsonite.Library.DependencyInjection;
+using Samsonite.Library.Web.DependencyInjection;
+using Samsonite.Library.WebApi.DependencyInjection;
 using Samsonite.Library.Utility;
 using System;
 using System.IO;
@@ -49,7 +50,7 @@ namespace Samsonite.Sassy.Test
             services.AddSingleton<IHostEnvironment>(new HostingEnvironment() { });
             //注入自定义类
             CoreDI.Configure(services);
-            BusinessDI.Configure(services);
+            CustomDI.Configure(services);
 
             //构建容器
             ServiceProvider serviceProvider = services.BuildServiceProvider();

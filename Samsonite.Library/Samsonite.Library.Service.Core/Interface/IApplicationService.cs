@@ -1,8 +1,7 @@
-﻿using Samsonite.Library.Service.Core.Enum;
-using Samsonite.Library.Service.Core.Model;
+﻿using Samsonite.Library.Service.Core.Model;
 using System;
 
-namespace Samsonite.Library.Service.Core.Interface
+namespace Samsonite.Library.Service.Core
 {
     public interface IApplicationService
     {

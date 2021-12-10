@@ -1,10 +1,10 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Samsonite.Library.APP.Helper;
-using Samsonite.Library.Basic;
-using Samsonite.Library.Core;
-using Samsonite.Library.Core.Models;
+using Samsonite.Library.Business.Basic;
 using Samsonite.Library.Data.Entity.Models;
 using Samsonite.Library.Utility;
+using Samsonite.Library.Web.Core;
+using Samsonite.Library.Web.Core.Models;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -185,7 +185,7 @@ namespace Samsonite.Library.APP.Controllers
             if (objUserInfo != null)
             {
                 //如果是密码过期
-                if (objUserInfo.Status == (int)Samsonite.Library.Core.Models.UserStatus.ExpiredPwd)
+                if (objUserInfo.Status == (int)Samsonite.Library.Web.Core.Models.UserStatus.ExpiredPwd)
                 {
                     _isExpired = true;
                     //如果是首次登入

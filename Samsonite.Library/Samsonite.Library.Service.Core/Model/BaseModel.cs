@@ -1,7 +1,5 @@
 ﻿using System;
 
-using Samsonite.Library.Service.Core.Enum;
-
 namespace Samsonite.Library.Service.Core.Model
 {
 

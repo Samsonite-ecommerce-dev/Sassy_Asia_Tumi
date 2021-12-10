@@ -1,6 +1,6 @@
 ﻿@{
     Layout = "~/Views/Shared/_Layout.cshtml";
-    @inject Samsonite.Library.Core.IAntiforgeryService _antiforgeryService;
+    @inject Samsonite.Library.Web.Core.IAntiforgeryService _antiforgeryService;
 }
 <div class="main" style="padding:10px" v-cloak>
     <el-tabs type="border-card" v-model="custom.activeName">

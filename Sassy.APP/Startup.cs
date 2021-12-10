@@ -5,9 +5,10 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Samsonite.Library.Core;
 using Samsonite.Library.Data.Entity.Models;
-using Samsonite.Library.DependencyInjection;
+using Samsonite.Library.Web.Core;
+using Samsonite.Library.Web.DependencyInjection;
+using Samsonite.Library.WebApi.DependencyInjection;
 
 namespace Samsonite.Library.APP
 {
@@ -33,8 +34,8 @@ namespace Samsonite.Library.APP
             services.AddSession();
             //自定义DI注入
             CoreDI.Configure(services);
-            BusinessDI.Configure(services);
-            WebInterfaceDI.Configure(services);
+            CustomDI.Configure(services);
+            WebApiDI.Configure(services);
             //全局过滤器注入
             GlobalFilterDI.Configure(services);
             ////自定义Antiforgery

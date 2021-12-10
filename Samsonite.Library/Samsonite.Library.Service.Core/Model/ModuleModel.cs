@@ -1,5 +1,4 @@
-﻿using Samsonite.Library.Service.Core;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 
 namespace Samsonite.Library.Service.Core.Model
 {

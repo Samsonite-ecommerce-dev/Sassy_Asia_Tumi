@@ -7,7 +7,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
 using Samsonite.Library.Data.Entity.Models;
-using Samsonite.Library.DependencyInjection;
+using Samsonite.Library.WebApi.DependencyInjection;
 
 namespace Samsonite.Library.API
 {
@@ -27,7 +27,7 @@ namespace Samsonite.Library.API
             services.AddDbContext<appEntities>(options => options.UseSqlServer(Configuration.GetConnectionString("appConnection")));
             services.AddDbContext<logEntities>(options => options.UseSqlServer(Configuration.GetConnectionString("logConnection")));
             //自定义DI注入
-            WebInterfaceDI.Configure(services);
+            WebApiDI.Configure(services);
 
             //允许跨域请求,注意要放在 AddMvc 之前
             services.AddCors();
