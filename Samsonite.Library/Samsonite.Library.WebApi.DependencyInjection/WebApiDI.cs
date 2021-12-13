@@ -13,7 +13,8 @@ namespace Samsonite.Library.WebApi.DependencyInjection
             services.AddScoped<IAuthorizeService, AuthorizeService>();
             services.AddScoped<IMenuService, MenuService>();
             //api
-            services.AddScoped<ISASService, SASService>();
+            services.AddScoped<IProductService, ProductService>();
+            services.AddScoped<ISparePartService, SparePartService>();
         }
     }
 }

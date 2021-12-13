@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using Samsonite.Library.WebApi.Core.Models;
+using System.Collections.Generic;
 using System.Text.Json.Serialization;
 
 namespace Samsonite.Library.Bussness.WebApi.Models

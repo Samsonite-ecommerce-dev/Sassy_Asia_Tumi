@@ -1,5 +1,4 @@
-﻿using Samsonite.Library.Utility;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Security.Cryptography;
 using System.Text;
@@ -12,24 +11,24 @@ namespace Samsonite.Library.WebApi.Core.Utils
         /// <summary>
         /// 验证页码数
         /// </summary>
-        /// <param name="objPageSize"></param>
+        /// <param name="pageSize"></param>
         /// <returns></returns>
-        public int ValidatePageSize(int objPageSize)
+        public int ValidatePageSize(int pageSize)
         {
-            if (objPageSize > GlobalConfig.MaxPageSize) objPageSize = GlobalConfig.MaxPageSize;
-            if (objPageSize <= 0) objPageSize = GlobalConfig.DefaultPageSize;
-            return objPageSize;
+            if (pageSize > GlobalConfig.MaxPageSize) pageSize = GlobalConfig.MaxPageSize;
+            if (pageSize <= 0) pageSize = GlobalConfig.DefaultPageSize;
+            return pageSize;
         }
 
         /// <summary>
         /// 验证当前页码
         /// </summary>
-        /// <param name="objPageIndex"></param>
+        /// <param name="currentPage"></param>
         /// <returns></returns>
-        public int ValidatePageIndex(int objPageIndex)
+        public int ValidateCurrentPage(int currentPage)
         {
-            if (objPageIndex < 1) objPageIndex = 1;
-            return objPageIndex;
+            if (currentPage < 1) currentPage = 1;
+            return currentPage;
         }
         #endregion
 

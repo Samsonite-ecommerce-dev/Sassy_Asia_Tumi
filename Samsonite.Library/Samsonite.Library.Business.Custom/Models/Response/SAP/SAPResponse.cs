@@ -13,9 +13,6 @@ namespace Samsonite.Library.Business.Custom.Models
         /// Concatenation of line id (first 3 chars), line size (Last 3 chars) and line colour (5th and 6th char)
         /// </summary>
         public string SapManufacturerSku { get; set; }
-        public string LineId { set; get; }
-        public string ColourId { set; get; }
-        public string SizeId { set; get; }
         /// <summary>
         /// SAP Material ID
         /// </summary>

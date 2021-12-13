@@ -1,22 +1,13 @@
-﻿using System.Collections.Generic;
+﻿using Samsonite.Library.WebApi.Core.Models;
+using System.Collections.Generic;
 using System.Text.Json.Serialization;
 
 namespace Samsonite.Library.Bussness.WebApi.Models
 {
-    public class GetSparePartResponse
+    public class GetSparePartResponse:PageRequest
     {
         [JsonPropertyName("data")]
-        public List<SkuRelated> Data { get; set; }
-    }
-
-    public class SkuRelated
-    {
-        [JsonPropertyName("sku")]
-
-        public string Sku { get; set; }
-
-        [JsonPropertyName("spareparts")]
-        public List<SparePartInfo> SpareParts { get; set; }
+        public List<SparePartInfo> Data { get; set; }
     }
 
     public class SparePartInfo
@@ -35,5 +26,14 @@ namespace Samsonite.Library.Bussness.WebApi.Models
 
         [JsonPropertyName("group_description")]
         public string GroupDesc { get; set; }
+
+        [JsonPropertyName("base_price")]
+        public decimal BasePrice { get; set; }
+
+        [JsonPropertyName("unit")]
+        public string UnitofMeasure { get; set; }
+
+        [JsonPropertyName("status")]
+        public string Status { get; set; }
     }
 }

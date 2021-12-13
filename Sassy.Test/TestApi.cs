@@ -1,4 +1,7 @@
-﻿using Samsonite.Library.Utility;
+﻿using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
+using Samsonite.Library.Utility;
+using Samsonite.Library.WebApi.Core.Utils;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -12,75 +15,61 @@ namespace Samsonite.Sassy.Test
 {
     public class TestApi
     {
-        //测试
-        private static string localSite = "http://localhost:5001/";
-        //private static string localSite = "http://sassytest.tumi-asia.com/";
-        private static string secret = "c83QnLScml1nn544uXwO55JgdVQ4Bf9h";
-
-        //正式
-        //private string localSite = "https://sassy.tumi-asia.com/";
-        //private static string secret = "c83QnLScml1nn544uXwO55JgdVQ4Bf9h";
-
-        #region SAS
-        public static void TestSAS()
+        private string localSite = string.Empty;
+        private string userid = string.Empty;
+        private string version = string.Empty;
+        private string format = string.Empty;
+        private string secret = string.Empty;
+        private string method = string.Empty;
+        private UtilsHelper _utilsHelper;
+        public TestApi()
         {
-            //APIGetRelatedSpareParts();
+            //测试
+            this.localSite = "http://localhost:5001/";
+            //this.localSite = "http://sassytest.tumi-asia.com/";
+            this.secret = "c83QnLScml1nn544uXwO55JgdVQ4Bf9h";
 
-            APIGetSparePartGroups();
+            //正式
+            //private string localSite = "https://sassy.tumi-asia.com/";
+            //private static string secret = "c83QnLScml1nn544uXwO55JgdVQ4Bf9h";
+
+            this.userid = "sasuser";
+            this.version = "1.0";
+            this.format = "json";
+            this.method = "md5";
+
+            _utilsHelper = new UtilsHelper();
         }
 
-        public static void APIGetRelatedSpareParts()
+        #region SAS
+        public void TestSAS()
+        {
+            APIGetProducts();
+
+            //APIGetSpareParts();
+
+            //APIGetRelatedSpareParts();
+
+            //APIGetSparePartGroups();
+        }
+
+        public void APIGetProducts()
         {
             try
             {
                 IDictionary<string, string> objParams = new Dictionary<string, string>();
                 //默认参数
-                objParams.Add("userid", "sasuser");
-                objParams.Add("version", "1.0");
-                objParams.Add("format", "json");
+                objParams.Add("userid", this.userid);
+                objParams.Add("version", this.version);
+                objParams.Add("format", this.format);
                 objParams.Add("timestamp", TimeHelper.DateTimeToUnixTimestamp(DateTime.Now).ToString());
                 //传递参数
-                objParams.Add("sku", "I25*");
-                objParams.Add("groupid", "312");
-                //测试Key
-                string _sign = CreateSign(objParams, secret);
-                objParams.Add("sign", _sign);
-                string _params = string.Empty;
-                foreach (var _item in objParams)
-                {
-                    _params += $"&{_item.Key}={_item.Value}";
-                }
-                _params = _params.Substring(1);
-                localSite = $"{localSite}sas/spareparts/related/get?{_params}";
-                //Console.WriteLine(localSite);
-                HttpWebRequest req = null;
-                if (localSite.StartsWith("https", StringComparison.OrdinalIgnoreCase))
-                {
-                    ServicePointManager.ServerCertificateValidationCallback = new RemoteCertificateValidationCallback(TrustAllValidationCallback);
-                    ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
-                    req = (HttpWebRequest)WebRequest.CreateDefault(new Uri(localSite));
-                }
-                else
-                {
-                    req = (HttpWebRequest)WebRequest.Create(localSite);
-                }
-                req.Method = "GET";
-                //req.KeepAlive = true;
-                req.Timeout = 0xea60;
-                req.ContentType = "application/x-www-form-urlencoded;charset=utf-8";
-                DateTime _beginTime = DateTime.Now;
-                using (HttpWebResponse response = (HttpWebResponse)req.GetResponse())
-                {
-                    using (StreamReader reader = new StreamReader(response.GetResponseStream()))
-                    {
-                        string _r = reader.ReadToEnd();
-                        Console.WriteLine(_r);
-                    }
-                    if (response != null) response.Close();
-                }
-                DateTime _endTime = DateTime.Now;
-                TimeSpan TS = new TimeSpan(_endTime.Ticks - _beginTime.Ticks);
-                Console.WriteLine(TS);
+                objParams.Add("pagesize", "100");
+                objParams.Add("currentpage", "1");
+                //签名
+                objParams.Add("sign", _utilsHelper.CreateSign(objParams, this.secret, this.method));
+                //执行请求
+                this.DoGet($"{this.localSite}sas/products/get", objParams);
             }
             catch (Exception ex)
             {
@@ -88,56 +77,69 @@ namespace Samsonite.Sassy.Test
             }
         }
 
-        public static void APIGetSparePartGroups()
+        public void APIGetSpareParts()
         {
             try
             {
                 IDictionary<string, string> objParams = new Dictionary<string, string>();
                 //默认参数
-                objParams.Add("userid", "sasuser");
-                objParams.Add("version", "1.0");
-                objParams.Add("format", "json");
+                objParams.Add("userid", this.userid);
+                objParams.Add("version", this.version);
+                objParams.Add("format", this.format);
                 objParams.Add("timestamp", TimeHelper.DateTimeToUnixTimestamp(DateTime.Now).ToString());
                 //传递参数
-                //测试Key
-                string _sign = CreateSign(objParams, secret);
-                objParams.Add("sign", _sign);
-                string _params = string.Empty;
-                foreach (var _item in objParams)
-                {
-                    _params += $"&{_item.Key}={_item.Value}";
-                }
-                _params = _params.Substring(1);
-                localSite = $"{localSite}sas/spareparts/groups/get?{_params}";
-                //Console.WriteLine(localSite);
-                HttpWebRequest req = null;
-                if (localSite.StartsWith("https", StringComparison.OrdinalIgnoreCase))
-                {
-                    ServicePointManager.ServerCertificateValidationCallback = new RemoteCertificateValidationCallback(TrustAllValidationCallback);
-                    ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
-                    req = (HttpWebRequest)WebRequest.CreateDefault(new Uri(localSite));
-                }
-                else
-                {
-                    req = (HttpWebRequest)WebRequest.Create(localSite);
-                }
-                req.Method = "GET";
-                //req.KeepAlive = true;
-                req.Timeout = 0xea60;
-                req.ContentType = "application/x-www-form-urlencoded;charset=utf-8";
-                DateTime _beginTime = DateTime.Now;
-                using (HttpWebResponse response = (HttpWebResponse)req.GetResponse())
-                {
-                    using (StreamReader reader = new StreamReader(response.GetResponseStream()))
-                    {
-                        string _r = reader.ReadToEnd();
-                        Console.WriteLine(_r);
-                    }
-                    if (response != null) response.Close();
-                }
-                DateTime _endTime = DateTime.Now;
-                TimeSpan TS = new TimeSpan(_endTime.Ticks - _beginTime.Ticks);
-                Console.WriteLine(TS);
+                objParams.Add("pagesize", "100");
+                objParams.Add("currentpage", "1");
+                //签名
+                objParams.Add("sign", _utilsHelper.CreateSign(objParams, this.secret, this.method));
+                //执行请求
+                this.DoGet($"{this.localSite}sas/spareparts/get", objParams);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex);
+            }
+        }
+
+        public void APIGetRelatedSpareParts()
+        {
+            try
+            {
+                IDictionary<string, string> objParams = new Dictionary<string, string>();
+                //默认参数
+                objParams.Add("userid", this.userid);
+                objParams.Add("version", this.version);
+                objParams.Add("format", this.format);
+                objParams.Add("timestamp", TimeHelper.DateTimeToUnixTimestamp(DateTime.Now).ToString());
+                //传递参数
+                objParams.Add("sku", "I25*");
+                objParams.Add("groupid", "312");
+                //签名
+                objParams.Add("sign", _utilsHelper.CreateSign(objParams, this.secret, this.method));
+                //执行请求
+                this.DoGet($"{this.localSite}sas/spareparts/related/get", objParams);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex);
+            }
+        }
+
+        public void APIGetSparePartGroups()
+        {
+            try
+            {
+                IDictionary<string, string> objParams = new Dictionary<string, string>();
+                //默认参数
+                objParams.Add("userid", this.userid);
+                objParams.Add("version", this.version);
+                objParams.Add("format", this.format);
+                objParams.Add("timestamp", TimeHelper.DateTimeToUnixTimestamp(DateTime.Now).ToString());
+                //传递参数
+                //签名
+                objParams.Add("sign", _utilsHelper.CreateSign(objParams, this.secret, this.method));
+                //执行请求
+                this.DoGet($"{this.localSite}sas/spareparts/groups/get", objParams);
             }
             catch (Exception ex)
             {
@@ -145,6 +147,107 @@ namespace Samsonite.Sassy.Test
             }
         }
         #endregion
+
+        #region 函数
+        /// <summary>
+        /// get
+        /// </summary>
+        /// <param name="objUrl"></param>
+        /// <param name="objParams"></param>
+        private void DoGet(string objUrl, IDictionary<string, string> objParams)
+        {
+            string _params = string.Empty;
+            foreach (var _item in objParams)
+            {
+                _params += $"&{_item.Key}={_item.Value}";
+            }
+            _params = _params.Substring(1);
+            objUrl = $"{objUrl}?{_params}";
+            HttpWebRequest req = null;
+            if (this.localSite.StartsWith("https", StringComparison.OrdinalIgnoreCase))
+            {
+                ServicePointManager.ServerCertificateValidationCallback = new RemoteCertificateValidationCallback(TrustAllValidationCallback);
+                ServicePointManager.SecurityProtocol = SecurityProtocolType.Ssl3 | SecurityProtocolType.Tls | SecurityProtocolType.Tls11 | SecurityProtocolType.Tls12;
+                req = (HttpWebRequest)WebRequest.CreateDefault(new Uri(objUrl));
+            }
+            else
+            {
+                req = (HttpWebRequest)WebRequest.Create(objUrl);
+            }
+            req.Method = WebRequestMethods.Http.Get;
+            //req.KeepAlive = true;
+            req.Timeout = 0xea60;
+            req.ContentType = "application/x-www-form-urlencoded;charset=utf-8";
+            DateTime _beginTime = DateTime.Now;
+            using (HttpWebResponse response = (HttpWebResponse)req.GetResponse())
+            {
+                using (StreamReader reader = new StreamReader(response.GetResponseStream()))
+                {
+                    string _r = reader.ReadToEnd();
+                    Console.WriteLine(_r);
+                }
+                response.Close();
+            }
+            DateTime _endTime = DateTime.Now;
+            TimeSpan TS = new TimeSpan(_endTime.Ticks - _beginTime.Ticks);
+            Console.WriteLine(TS);
+        }
+
+        /// <summary>
+        /// post
+        /// </summary>
+        /// <param name="objUrl"></param>
+        /// <param name="objParams"></param>
+        /// <param name="objPostData"></param>
+        private void DoPost(string objUrl, IDictionary<string, string> objParams, object objPostData)
+        {
+            string _params = string.Empty;
+            foreach (var _item in objParams)
+            {
+                _params += $"&{_item.Key}={_item.Value}";
+            }
+            _params = _params.Substring(1);
+            objUrl = $"{objUrl}?{_params}";
+            //获取信息
+            HttpWebRequest req = null;
+            if (this.localSite.StartsWith("https", StringComparison.OrdinalIgnoreCase))
+            {
+                ServicePointManager.ServerCertificateValidationCallback = new RemoteCertificateValidationCallback(TrustAllValidationCallback);
+                ServicePointManager.SecurityProtocol = SecurityProtocolType.Ssl3 | SecurityProtocolType.Tls | SecurityProtocolType.Tls11 | SecurityProtocolType.Tls12;
+                req = (HttpWebRequest)WebRequest.CreateDefault(new Uri(objUrl));
+            }
+            else
+            {
+                req = (HttpWebRequest)WebRequest.Create(objUrl);
+            }
+
+            req.ReadWriteTimeout = 5 * 1000;
+            req.Method = WebRequestMethods.Http.Post;
+            req.ContentType = "application/json";
+            var _data = JsonHelper.JsonSerialize(objPostData);
+
+            using (var sw = new StreamWriter(req.GetRequestStream()))
+            {
+                sw.Write(_data);
+            }
+            using (var response = req.GetResponse())
+            {
+                using (var sr = new StreamReader(response.GetResponseStream()))
+                {
+                    string responseText = sr.ReadToEnd();
+                    Console.WriteLine(responseText);
+                    JObject obj = JsonConvert.DeserializeObject<JObject>(responseText);
+                    if (obj.GetValue("Code").ToString() == "100")
+                    {
+                        Console.WriteLine("success");
+                    }
+                    else
+                    {
+                        Console.WriteLine("fail");
+                    }
+                }
+            }
+        }
 
         private static string CreateSign(IDictionary<string, string> parameters, string secret)
         {
@@ -179,6 +282,7 @@ namespace Samsonite.Sassy.Test
 
             return result.ToString();
         }
+        #endregion
 
         private static bool TrustAllValidationCallback(object sender, X509Certificate certificate, X509Chain chain, SslPolicyErrors errors)
         {

@@ -56,6 +56,18 @@ namespace Samsonite.Library.WebApi.Core.Models
     public class ApiPageResponse : ApiGetResponse
     {
         /// <summary>
+        /// 记录总数
+        /// </summary>
+        [JsonPropertyName("total_record")]
+        public long TotalRecord { get; set; }
+
+        /// <summary>
+        /// 总页数
+        /// </summary>
+        [JsonPropertyName("total_page")]
+        public int TotalPage { get; set; }
+
+        /// <summary>
         /// 每页数据大小
         /// </summary>
         [JsonPropertyName("page_size")]
@@ -64,19 +76,7 @@ namespace Samsonite.Library.WebApi.Core.Models
         /// <summary>
         /// 当前页面
         /// </summary>
-        [JsonPropertyName("page_index")]
-        public int PageIndex { get; set; }
-
-        /// <summary>
-        /// 总页数
-        /// </summary>
-        [JsonPropertyName("page_total")]
-        public long PageTotal { get; set; }
-
-        /// <summary>
-        /// 记录总数
-        /// </summary>
-        [JsonPropertyName("total_record")]
-        public long TotalRecord { get; set; }
+        [JsonPropertyName("current_page")]
+        public int CurrentPage { get; set; }
     }
 }

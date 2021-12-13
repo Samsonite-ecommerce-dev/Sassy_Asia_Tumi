@@ -78,8 +78,9 @@ namespace Samsonite.Library.Business.Custom
                 {
                     var columns = item.Split("|");
 
-                    //过滤空行
-                    if (!string.IsNullOrEmpty(columns[1]) && !string.IsNullOrEmpty(columns[2]))
+                    //过滤空行(Spare Part不为空)
+                    //注:sku可能为空
+                    if (!string.IsNullOrEmpty(columns[2]))
                     {
                         SAPMaterialDto sAPMaterialDto = new SAPMaterialDto();
                         sAPMaterialDto.SapMaterialType = columns.Length >= 1 ? columns[0].ToUpper() : ""; ;
@@ -96,12 +97,11 @@ namespace Samsonite.Library.Business.Custom
                         //ZSPA:SparePart
                         if (sAPMaterialDto.SapMaterialType == "ZFGS")
                         {
-                            if (sAPMaterialDto.SapManufacturerSku.Length >= 3)
-                                sAPMaterialDto.LineId = sAPMaterialDto.SapManufacturerSku.Substring(0, 3);
-                            if (sAPMaterialDto.SapManufacturerSku.Length >= 6)
-                                sAPMaterialDto.ColourId = sAPMaterialDto.SapManufacturerSku.Substring(4, 2);
-                            if (sAPMaterialDto.SapManufacturerSku.Length >= 9)
-                                sAPMaterialDto.SizeId = sAPMaterialDto.SapManufacturerSku.Substring(6, 3);
+                            if (string.IsNullOrEmpty(sAPMaterialDto.SapManufacturerSku))
+                            {
+                                //如果sku为空,则用material+Grid代替
+                                sAPMaterialDto.SapManufacturerSku = $"{sAPMaterialDto.SapMaterialId}{sAPMaterialDto.SapColor}";
+                            }
                         }
                         else
                         {
@@ -150,9 +150,6 @@ namespace Samsonite.Library.Business.Custom
             {
                 List<CommonResultData<SAPMaterialResponse>> _result = new List<CommonResultData<SAPMaterialResponse>>();
                 List<Product> products = new List<Product>();
-                //List<ProductLineSize> productLineSizes = new List<ProductLineSize>();
-                //List<ProductLineColor> productLineColors = new List<ProductLineColor>();
-                //List<ProductLine> productLines = new List<ProductLine>();
 
                 foreach (var item in sAPMaterialDtos)
                 {
@@ -169,126 +166,6 @@ namespace Samsonite.Library.Business.Custom
                         MaterialGroup = VariableHelper.SaferequestSQL(item.SapMaterialGroup),
                     });
                 }
-
-                //foreach (var item in sAPMaterialDtos)
-                //{
-                //    string sku = item.SapManufacturerSku.ToUpper();
-                //    string line = sku.Length >= 3 ? sku.Substring(0, 3) : "";
-                //    string lineColor = sku.Length >= 6 ? sku.Substring(4, 2) : "";
-                //    //最后三位
-                //    string lineSize = sku.Length >= 9 ? sku.Substring(sku.Length - 3, 3) : "";
-                //    productLines.Add(new ProductLine
-                //    {
-                //        LineID = line,
-                //        LineDescription = VariableHelper.SaferequestSQL(item.SapCollection),
-                //        LineText = string.Empty
-                //    });
-
-                //    productLineColors.Add(new ProductLineColor
-                //    {
-                //        LineID = line,
-                //        ColorID = lineColor,
-                //        ColorDescription = VariableHelper.SaferequestSQL(item.SapColorDescription),
-                //        ColorText = string.Empty
-                //    });
-
-                //    productLineSizes.Add(new ProductLineSize
-                //    {
-                //        LineID = line,
-                //        SizeID = lineSize,
-                //        SizeDescription = VariableHelper.SaferequestSQL(item.SapName),
-                //        SizeText = string.Empty,
-                //        Length = 0,
-                //        Width = 0,
-                //        Height = 0,
-                //        Volume = 0
-                //    });
-                //}
-
-                ////Line对象去重
-                //var distinctLine = productLines.Where(t => !string.IsNullOrWhiteSpace(t.LineID)).GroupBy(t => t.LineID).Select(t => t.FirstOrDefault()).ToList();
-
-                ////过滤重复 LineColours
-                //var distinctLineColours = productLineColors.Where(t => !string.IsNullOrWhiteSpace(t.ColorID)).GroupBy(t => t.LineID + t.ColorID).Select(t => t.FirstOrDefault()).ToList();
-
-                ////过滤重复 LineSizes
-                //var distinctLineSizes = productLineSizes.Where(t => !string.IsNullOrWhiteSpace(t.SizeID)).GroupBy(t => t.LineID + t.SizeID).Select(t => t.FirstOrDefault()).ToList();
-
-                ////处理Line
-                //if (distinctLine.Any())
-                //{
-                //    int linePageSize = 1000;
-                //    int lineTotalPage = (int)Math.Ceiling(distinctLine.Count / (decimal)linePageSize);
-                //    StringBuilder lineSqlBuilder = new StringBuilder();
-                //    //批量保存
-                //    for (int page = 0; page < lineTotalPage; page++)
-                //    {
-                //        lineSqlBuilder = new StringBuilder();
-                //        foreach (var item in distinctLine.Skip(page * linePageSize).Take(linePageSize))
-                //        {
-                //            lineSqlBuilder.AppendLine($"IF NOT EXISTS(SELECT * from [ProductLine] WHERE LineID = N'{item.LineID}')");
-                //            lineSqlBuilder.AppendLine("BEGIN");
-                //            lineSqlBuilder.AppendLine("INSERT INTO [ProductLine](LineID,LineDescription,LineText,AddDate,EditDate)");
-                //            lineSqlBuilder.AppendLine($" VALUES(N'{item.LineID}',N'{item.LineDescription}',N'{item.LineText}',getdate(),getdate())");
-                //            lineSqlBuilder.AppendLine("END");
-                //            lineSqlBuilder.AppendLine("ELSE");
-                //            lineSqlBuilder.AppendLine("BEGIN");
-                //            lineSqlBuilder.AppendLine($"UPDATE [ProductLine] SET LineDescription=N'{item.LineDescription}',EditDate=getdate() WHERE LineID = N'{item.LineID}'");
-                //            lineSqlBuilder.AppendLine("END");
-                //        }
-                //        _appDB.Database.ExecuteSqlRaw(lineSqlBuilder.ToString());
-                //    }
-                //}
-                ////处理Line Color
-                //if (distinctLineColours.Any())
-                //{
-                //    int colorPageSize = 1000;
-                //    int colorTotalPage = (int)Math.Ceiling(distinctLineColours.Count / (decimal)colorPageSize);
-                //    StringBuilder colorSqlBuilder = new StringBuilder();
-                //    //批量保存
-                //    for (int page = 0; page < colorTotalPage; page++)
-                //    {
-                //        colorSqlBuilder = new StringBuilder();
-                //        foreach (var item in distinctLineColours.Skip(page * colorPageSize).Take(colorPageSize))
-                //        {
-                //            colorSqlBuilder.AppendLine($"IF NOT EXISTS(SELECT * from [ProductLineColor] WHERE LineID = N'{item.LineID}' AND ColorID=N'{item.ColorID}')");
-                //            colorSqlBuilder.AppendLine("BEGIN");
-                //            colorSqlBuilder.AppendLine("INSERT INTO [ProductLineColor](LineID,ColorID,ColorDescription,ColorText,AddDate,EditDate)");
-                //            colorSqlBuilder.AppendLine($" VALUES(N'{item.LineID}',N'{item.ColorID}',N'{item.ColorDescription}',N'{item.ColorText}',getdate(),getdate())");
-                //            colorSqlBuilder.AppendLine("END");
-                //            colorSqlBuilder.AppendLine("ELSE");
-                //            colorSqlBuilder.AppendLine("BEGIN");
-                //            colorSqlBuilder.AppendLine($"UPDATE [ProductLineColor] SET ColorDescription=N'{item.ColorDescription}',EditDate=getdate() WHERE LineID = N'{item.LineID}' AND ColorID=N'{item.ColorID}'");
-                //            colorSqlBuilder.AppendLine("END");
-                //        }
-                //        _appDB.Database.ExecuteSqlRaw(colorSqlBuilder.ToString());
-                //    }
-                //}
-                ////处理Line Size
-                //if (distinctLineSizes.Any())
-                //{
-                //    int sizePageSize = 1000;
-                //    int sizeTotalPage = (int)Math.Ceiling(distinctLineSizes.Count / (decimal)sizePageSize);
-                //    StringBuilder sizeSqlBuilder = new StringBuilder();
-                //    //批量保存
-                //    for (int page = 0; page < sizeTotalPage; page++)
-                //    {
-                //        sizeSqlBuilder = new StringBuilder();
-                //        foreach (var item in distinctLineSizes.Skip(page * sizePageSize).Take(sizePageSize))
-                //        {
-                //            sizeSqlBuilder.AppendLine($"IF NOT EXISTS(SELECT * from [ProductLineSize] WHERE LineID = N'{item.LineID}' AND SizeID=N'{item.SizeID}')");
-                //            sizeSqlBuilder.AppendLine("BEGIN");
-                //            sizeSqlBuilder.AppendLine("INSERT INTO [ProductLineSize](LineID,SizeID,SizeDescription,SizeText,[Length],Width,Height,Volume,AddDate,EditDate)");
-                //            sizeSqlBuilder.AppendLine($" VALUES(N'{item.LineID}',N'{item.SizeID}',N'{item.SizeDescription}',N'{item.SizeText}',{item.Length},{item.Width},{item.Height},{item.Volume},getdate(),getdate())");
-                //            sizeSqlBuilder.AppendLine("END");
-                //            sizeSqlBuilder.AppendLine("ELSE");
-                //            sizeSqlBuilder.AppendLine("BEGIN");
-                //            sizeSqlBuilder.AppendLine($"UPDATE [ProductLineSize] SET SizeDescription=N'{item.SizeDescription}',EditDate=getdate() WHERE LineID = N'{item.LineID}' AND SizeID=N'{item.SizeID}'");
-                //            sizeSqlBuilder.AppendLine("END");
-                //        }
-                //        _appDB.Database.ExecuteSqlRaw(sizeSqlBuilder.ToString());
-                //    }
-                //}
 
                 //处理Sku
                 if (products.Any())

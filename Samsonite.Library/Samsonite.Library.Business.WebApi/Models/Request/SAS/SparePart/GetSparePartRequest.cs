@@ -4,8 +4,8 @@ namespace Samsonite.Library.Bussness.WebApi.Models
 {
     public class GetSparePartRequest : ApiRequest
     {
-        public string Sku { get; set; }
+        public int PageSize { get; set; }
 
-        public int GroupID { get; set; }
+        public int CurrentPage { get; set; }
     }
 }

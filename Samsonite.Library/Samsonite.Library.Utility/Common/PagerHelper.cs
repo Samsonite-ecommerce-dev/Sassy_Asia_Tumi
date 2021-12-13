@@ -10,7 +10,7 @@ namespace Samsonite.Library.Utility
         /// <param name="objTotalCount"></param>
         /// <param name="objPagesize"></param>
         /// <returns></returns>
-        public static int CountTotalPage(int objTotalCount, int objPagesize)
+        public static long CountTotalPage(long objTotalCount, long objPagesize)
         {
             if (objTotalCount < 0)
                 objTotalCount = 0;

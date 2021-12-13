@@ -28,7 +28,7 @@ namespace Samsonite.Sassy.Test
             //TestBug();
 
             //TestApi
-            TestApi.TestSAS();
+            (new TestApi()).TestSAS();
 
             Console.ReadLine();
         }
@@ -84,13 +84,13 @@ namespace Samsonite.Sassy.Test
 
 
             StringBuilder _s = new StringBuilder();
-            for(var i = 0; i < 10; i++)
+            for (var i = 0; i < 10; i++)
             {
                 _s = new StringBuilder();
                 _s.Append(i.ToString());
                 Console.WriteLine(_s.ToString());
             }
-            
+
             Console.WriteLine("finish!");
         }
 

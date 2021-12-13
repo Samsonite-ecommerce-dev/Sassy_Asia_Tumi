@@ -42,17 +42,33 @@ namespace Samsonite.Library.WebApi.Core
                     {
                          ID=100,
                          RouteGroup="",
-                         InterfaceName="Get Related SpareParts",
-                         ActionName="GetRelatedSpareParts",
+                         InterfaceName="Get Products",
+                         ActionName="GetProducts",
                          SeqNumber=100
                     },
                     new ApiMenuInfo()
                     {
-                         ID=110,
+                         ID=200,
+                         RouteGroup="",
+                         InterfaceName="Get SpareParts",
+                         ActionName="GetSpareParts",
+                         SeqNumber=200
+                    },
+                    new ApiMenuInfo()
+                    {
+                         ID=210,
                          RouteGroup="",
                          InterfaceName="Get Spare Part Groups",
                          ActionName="GetSparePartGroups",
-                         SeqNumber=110
+                         SeqNumber=210
+                    },
+                    new ApiMenuInfo()
+                    {
+                         ID=220,
+                         RouteGroup="",
+                         InterfaceName="Get Related SpareParts",
+                         ActionName="GetRelatedSpareParts",
+                         SeqNumber=220
                     }
                 },
                 RootID = 1
