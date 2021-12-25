@@ -44,11 +44,11 @@ namespace Samsonite.Sassy.Test
         #region SAS
         public void TestSAS()
         {
-            APIGetProducts();
+            //APIGetProducts();
 
             //APIGetSpareParts();
 
-            //APIGetRelatedSpareParts();
+            APIGetRelatedSpareParts();
 
             //APIGetSparePartGroups();
         }

@@ -100,7 +100,7 @@ namespace Samsonite.Library.Business.Custom
                             if (string.IsNullOrEmpty(sAPMaterialDto.SapManufacturerSku))
                             {
                                 //如果sku为空,则用material+Grid代替
-                                sAPMaterialDto.SapManufacturerSku = $"{sAPMaterialDto.SapMaterialId}{sAPMaterialDto.SapColor}";
+                                sAPMaterialDto.SapManufacturerSku = $"{sAPMaterialDto.SapMaterialId}-{sAPMaterialDto.SapColor}";
                             }
                         }
                         else
