@@ -2,6 +2,7 @@
 using Samsonite.Library.Bussness.WebApi;
 using Samsonite.Library.Bussness.WebApi.Models;
 using Samsonite.Library.Utility;
+using Samsonite.Library.WebApi.Core;
 using Samsonite.Library.WebApi.Core.Models;
 using Samsonite.Library.WebApi.Core.Utils;
 using System;
@@ -52,10 +53,10 @@ namespace Samsonite.Library.API.Controllers
                 _result.PageSize = request.PageSize;
                 _result.CurrentPage = request.CurrentPage;
             }
-            catch (Exception ex)
+            catch (ApiException ex)
             {
                 //返回信息
-                _result.Code = (int)ApiResultCode.Fail;
+                _result.Code = (int)ex.ErrorCode;
                 _result.Message = ex.Message;
             }
             return _result;
@@ -91,10 +92,10 @@ namespace Samsonite.Library.API.Controllers
                 _result.PageSize = request.PageSize;
                 _result.CurrentPage = request.CurrentPage;
             }
-            catch (Exception ex)
+            catch (ApiException ex)
             {
                 //返回信息
-                _result.Code = (int)ApiResultCode.Fail;
+                _result.Code = (int)ex.ErrorCode;
                 _result.Message = ex.Message;
             }
             return _result;
@@ -121,10 +122,10 @@ namespace Samsonite.Library.API.Controllers
                 _result.Message = string.Empty;
                 _result.Data = _res.Data;
             }
-            catch (Exception ex)
+            catch (ApiException ex)
             {
                 //返回信息
-                _result.Code = (int)ApiResultCode.Fail;
+                _result.Code = (int)ex.ErrorCode;
                 _result.Message = ex.Message;
             }
             return _result;
@@ -147,7 +148,7 @@ namespace Samsonite.Library.API.Controllers
             {
                 if (string.IsNullOrEmpty(request.Sku))
                 {
-                    throw new Exception("Please input a SKU!");
+                    throw new ApiException((int)ApiResultCode.InvalidParameter, "Please input a SKU!");
                 }
 
                 var _res = _sparePartService.GetSparePartRelateds(request);
@@ -156,10 +157,10 @@ namespace Samsonite.Library.API.Controllers
                 _result.Message = string.Empty;
                 _result.Data = _res.Data;
             }
-            catch (Exception ex)
+            catch (ApiException ex)
             {
                 //返回信息
-                _result.Code = (int)ApiResultCode.Fail;
+                _result.Code = (int)ex.ErrorCode;
                 _result.Message = ex.Message;
             }
             return _result;

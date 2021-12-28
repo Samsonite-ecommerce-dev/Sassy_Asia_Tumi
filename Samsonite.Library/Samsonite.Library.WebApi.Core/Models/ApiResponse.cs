@@ -11,7 +11,7 @@ namespace Samsonite.Library.WebApi.Core.Models
         public string RequestID { get; set; }
 
         /// <summary>
-        /// 结果代码（100表示成功，其它表示失败）
+        /// 结果代码（200表示成功，其它表示失败）
         /// </summary>
         [JsonPropertyName("code")]
         public int Code { get; set; }

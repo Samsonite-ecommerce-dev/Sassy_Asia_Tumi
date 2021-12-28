@@ -4,7 +4,7 @@ using System.Text.Json.Serialization;
 
 namespace Samsonite.Library.Bussness.WebApi.Models
 {
-    public class GetProductResponse: PageRequest
+    public class GetProductResponse: PageResponse
     {
         [JsonPropertyName("data")]
         public List<ProductInfo> Data { get; set; }

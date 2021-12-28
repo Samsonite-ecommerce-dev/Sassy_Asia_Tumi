@@ -112,8 +112,8 @@ namespace Samsonite.Sassy.Test
                 objParams.Add("format", this.format);
                 objParams.Add("timestamp", TimeHelper.DateTimeToUnixTimestamp(DateTime.Now).ToString());
                 //传递参数
-                objParams.Add("sku", "I25*");
-                objParams.Add("groupid", "312");
+                objParams.Add("sku", "1");
+                //objParams.Add("groupid", "312");
                 //签名
                 objParams.Add("sign", _utilsHelper.CreateSign(objParams, this.secret, this.method));
                 //执行请求

@@ -7,10 +7,14 @@ namespace Samsonite.Library.WebApi.Core.Models
         /// <summary>
         /// 成功
         /// </summary>
-        Success = 200,
+        Success = 0,
         /// <summary>
-        /// 失败
+        /// 参数错误
         /// </summary>
-        Fail = 100
+        InvalidParameter = 10,
+        /// <summary>
+        /// 系统错误
+        /// </summary>
+        SystemError = 99
     }
 }

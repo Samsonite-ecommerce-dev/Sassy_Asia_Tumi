@@ -51,14 +51,14 @@ namespace Samsonite.Library.WebApi.Core
         /// </summary>
         /// <param name="authorizeValidRequest"></param>
         /// <returns></returns>
-        public AuthorizeResult VisitValid(AuthorizeValidRequest authorizeValidRequest)
+        public AuthorizeValidResponse VisitValid(AuthorizeValidRequest authorizeValidRequest)
         {
-            AuthorizeResult _result = new AuthorizeResult();
+            AuthorizeValidResponse _result = new AuthorizeValidResponse();
             AuthorizeParam _paramsRequest = new AuthorizeParam()
             {
                 Url = authorizeValidRequest.RequestUrl,
-                PostBody = authorizeValidRequest.PostBody,
-                Ip = authorizeValidRequest.RequestIp
+                Ip = authorizeValidRequest.RequestIp,
+                PostBody = authorizeValidRequest.PostBody
             };
 
             try
@@ -162,7 +162,7 @@ namespace Samsonite.Library.WebApi.Core
                                     if (objAuthorizeUser.Roles.Contains(objInterface.ID))
                                     {
                                         //返回信息
-                                        _result = new AuthorizeResult()
+                                        _result = new AuthorizeValidResponse()
                                         {
                                             Result = true,
                                             Message = string.Empty,
@@ -202,7 +202,7 @@ namespace Samsonite.Library.WebApi.Core
             catch (Exception ex)
             {
                 //返回信息
-                _result = new AuthorizeResult()
+                _result = new AuthorizeValidResponse()
                 {
                     Result = false,
                     Message = ex.Message,

@@ -4,7 +4,7 @@ using System.Text.Json.Serialization;
 
 namespace Samsonite.Library.Bussness.WebApi.Models
 {
-    public class GetSparePartResponse:PageRequest
+    public class GetSparePartResponse:PageResponse
     {
         [JsonPropertyName("data")]
         public List<SparePartInfo> Data { get; set; }

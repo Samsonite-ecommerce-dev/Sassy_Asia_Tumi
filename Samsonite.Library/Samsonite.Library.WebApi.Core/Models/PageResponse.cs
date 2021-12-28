@@ -2,7 +2,7 @@
 
 namespace Samsonite.Library.WebApi.Core.Models
 {
-    public class PageRequest
+    public class PageResponse
     {
         /// <summary>
         /// 记录总数

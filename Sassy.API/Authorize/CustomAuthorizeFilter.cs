@@ -79,9 +79,9 @@ namespace Samsonite.Library.API
                     RequestParam = _requestParams,
                     AuthorizeUsers = _authorizeUsers
                 });
-                ////测试用-------------
+                //注:测试时跳过验证使用代码********************************************************************************//
                 //_result.Result = true;
-                ////-------------------
+                //*********************************************************************************************************//
                 //访问信息
                 webApiAccessLog.LogType = _apiBaseService.GetAPIType(_controllerName);
                 webApiAccessLog.Url = _result.Params.Url;
@@ -112,7 +112,7 @@ namespace Samsonite.Library.API
                 var _contextResult = new JsonResult(new ApiResponse
                 {
                     RequestID = _requestD,
-                    Code = (int)ApiResultCode.Fail,
+                    Code = (int)ApiResultCode.SystemError,
                     Message = ex.Message
                 });
                 context.Result = _contextResult;

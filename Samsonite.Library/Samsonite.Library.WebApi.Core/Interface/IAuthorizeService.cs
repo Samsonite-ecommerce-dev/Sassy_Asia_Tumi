@@ -16,6 +16,6 @@ namespace Samsonite.Library.WebApi.Core
         /// </summary>
         /// <param name="authorizeValidRequest"></param>
         /// <returns></returns>
-        AuthorizeResult VisitValid(AuthorizeValidRequest authorizeValidRequest);
+        AuthorizeValidResponse VisitValid(AuthorizeValidRequest authorizeValidRequest);
     }
 }

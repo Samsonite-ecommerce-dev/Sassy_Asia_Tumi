@@ -6,13 +6,12 @@ namespace Samsonite.Library.API
 {
     public class CustomExceptionFilter : ExceptionFilterAttribute
     {
-
         public override void OnException(ExceptionContext context)
         {
             //返回错误信息
             context.Result = new JsonResult(new ApiResponse
             {
-                Code = (int)ApiResultCode.Fail,
+                Code = (int)ApiResultCode.SystemError,
                 Message = context.Exception.Message
             });
 
