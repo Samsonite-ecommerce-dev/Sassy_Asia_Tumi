@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
-using Samsonite.Library.Business.Custom;
-using Samsonite.Library.Business.Custom.Models;
+using Samsonite.Library.Business.Web.Custom;
+using Samsonite.Library.Business.Web.Custom.Models;
 using Samsonite.Library.Data.Entity.Models;
 using Samsonite.Library.Utility;
 using Samsonite.Library.Web.Core;

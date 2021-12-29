@@ -7,7 +7,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
 using Samsonite.Library.Data.Entity.Models;
-using Samsonite.Library.WebApi.DependencyInjection;
+using Samsonite.Library.DependencyInjection.WebApi;
 
 namespace Samsonite.Library.API
 {

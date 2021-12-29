@@ -25,8 +25,8 @@ namespace Samsonite.Sassy.Test
         public TestApi()
         {
             //测试
-            this.localSite = "http://localhost:5001/";
-            //this.localSite = "http://sassytest.tumi-asia.com/";
+            //this.localSite = "http://tumisassyapitest.tumi-asia.com/";
+            this.localSite = "http://127.0.0.1:5001/";
             this.secret = "c83QnLScml1nn544uXwO55JgdVQ4Bf9h";
 
             //正式

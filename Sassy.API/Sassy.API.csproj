@@ -10,8 +10,8 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Samsonite.Library\Samsonite.Library.Business.WebApi\Samsonite.Library.Business.WebApi.csproj" />
+    <ProjectReference Include="..\Samsonite.Library\Samsonite.Library.DependencyInjection.WebApi\Samsonite.Library.DependencyInjection.WebApi.csproj" />
     <ProjectReference Include="..\Samsonite.Library\Samsonite.Library.Utility\Samsonite.Library.Utility.csproj" />
-    <ProjectReference Include="..\Samsonite.Library\Samsonite.Library.WebApi.DependencyInjection\Samsonite.Library.WebApi.DependencyInjection.csproj" />
   </ItemGroup>
 
 </Project>

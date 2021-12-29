@@ -16,15 +16,13 @@ namespace Samsonite.Library.API
     {
         private IApiBaseService _apiBaseService;
         private IAuthorizeService _authorizeService;
-        private appEntities _appDB;
         private logEntities _logDB;
         private List<AuthorizeUser> _authorizeUsers;
         private string _requestD = string.Empty;
-        public CustomAuthorizeFilter(IApiBaseService apiBaseService, IAuthorizeService authorizeService, appEntities appEntities, logEntities logEntities)
+        public CustomAuthorizeFilter(IApiBaseService apiBaseService, IAuthorizeService authorizeService, logEntities logEntities)
         {
             _apiBaseService = apiBaseService;
             _authorizeService = authorizeService;
-            _appDB = appEntities;
             _logDB = logEntities;
             //初始化账号信息
             _authorizeUsers = _authorizeService.GetApiAccounts();

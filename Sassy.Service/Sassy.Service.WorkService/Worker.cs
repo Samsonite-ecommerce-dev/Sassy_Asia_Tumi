@@ -3,12 +3,13 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
-using Samsonite.Library.Business.Custom;
+using Samsonite.Library.Business.WorkService;
 using Samsonite.Library.Data.Entity.Models;
-using Samsonite.Library.Service.Core;
-using Samsonite.Library.Service.Core.Model;
+using Samsonite.Library.DependencyInjection.WorkService;
 using Samsonite.Library.Utility;
-using Samsonite.Library.Web.Core;
+using Samsonite.Library.WorkService.Core;
+using Samsonite.Library.WorkService.Core.Model;
+using Samsonite.Library.WorkService.Core.Utils;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -29,7 +30,6 @@ namespace Samsonite.Library.Service.WorkService
         private readonly appEntities _appDB;
         private readonly logEntities _logDB;
         private readonly ILogger<Worker> _logger;
-
         public Worker(ILogger<Worker> logger)
         {
             //读取配置文件
@@ -42,9 +42,7 @@ namespace Samsonite.Library.Service.WorkService
             services.AddDbContext<appEntities>(o => o.UseSqlServer(connectionStrings.GetSection("appConnection").Value), ServiceLifetime.Transient);
             services.AddDbContext<logEntities>(o => o.UseSqlServer(connectionStrings.GetSection("logConnection").Value), ServiceLifetime.Transient);
             //注册函数
-            services.AddScoped<IApplicationService, ApplicationService>();
-            services.AddScoped<IFtpService, FtpService>();
-            services.AddScoped<ISAPService, SAPService>();
+            WorkServiceDI.Configure(services);
             //构建容器
             ServiceProvider serviceProvider = services.BuildServiceProvider();
 
@@ -69,9 +67,9 @@ namespace Samsonite.Library.Service.WorkService
         {
             while (!stoppingToken.IsCancellationRequested)
             {
-                JobThread();
+                //JobThread();
 
-                await Task.Delay(Config.JobIntervalTime, stoppingToken);
+                await Task.Delay(GlobalConfig.JobIntervalTime, stoppingToken);
             }
         }
 
@@ -305,9 +303,9 @@ namespace Samsonite.Library.Service.WorkService
         /// <param name="fileName"></param>
         private void WriteLogger(LogLevel logLevel, string msg, string fileName)
         {
-            string _fileName = $"{Config.ThreadPrefix}_{fileName}";
+            string _fileName = $"{GlobalConfig.ThreadPrefix}_{fileName}";
             //控制台日志
-            if (Config.IsConsoleLogger)
+            if (GlobalConfig.IsConsoleLogger)
             {
                 switch (logLevel)
                 {

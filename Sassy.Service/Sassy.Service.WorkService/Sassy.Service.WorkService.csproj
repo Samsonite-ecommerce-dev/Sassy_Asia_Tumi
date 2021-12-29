@@ -11,8 +11,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\Samsonite.Library\Samsonite.Library.Business.Custom\Samsonite.Library.Business.Custom.csproj" />
-    <ProjectReference Include="..\..\Samsonite.Library\Samsonite.Library.Service.Core\Samsonite.Library.Service.Core.csproj" />
+    <ProjectReference Include="..\..\Samsonite.Library\Samsonite.Library.DependencyInjection.WorkService\Samsonite.Library.DependencyInjection.WorkService.csproj" />
     <ProjectReference Include="..\Sassy.Service.Application\Sassy.Service.Application.csproj" />
   </ItemGroup>
 </Project>

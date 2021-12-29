@@ -1,4 +1,4 @@
-﻿using Samsonite.Library.Business.Basic.Models;
+﻿using Samsonite.Library.Business.Web.Basic.Models;
 using Samsonite.Library.Web.Core.Models;
 using System.Collections.Generic;
 using System.Linq;

@@ -7,8 +7,8 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Samsonite.Library.Data.Entity.Models;
 using Samsonite.Library.Web.Core;
-using Samsonite.Library.Web.DependencyInjection;
-using Samsonite.Library.WebApi.DependencyInjection;
+using Samsonite.Library.DependencyInjection.Web;
+using Samsonite.Library.DependencyInjection.WebApi;
 
 namespace Samsonite.Library.APP
 {

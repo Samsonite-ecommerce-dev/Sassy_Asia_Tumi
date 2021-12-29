@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Samsonite.Library.APP.Helper;
-using Samsonite.Library.Business.Basic;
-using Samsonite.Library.Business.Basic.Models;
+using Samsonite.Library.Business.Web.Basic;
+using Samsonite.Library.Business.Web.Basic.Models;
 using Samsonite.Library.Data.Entity.Models;
 using Samsonite.Library.Utility;
 using Samsonite.Library.Web.Core;
