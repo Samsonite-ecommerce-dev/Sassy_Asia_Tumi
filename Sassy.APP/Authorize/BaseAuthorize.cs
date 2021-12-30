@@ -16,7 +16,7 @@ public class BaseAuthorize : ActionFilterAttribute
         _baseService = baseService;
         _antiforgeryService = antiforgeryService;
         //加载语言包
-        _languagePack = _baseService.CurrentLanguagePack();
+        _languagePack = _baseService.CurrentLanguagePack;
     }
 
     /// <summary>

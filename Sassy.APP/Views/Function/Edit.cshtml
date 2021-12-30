@@ -192,7 +192,7 @@
                     if (this.subForm.funcPowers.length > 1) {
                         this.subForm.funcPowers.splice(index, 1);
                         for (let i in this.subForm.funcPowers) {
-                            this.subForm.funcPowers[i].index = i;
+                            this.subForm.funcPowers[i].index = parseInt(i);
                         }
                     }
                     else {

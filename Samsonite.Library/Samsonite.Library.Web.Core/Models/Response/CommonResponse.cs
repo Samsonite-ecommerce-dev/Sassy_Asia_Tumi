@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Text.Json.Serialization;
 
 namespace Samsonite.Library.Web.Core.Models
 {
@@ -17,17 +18,22 @@ namespace Samsonite.Library.Web.Core.Models
 
     public class PostResponse
     {
+        [JsonPropertyName("result")]
         public bool Result { get; set; }
 
+        [JsonPropertyName("msg")]
         public string Message { get; set; }
     }
 
     public class ErrorResponse
     {
+        [JsonPropertyName("is_error")]
         public bool IsError { get; set; }
 
+        [JsonPropertyName("error_code")]
         public int ErrorCode { get; set; }
 
+        [JsonPropertyName("error_message")]
         public string ErrorMessage { get; set; }
     }
 }

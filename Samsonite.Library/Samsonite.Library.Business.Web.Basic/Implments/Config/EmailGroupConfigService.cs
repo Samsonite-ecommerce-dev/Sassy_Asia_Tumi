@@ -6,6 +6,7 @@ using Samsonite.Library.Web.Core.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.Json;
 
 namespace Samsonite.Library.Business.Web.Basic
 {
@@ -64,7 +65,7 @@ namespace Samsonite.Library.Business.Web.Basic
                     }
                 }
 
-                List<MailAddressesAttr> _mailAddressesAttrs = JsonHelper.JsonDeserialize<List<MailAddressesAttr>>(request.MailAddresses);
+                List<MailAddressesAttr> _mailAddressesAttrs = JsonSerializer.Deserialize<List<MailAddressesAttr>>(request.MailAddresses);
                 if (_mailAddressesAttrs.Count > 0)
                 {
                     foreach (var item in _mailAddressesAttrs)
@@ -131,7 +132,7 @@ namespace Samsonite.Library.Business.Web.Basic
                     }
                 }
 
-                List<MailAddressesAttr> _mailAddressesAttrs = JsonHelper.JsonDeserialize<List<MailAddressesAttr>>(request.MailAddresses);
+                List<MailAddressesAttr> _mailAddressesAttrs = JsonSerializer.Deserialize<List<MailAddressesAttr>>(request.MailAddresses);
                 if (_mailAddressesAttrs.Count > 0)
                 {
                     foreach (var item in _mailAddressesAttrs)

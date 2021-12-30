@@ -20,9 +20,9 @@ public class UserPowerAuthorize : BaseAuthorize
     public override void OnActionExecuting(ActionExecutingContext filterContext)
     {
         //加载语言包
-        var _languagePack = _baseService.CurrentLanguagePack();
+        var _languagePack = _baseService.CurrentLanguagePack;
 
-        UserSessionModel objUserSessionModel = _baseService.CurrentLoginUser();
+        UserSessionModel objUserSessionModel = _baseService.CurrentLoginUser;
         //控制器名称
         string _controller = filterContext.RouteData.Values["controller"].ToString();
         var _actionName = filterContext.RouteData.Values["action"].ToString();

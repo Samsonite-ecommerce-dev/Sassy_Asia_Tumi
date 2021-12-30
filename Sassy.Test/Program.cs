@@ -3,14 +3,16 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Hosting.Internal;
+using Samsonite.Library.Business.Web.Basic.Models;
 using Samsonite.Library.Business.WorkService;
 using Samsonite.Library.Data.Entity.Models;
 using Samsonite.Library.DependencyInjection.Web;
 using Samsonite.Library.Utility;
 using Samsonite.Library.Web.Core;
 using System;
+using System.Collections.Generic;
 using System.IO;
-using System.Text;
+using System.Text.Json;
 
 namespace Samsonite.Sassy.Test
 {
@@ -24,10 +26,10 @@ namespace Samsonite.Sassy.Test
         {
             Init();
 
-            //TestBug();
+            TestBug();
 
             //TestApi
-            (new TestApi()).TestSAS();
+            //(new TestApi()).TestSAS();
 
             Console.ReadLine();
         }
@@ -68,7 +70,7 @@ namespace Samsonite.Sassy.Test
             //dc.Add("t2", "222");
             //dc.Add("t3", "333");
 
-            //Console.WriteLine(JsonHelper.JsonSerialize(dc));
+            //Console.WriteLine(JsonSerializer.Serialize(dc));
 
             //var x = iSAPService.DownMaterial();
             ////分页批量保存
@@ -82,13 +84,14 @@ namespace Samsonite.Sassy.Test
             //}
 
 
-            StringBuilder _s = new StringBuilder();
-            for (var i = 0; i < 10; i++)
+            //string x = "[{\"index\":0,\"value\":\"127.0.0.1\"},{\"index\":1,\"value\":\"::1\"},{\"index\":2,\"value\":\"1321\"}]";
+            string x = "[{\"index\":\"0\",\"value\":\"127.0.0.1\"},{\"index\":\"1\",\"value\":\"::1\"}]";
+            var y=JsonSerializer.Deserialize<List<MailAddressesAttr>>(x);
+            foreach(var item in y)
             {
-                _s = new StringBuilder();
-                _s.Append(i.ToString());
-                Console.WriteLine(_s.ToString());
+                Console.WriteLine($"{item.Index}-{item.Value}");
             }
+
 
             Console.WriteLine("finish!");
         }
@@ -100,9 +103,9 @@ namespace Samsonite.Sassy.Test
             {
                 string _token = AESEncryption.Decrypt(serializedToken);
                 string[] _arrayToken = _token.Split(".");
-                _result.HeaderInfo = JsonHelper.JsonDeserialize<AntiforgeryTokenModel.Header>(EncryptHelper.DecodeBase64(_arrayToken[0]));
-                _result.SecurityInfo = JsonHelper.JsonDeserialize<AntiforgeryTokenModel.Security>(EncryptHelper.DecodeBase64(_arrayToken[1]));
-                _result.PayloadInfo = JsonHelper.JsonDeserialize<AntiforgeryTokenModel.Payload>(EncryptHelper.DecodeBase64(_arrayToken[2]));
+                _result.HeaderInfo = JsonSerializer.Deserialize<AntiforgeryTokenModel.Header>(EncryptHelper.DecodeBase64(_arrayToken[0]));
+                _result.SecurityInfo = JsonSerializer.Deserialize<AntiforgeryTokenModel.Security>(EncryptHelper.DecodeBase64(_arrayToken[1]));
+                _result.PayloadInfo = JsonSerializer.Deserialize<AntiforgeryTokenModel.Payload>(EncryptHelper.DecodeBase64(_arrayToken[2]));
                 if (_arrayToken.Length >= 4)
                 {
                     _result.Signature = _arrayToken[3];

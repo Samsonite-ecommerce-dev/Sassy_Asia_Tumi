@@ -1,5 +1,4 @@
-﻿using Newtonsoft.Json;
-using Samsonite.Library.Business.Web.Basic.Models;
+﻿using Samsonite.Library.Business.Web.Basic.Models;
 using Samsonite.Library.Data.Entity.Models;
 using Samsonite.Library.Utility;
 using Samsonite.Library.Web.Core;
@@ -7,6 +6,7 @@ using Samsonite.Library.Web.Core.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.Json;
 
 namespace Samsonite.Library.Business.Web.Basic
 {
@@ -31,7 +31,7 @@ namespace Samsonite.Library.Business.Web.Basic
                 List<SysConfig> objSysConfigs = _appDB.SysConfig.ToList();
 
                 //保存语言
-                var _languageArray = JsonHelper.JsonDeserialize<List<string>>(request.LanguagePack);
+                var _languageArray = JsonSerializer.Deserialize<List<string>>(request.LanguagePack);
                 if (_languageArray.Count == 0)
                 {
                     throw new Exception("请至少配置一种语言");
@@ -59,7 +59,7 @@ namespace Samsonite.Library.Business.Web.Basic
                         MailUsername = request.MailUserName,
                         MailPassword = request.MailPassword
                     };
-                    _Configec.ConfigValue = JsonHelper.JsonSerialize(objEmailModel, new JsonSerializerSettings() { NullValueHandling = NullValueHandling.Ignore });
+                    _Configec.ConfigValue = JsonSerializer.Serialize(objEmailModel, new JsonSerializerOptions() { IgnoreNullValues = true });
                 }
 
                 //短信配置
@@ -79,7 +79,7 @@ namespace Samsonite.Library.Business.Web.Basic
                         Sender = request.SMSSender,
                         SendPhoneNumber = string.Empty
                     };
-                    _Configsm.ConfigValue = JsonHelper.JsonSerialize(objSMSModel, new JsonSerializerSettings() { NullValueHandling = NullValueHandling.Ignore });
+                    _Configsm.ConfigValue = JsonSerializer.Serialize(objSMSModel, new JsonSerializerOptions() { IgnoreNullValues = true });
                 }
 
                 //皮肤配置

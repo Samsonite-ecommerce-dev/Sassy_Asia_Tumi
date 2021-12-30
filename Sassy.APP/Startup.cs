@@ -46,7 +46,12 @@ namespace Samsonite.Library.APP
 
             //});
 
-            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_3_0);
+            services.AddMvc()
+                .AddJsonOptions(options =>
+                {
+                    //·µ»ØµÄJSONºöÂÔNULL
+                    options.JsonSerializerOptions.IgnoreNullValues = true;
+                }).SetCompatibilityVersion(CompatibilityVersion.Version_3_0);
             //services.AddControllersWithViews();
         }
 

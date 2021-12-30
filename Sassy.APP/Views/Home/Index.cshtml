@@ -1,7 +1,7 @@
 ﻿@{
     Layout = null;
     @inject Samsonite.Library.Web.Core.IBaseService _baseService;
-    string _skinStyle = _baseService.CurrentApplicationConfig().SysConfig.SkinStyle;
+    string _skinStyle = _baseService.CurrentApplicationConfig.SysConfig.SkinStyle;
     var _defineMenuList = (List<Samsonite.Library.Web.Core.Models.DefineMenu>)Model;
 }
 <!DOCTYPE html>

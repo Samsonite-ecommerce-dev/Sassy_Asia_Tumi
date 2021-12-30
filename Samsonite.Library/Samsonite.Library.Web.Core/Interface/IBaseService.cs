@@ -6,36 +6,36 @@ namespace Samsonite.Library.Web.Core
     public interface IBaseService
     {
         /// <summary>
-        /// 获取站点配置信息
-        /// </summary>
-        AppConfigModel CurrentApplicationConfig();
-
-        /// <summary>
         /// 获取语言包
         /// </summary>
-        Dictionary<string, string> CurrentLanguagePack();
+        Dictionary<string, string> CurrentLanguagePack { get; }
+
+        /// <summary>
+        /// 获取站点配置信息
+        /// </summary>
+        AppConfigModel CurrentApplicationConfig { get; }
 
         /// <summary>
         /// 获取当前登录信息
         /// </summary>
-        UserSessionModel CurrentLoginUser();
+        UserSessionModel CurrentLoginUser { get; }
 
         /// <summary>
         /// 当前语言包ID
         /// </summary>
         /// <returns></returns>
-        int CurrentLanguage();
+        int CurrentLanguage { get; }
 
         /// <summary>
         /// 获取当前加载语言文件后缀
         /// </summary>
         /// <returns></returns>
-        string CurrentLanguageFile();
+        string CurrentLanguageFileExt { get; }
 
         /// <summary>
         /// 当前页面ID
         /// </summary>
-        int CurrentFunctionID();
+        int CurrentFunctionID{ get; }
 
         /// <summary>
         /// 获取当前功能栏权限

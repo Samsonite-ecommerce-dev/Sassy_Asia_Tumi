@@ -7,6 +7,7 @@ using Samsonite.Library.Web.Core.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.Json;
 
 namespace Samsonite.Library.Business.Web.Basic
 {
@@ -80,7 +81,7 @@ namespace Samsonite.Library.Business.Web.Basic
                         }
                     }
 
-                    List<IpsAttr> _ipsAttrs = JsonHelper.JsonDeserialize<List<IpsAttr>>(request.Ips);
+                    List<IpsAttr> _ipsAttrs = JsonSerializer.Deserialize<List<IpsAttr>>(request.Ips);
                     if (_ipsAttrs.Count > 0)
                     {
                         foreach (var item in _ipsAttrs)
@@ -96,7 +97,7 @@ namespace Samsonite.Library.Business.Web.Basic
                         throw new Exception("请至少填写一个要限制的IP");
                     }
 
-                    List<int> _interfaceAttrs = JsonHelper.JsonDeserialize<List<int>>(request.Interfaces);
+                    List<int> _interfaceAttrs = JsonSerializer.Deserialize<List<int>>(request.Interfaces);
                     if (_interfaceAttrs.Count == 0)
                     {
                         throw new Exception("请至少填写一个API权限");
@@ -107,7 +108,7 @@ namespace Samsonite.Library.Business.Web.Basic
                         Appid = request.AppID,
                         Token = request.Token,
                         CompanyName = string.Empty,
-                        Ips = JsonHelper.JsonSerialize(_ipsAttrs.Select(p => p.Value)),
+                        Ips = JsonSerializer.Serialize(_ipsAttrs.Select(p => p.Value)),
                         Remark = request.Remark,
                         IsUsed = request.IsUsed
                     };
@@ -185,7 +186,7 @@ namespace Samsonite.Library.Business.Web.Basic
                         }
                     }
 
-                    List<IpsAttr> _ipsAttrs = JsonHelper.JsonDeserialize<List<IpsAttr>>(request.Ips);
+                    List<IpsAttr> _ipsAttrs = JsonSerializer.Deserialize<List<IpsAttr>>(request.Ips);
                     if (_ipsAttrs.Count > 0)
                     {
                         foreach (var item in _ipsAttrs)
@@ -201,7 +202,7 @@ namespace Samsonite.Library.Business.Web.Basic
                         throw new Exception("请至少填写一个要限制的IP");
                     }
 
-                    List<int> _interfaceAttrs = JsonHelper.JsonDeserialize<List<int>>(request.Interfaces);
+                    List<int> _interfaceAttrs = JsonSerializer.Deserialize<List<int>>(request.Interfaces);
                     if (_interfaceAttrs.Count == 0)
                     {
                         throw new Exception("请至少填写一个API权限");
@@ -212,7 +213,7 @@ namespace Samsonite.Library.Business.Web.Basic
                     {
                         objData.Appid = request.AppID;
                         objData.Token = request.Token;
-                        objData.Ips = JsonHelper.JsonSerialize(_ipsAttrs.Select(p => p.Value));
+                        objData.Ips = JsonSerializer.Serialize(_ipsAttrs.Select(p => p.Value));
                         objData.IsUsed = request.IsUsed;
                         objData.Remark = request.Remark;
                         _appDB.SaveChanges();

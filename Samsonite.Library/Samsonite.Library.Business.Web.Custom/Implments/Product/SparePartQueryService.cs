@@ -23,7 +23,7 @@ namespace Samsonite.Library.Business.Web.Custom
             _baseService = baseService;
             _appLogService = appLogService;
             _hostEnvironment = hostEnvironment;
-            _currentApplicationConfig = _baseService.CurrentApplicationConfig();
+            _currentApplicationConfig = _baseService.CurrentApplicationConfig;
             _appDB = appEntities;
         }
 
@@ -63,7 +63,7 @@ namespace Samsonite.Library.Business.Web.Custom
         public PostResponse Edit(SparePartQueryEditRequest request)
         {
             //加载语言包
-            var _languagePack = _baseService.CurrentLanguagePack();
+            var _languagePack = _baseService.CurrentLanguagePack;
 
             try
             {
@@ -124,7 +124,7 @@ namespace Samsonite.Library.Business.Web.Custom
         /// <returns></returns>
         private string GetImageUrl(string imageName)
         {
-            return $"{_baseService.CurrentApplicationConfig().GlobalConfig.ImagePath}/SparePartImage/{imageName}";
+            return $"{_baseService.CurrentApplicationConfig.GlobalConfig.ImagePath}/SparePartImage/{imageName}";
         }
 
         /// <summary>

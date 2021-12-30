@@ -162,7 +162,7 @@
                 removeKeys: function (index) {
                     this.subForm.packKeys.splice(index, 1);
                     for (let i in this.subForm.packKeys) {
-                        this.subForm.packKeys[i].index = i
+                        this.subForm.packKeys[i].index = parseInt(i)
                     }
                 }
             }

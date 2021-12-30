@@ -8,6 +8,7 @@ using Samsonite.Library.Web.Core.Models;
 using Samsonite.Library.WebApi.Core;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.Json;
 
 namespace Samsonite.Library.APP.Controllers
 {
@@ -69,7 +70,7 @@ namespace Samsonite.Library.APP.Controllers
                 WebApiAccount objWebApiAccount = _appDB.WebApiAccount.Where(p => p.ID == _appID).SingleOrDefault();
                 if (objWebApiAccount != null)
                 {
-                    List<string> _attrs = JsonHelper.JsonDeserialize<List<string>>(objWebApiAccount.Ips);
+                    List<string> _attrs = JsonSerializer.Deserialize<List<string>>(objWebApiAccount.Ips);
                     List<int> _interfaces = _appDB.WebApiRoles.Where(p => p.AccountID == objWebApiAccount.ID).Select(p => p.InterfaceID).ToList();
 
                     //返回数据
@@ -143,7 +144,7 @@ namespace Samsonite.Library.APP.Controllers
                            ck = dy.ID,
                            s1 = dy.Appid,
                            s2 = dy.Token,
-                           s3 = string.Join(",", JsonHelper.JsonDeserialize<List<string>>(dy.Ips)),
+                           s3 = string.Join(",", JsonSerializer.Deserialize<List<string>>(dy.Ips)),
                            s4 = dy.Remark,
                            s5 = (dy.IsUsed) ? "<label class=\"el-icon-check text-primary\"></label>" : "<label class=\"el-icon-close text-danger\"></label>"
                        }

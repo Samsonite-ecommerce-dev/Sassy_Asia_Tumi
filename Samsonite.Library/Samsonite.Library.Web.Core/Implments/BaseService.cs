@@ -13,57 +13,75 @@ namespace Samsonite.Library.Web.Core
         public BaseService(IAppConfigService appConfigService, IAppLanguageService appLanguageService, IHttpContextAccessor httpContextAccessor, IMemoryCache memoryCache, appEntities appEntities) : base(appConfigService, appLanguageService, httpContextAccessor, memoryCache, appEntities)
         {
             _appConfigService = appConfigService;
-            _currentFunctionID = this.CurrentFunctionID();
+            _currentFunctionID = this.CurrentFunctionID;
         }
 
         /// <summary>
         /// 获取语言包
         /// </summary>
-        public Dictionary<string, string> CurrentLanguagePack()
+        public Dictionary<string, string> CurrentLanguagePack
         {
-            return this.GetCurrentLanguagePack();
+            get
+            {
+                return this.GetCurrentLanguagePack();
+            }
         }
 
         /// <summary>
         /// 获取站点配置信息
         /// </summary>
-        public AppConfigModel CurrentApplicationConfig()
+        public AppConfigModel CurrentApplicationConfig
         {
-            return _appConfigService.GetConfigCache();
+            get
+            {
+                return _appConfigService.GetConfigCache();
+            }
         }
 
         /// <summary>
         /// 获取当前登录信息
         /// </summary>
-        public UserSessionModel CurrentLoginUser()
+        public UserSessionModel CurrentLoginUser
         {
-            return this.GetCurrentLoginUser();
+            get
+            {
+                return this.GetCurrentLoginUser();
+            }
         }
 
         /// <summary>
         /// 当前语言包ID
         /// </summary>
         /// <returns></returns>
-        public int CurrentLanguage()
+        public int CurrentLanguage
         {
-            return this.GetCurrentLanguage();
+            get
+            {
+                return this.GetCurrentLanguage();
+            }
         }
 
         /// <summary>
         /// 获取当前加载语言文件后缀
         /// </summary>
         /// <returns></returns>
-        public string CurrentLanguageFile()
+        public string CurrentLanguageFileExt
         {
-            return this.GetCurrentLanguageFile();
+            get
+            {
+                return this.GetCurrentLanguageFileExt();
+            }
         }
 
         /// <summary>
         /// 当前页面ID
         /// </summary>
-        public int CurrentFunctionID()
+        public int CurrentFunctionID
         {
-            return this.GetCurrentFunctionID();
+            get
+            {
+                return this.GetCurrentFunctionID();
+            }
         }
 
         /// <summary>

@@ -101,7 +101,7 @@ namespace Samsonite.Library.Business.Web.Custom
         public List<UploadSparePartImportResponse> ImportSave(UploadSparePartImportRequest request)
         {
             //加载语言包
-            var _languagePack = _baseService.CurrentLanguagePack();
+            var _languagePack = _baseService.CurrentLanguagePack;
 
             List<UploadSparePartImportResponse> _result = new List<UploadSparePartImportResponse>();
 

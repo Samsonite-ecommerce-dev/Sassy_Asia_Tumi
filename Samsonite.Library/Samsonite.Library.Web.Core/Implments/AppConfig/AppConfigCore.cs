@@ -1,10 +1,10 @@
 ﻿using Microsoft.Extensions.Configuration;
 using Samsonite.Library.Data.Entity.Models;
-using Samsonite.Library.Utility;
 using Samsonite.Library.Web.Core.Models;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Text.Json;
 
 namespace Samsonite.Library.Web.Core
 {
@@ -128,7 +128,7 @@ namespace Samsonite.Library.Web.Core
 
             if (objSysConfig != null)
             {
-                _result = JsonHelper.JsonDeserialize<EmailModel>(objSysConfig.ConfigValue);
+                _result = JsonSerializer.Deserialize<EmailModel>(objSysConfig.ConfigValue);
             }
             return _result;
         }
@@ -144,7 +144,7 @@ namespace Samsonite.Library.Web.Core
 
             if (objSysConfig != null)
             {
-                _result = JsonHelper.JsonDeserialize<SMSModel>(objSysConfig.ConfigValue);
+                _result = JsonSerializer.Deserialize<SMSModel>(objSysConfig.ConfigValue);
             }
             return _result;
         }

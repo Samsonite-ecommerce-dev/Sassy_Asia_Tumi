@@ -136,7 +136,7 @@
                     if (this.subForm.ips.length > 1) {
                         this.subForm.ips.splice(index, 1);
                         for (let i in this.subForm.ips) {
-                            this.subForm.ips[i].index = i;
+                            this.subForm.ips[i].index = parseInt(i);
                         }
                     }
                     else {

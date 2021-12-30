@@ -122,7 +122,7 @@ namespace Samsonite.Library.Web.Core
         public UploadSaveResponse SaveFile(UploadSaveRequest request)
         {
             //加载语言包
-            var _languagePack = _baseService.CurrentLanguagePack();
+            var _languagePack = _baseService.CurrentLanguagePack;
 
             List<string> _fileList = new List<string>();
             string _directoryPath = _appConfigService.GetConfig().GlobalConfig.UploadFilePath;

@@ -1,8 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System.Collections.Generic;
 
-namespace Samsonite.Library.Web.Core.Models
+namespace Samsonite.Library.Web.WorkService.Models
 {
     public class CommonResult
     {

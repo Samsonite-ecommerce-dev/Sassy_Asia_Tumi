@@ -6,6 +6,7 @@ using Samsonite.Library.Web.Core.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.Json;
 
 namespace Samsonite.Library.Web.Core
 {
@@ -56,7 +57,7 @@ namespace Samsonite.Library.Web.Core
                 string _sessionKey = _session.GetString($"{_globalConfig.SessionKey}_LoginMessage");
                 if (!string.IsNullOrEmpty(_sessionKey))
                 {
-                    objUserSessionModel = JsonHelper.JsonDeserialize<UserSessionModel>(_sessionKey);
+                    objUserSessionModel = JsonSerializer.Deserialize<UserSessionModel>(_sessionKey);
                 }
                 else
                 {
@@ -128,7 +129,7 @@ namespace Samsonite.Library.Web.Core
         /// <summary>
         /// 获取当前加载语言文件后缀
         /// </summary>
-        public string GetCurrentLanguageFile()
+        public string GetCurrentLanguageFileExt()
         {
             return _appLanguageService.LanguageTypeOption().Where(p => p.ID == this.GetCurrentLanguage()).SingleOrDefault().Lang;
         }
@@ -201,7 +202,7 @@ namespace Samsonite.Library.Web.Core
         /// <param name="userSessionModel"></param>
         protected void SetUserSession(UserSessionModel userSessionModel)
         {
-            _session.SetString($"{_globalConfig.SessionKey}_LoginMessage", JsonHelper.JsonSerialize<UserSessionModel>(userSessionModel));
+            _session.SetString($"{_globalConfig.SessionKey}_LoginMessage", JsonSerializer.Serialize<UserSessionModel>(userSessionModel));
         }
 
         /// <summary>

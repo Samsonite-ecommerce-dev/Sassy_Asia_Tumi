@@ -36,7 +36,7 @@ namespace Samsonite.Library.Web.Core
         public List<DefineMenu> GetMenuList(List<int> powers)
         {
             //加载语言包
-            var _languagePack = _baseService.CurrentLanguagePack();
+            var _languagePack = _baseService.CurrentLanguagePack;
 
             List<DefineMenu> _result = new List<DefineMenu>();
             List<DefineMenu.MenuChild> _children = new List<DefineMenu.MenuChild>();
@@ -68,7 +68,7 @@ namespace Samsonite.Library.Web.Core
         public PostResponse ResetLanguage(int id)
         {
             //加载语言包
-            var _languagePack = _baseService.CurrentLanguagePack();
+            var _languagePack = _baseService.CurrentLanguagePack;
 
             try
             {
@@ -108,7 +108,7 @@ namespace Samsonite.Library.Web.Core
         public PostResponse ResetPassword(EditPasswordRequest request)
         {
             //加载语言包
-            var _languagePack = _baseService.CurrentLanguagePack();
+            var _languagePack = _baseService.CurrentLanguagePack;
 
             try
             {
@@ -158,7 +158,7 @@ namespace Samsonite.Library.Web.Core
 
                     string _encryptPassword = _loginService.EncryptPassword(request.Password, objData.PrivateKey);
                     //检查是否存在N次密码修改存在重复
-                    List<string> objWebAppPasswordLogs = _logDB.WebAppPasswordLog.Where(p => p.UserID == objData.Userid).OrderByDescending(p => p.LogID).Select(p => p.Password).Take(_baseService.CurrentApplicationConfig().GlobalConfig.PwdPastNum).ToList();
+                    List<string> objWebAppPasswordLogs = _logDB.WebAppPasswordLog.Where(p => p.UserID == objData.Userid).OrderByDescending(p => p.LogID).Select(p => p.Password).Take(_baseService.CurrentApplicationConfig.GlobalConfig.PwdPastNum).ToList();
                     if (objWebAppPasswordLogs.Contains(_encryptPassword))
                     {
                         throw new Exception(_languagePack["home_editpassword_message_password_repeat_error"]);

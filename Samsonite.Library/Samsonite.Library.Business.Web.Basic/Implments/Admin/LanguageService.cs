@@ -8,6 +8,7 @@ using Samsonite.Library.Web.Core.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.Json;
 
 namespace Samsonite.Library.Business.Web.Basic
 {
@@ -79,7 +80,7 @@ namespace Samsonite.Library.Business.Web.Basic
         public PostResponse Add(LanguageAddRequest request)
         {
             //加载语言包
-            var _LanguagePackKey = _baseService.CurrentLanguagePack();
+            var _LanguagePackKey = _baseService.CurrentLanguagePack;
 
             int _seqNumberID = 0;
             using (var Trans = _appDB.Database.BeginTransaction())
@@ -92,7 +93,7 @@ namespace Samsonite.Library.Business.Web.Basic
                     }
 
                     //要插队的排序号
-                    var _packKeyArray = JsonHelper.JsonDeserialize<List<LanguagePackAttr>>(request.packKeys);
+                    var _packKeyArray = JsonSerializer.Deserialize<List<LanguagePackAttr>>(request.packKeys);
                     if (_packKeyArray.Count > 0)
                     {
                         List<LanguagePackKey> _removeLanguagePackKeys = new List<LanguagePackKey>();
@@ -209,7 +210,7 @@ namespace Samsonite.Library.Business.Web.Basic
         public PostResponse Edit(LanguageEditRequest request)
         {
             //加载语言包
-            var _LanguagePackKey = _baseService.CurrentLanguagePack();
+            var _LanguagePackKey = _baseService.CurrentLanguagePack;
 
             using (var Trans = _appDB.Database.BeginTransaction())
             {
@@ -222,7 +223,7 @@ namespace Samsonite.Library.Business.Web.Basic
                         objData.PackKey = request.LanguageKey;
                         if (!string.IsNullOrEmpty(request.LanguageValue))
                         {
-                            _languagePackValueAttrs = JsonHelper.JsonDeserialize<List<LanguagePackValueAttr>>(request.LanguageValue);
+                            _languagePackValueAttrs = JsonSerializer.Deserialize<List<LanguagePackValueAttr>>(request.LanguageValue);
                             //删除旧信息
                             _appDB.Database.ExecuteSqlRaw("delete from LanguagePackValue where KeyID={0}", objData.ID);
                             foreach (var item in _languagePackValueAttrs)
@@ -267,7 +268,7 @@ namespace Samsonite.Library.Business.Web.Basic
         public PostResponse Delete(long[] ids)
         {
             //加载语言包
-            var _LanguagePackKey = _baseService.CurrentLanguagePack();
+            var _LanguagePackKey = _baseService.CurrentLanguagePack;
 
             try
             {
@@ -319,7 +320,7 @@ namespace Samsonite.Library.Business.Web.Basic
         public PostResponse Restore(long[] ids)
         {
             //加载语言包
-            var _LanguagePackKey = _baseService.CurrentLanguagePack();
+            var _LanguagePackKey = _baseService.CurrentLanguagePack;
 
             try
             {
@@ -371,7 +372,7 @@ namespace Samsonite.Library.Business.Web.Basic
         public PostResponse Sort(LanguageSortRequest request)
         {
             //加载语言包
-            var _LanguagePackKey = _baseService.CurrentLanguagePack();
+            var _LanguagePackKey = _baseService.CurrentLanguagePack;
 
             try
             {
@@ -473,7 +474,7 @@ namespace Samsonite.Library.Business.Web.Basic
         public List<DefineGroupSelectOption> GetLanguageGroupObject()
         {
             //加载语言包
-            var _languagePack = _baseService.CurrentLanguagePack();
+            var _languagePack = _baseService.CurrentLanguagePack;
 
             List<DefineGroupSelectOption> _result = new List<DefineGroupSelectOption>();
             List<SysFunctionGroup> objSysFunctionGroups = _functionGroupService.GetFunctionGroupObject();

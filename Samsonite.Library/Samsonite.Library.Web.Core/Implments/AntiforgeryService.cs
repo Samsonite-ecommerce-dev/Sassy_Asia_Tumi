@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Samsonite.Library.Utility;
 using System;
+using System.Text.Json;
 
 namespace Samsonite.Library.Web.Core
 {
@@ -17,7 +18,7 @@ namespace Samsonite.Library.Web.Core
         {
             _baseService = baseService;
             _httpContextAccessor = httpContextAccessor;
-            _cookieName = $"{baseService.CurrentApplicationConfig().GlobalConfig.CookieKey}.Antiforgery";
+            _cookieName = $"{baseService.CurrentApplicationConfig.GlobalConfig.CookieKey}.Antiforgery";
         }
 
         /// <summary>
@@ -33,7 +34,7 @@ namespace Samsonite.Library.Web.Core
                 _cookieToken = GenerateTokens();
             }
             //创建requestToken
-            var _currentLoginUser = _baseService.CurrentLoginUser();
+            var _currentLoginUser = _baseService.CurrentLoginUser;
             var _requestToken = new AntiforgeryTokenModel()
             {
                 HeaderInfo = new AntiforgeryTokenModel.Header()
@@ -104,7 +105,7 @@ namespace Samsonite.Library.Web.Core
                     return false;
                 }
 
-                var _currentLoginUser = _baseService.CurrentLoginUser();
+                var _currentLoginUser = _baseService.CurrentLoginUser;
                 string _userName = (_currentLoginUser != null) ? _currentLoginUser.UserName : "";
                 if (!string.Equals(_userName, _requestToken.PayloadInfo.UserName))
                 {
@@ -143,7 +144,7 @@ namespace Samsonite.Library.Web.Core
         /// <returns></returns>
         private AntiforgeryTokenModel GenerateTokens()
         {
-            var _currentLoginUser = _baseService.CurrentLoginUser();
+            var _currentLoginUser = _baseService.CurrentLoginUser;
             var _newCookieToken = new AntiforgeryTokenModel()
             {
                 HeaderInfo = new AntiforgeryTokenModel.Header()
@@ -179,15 +180,15 @@ namespace Samsonite.Library.Web.Core
         {
             if (token.HeaderInfo.Alg == AntiforgeryTokenAlg.HS1.ToString())
             {
-                return EncryptHelper.HMAC_SHA1($"{EncryptHelper.EncodeBase64(JsonHelper.JsonSerialize(token.HeaderInfo))},{EncryptHelper.EncodeBase64(JsonHelper.JsonSerialize(token.SecurityInfo))},{EncryptHelper.EncodeBase64(JsonHelper.JsonSerialize(token.PayloadInfo))}", _secretKey);
+                return EncryptHelper.HMAC_SHA1($"{EncryptHelper.EncodeBase64(JsonSerializer.Serialize(token.HeaderInfo))},{EncryptHelper.EncodeBase64(JsonSerializer.Serialize(token.SecurityInfo))},{EncryptHelper.EncodeBase64(JsonSerializer.Serialize(token.PayloadInfo))}", _secretKey);
             }
             else if (token.HeaderInfo.Alg == AntiforgeryTokenAlg.HS512.ToString())
             {
-                return EncryptHelper.HMAC_SHA512($"{EncryptHelper.EncodeBase64(JsonHelper.JsonSerialize(token.HeaderInfo))},{EncryptHelper.EncodeBase64(JsonHelper.JsonSerialize(token.SecurityInfo))},{EncryptHelper.EncodeBase64(JsonHelper.JsonSerialize(token.PayloadInfo))}", _secretKey);
+                return EncryptHelper.HMAC_SHA512($"{EncryptHelper.EncodeBase64(JsonSerializer.Serialize(token.HeaderInfo))},{EncryptHelper.EncodeBase64(JsonSerializer.Serialize(token.SecurityInfo))},{EncryptHelper.EncodeBase64(JsonSerializer.Serialize(token.PayloadInfo))}", _secretKey);
             }
             else
             {
-                return EncryptHelper.HMAC_SHA256($"{EncryptHelper.EncodeBase64(JsonHelper.JsonSerialize(token.HeaderInfo))},{EncryptHelper.EncodeBase64(JsonHelper.JsonSerialize(token.SecurityInfo))},{EncryptHelper.EncodeBase64(JsonHelper.JsonSerialize(token.PayloadInfo))}", _secretKey);
+                return EncryptHelper.HMAC_SHA256($"{EncryptHelper.EncodeBase64(JsonSerializer.Serialize(token.HeaderInfo))},{EncryptHelper.EncodeBase64(JsonSerializer.Serialize(token.SecurityInfo))},{EncryptHelper.EncodeBase64(JsonSerializer.Serialize(token.PayloadInfo))}", _secretKey);
             }
         }
 
@@ -198,7 +199,7 @@ namespace Samsonite.Library.Web.Core
         /// <returns></returns>
         private string Serialize(AntiforgeryTokenModel token)
         {
-            string _base64Token = $"{EncryptHelper.EncodeBase64(JsonHelper.JsonSerialize(token.HeaderInfo))}.{EncryptHelper.EncodeBase64(JsonHelper.JsonSerialize(token.SecurityInfo))}.{EncryptHelper.EncodeBase64(JsonHelper.JsonSerialize(token.PayloadInfo))}";
+            string _base64Token = $"{EncryptHelper.EncodeBase64(JsonSerializer.Serialize(token.HeaderInfo))}.{EncryptHelper.EncodeBase64(JsonSerializer.Serialize(token.SecurityInfo))}.{EncryptHelper.EncodeBase64(JsonSerializer.Serialize(token.PayloadInfo))}";
             if (!string.IsNullOrEmpty(token.Signature))
             {
                 _base64Token += $".{token.Signature}";
@@ -218,9 +219,9 @@ namespace Samsonite.Library.Web.Core
             {
                 string _token = AESEncryption.Decrypt(serializedToken);
                 string[] _arrayToken = _token.Split(".");
-                _result.HeaderInfo = JsonHelper.JsonDeserialize<AntiforgeryTokenModel.Header>(EncryptHelper.DecodeBase64(_arrayToken[0]));
-                _result.SecurityInfo = JsonHelper.JsonDeserialize<AntiforgeryTokenModel.Security>(EncryptHelper.DecodeBase64(_arrayToken[1]));
-                _result.PayloadInfo = JsonHelper.JsonDeserialize<AntiforgeryTokenModel.Payload>(EncryptHelper.DecodeBase64(_arrayToken[2]));
+                _result.HeaderInfo = JsonSerializer.Deserialize<AntiforgeryTokenModel.Header>(EncryptHelper.DecodeBase64(_arrayToken[0]));
+                _result.SecurityInfo = JsonSerializer.Deserialize<AntiforgeryTokenModel.Security>(EncryptHelper.DecodeBase64(_arrayToken[1]));
+                _result.PayloadInfo = JsonSerializer.Deserialize<AntiforgeryTokenModel.Payload>(EncryptHelper.DecodeBase64(_arrayToken[2]));
                 if (_arrayToken.Length >= 4)
                 {
                     _result.Signature = _arrayToken[3];

@@ -6,6 +6,7 @@ using Samsonite.Library.Web.Core;
 using Samsonite.Library.Web.Core.Models;
 using System;
 using System.Linq;
+using System.Text.Json;
 
 namespace Samsonite.Library.Business.Web.Basic
 {
@@ -109,7 +110,7 @@ namespace Samsonite.Library.Business.Web.Basic
                 LogType = logType,
                 LogLevel = (int)logLevel,
                 CreateTime = DateTime.Now,
-                LogMessage = JsonHelper.JsonSerialize(data),
+                LogMessage = JsonSerializer.Serialize(data),
             });
             _logDB.SaveChanges();
         }

@@ -1,10 +1,10 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Caching.Memory;
 using Samsonite.Library.Data.Entity.Models;
-using Samsonite.Library.Utility;
 using Samsonite.Library.Web.Core.Models;
 using System;
 using System.Collections.Generic;
+using System.Text.Json;
 
 namespace Samsonite.Library.Web.Core
 {
@@ -34,7 +34,7 @@ namespace Samsonite.Library.Web.Core
                     UserID = this.GetCurrentUserID(),
                     UserIP = this.GetRequestIP(),
                     RecordID = record,
-                    LogMessage = JsonHelper.JsonSerialize(data),
+                    LogMessage = JsonSerializer.Serialize(data),
                     AddTime = DateTime.Now
                 });
                 _logDB.SaveChanges();
@@ -62,7 +62,7 @@ namespace Samsonite.Library.Web.Core
                     UserID = this.GetCurrentUserID(),
                     UserIP = this.GetRequestIP(),
                     RecordID = record,
-                    LogMessage = JsonHelper.JsonSerialize(data),
+                    LogMessage = JsonSerializer.Serialize(data),
                     AddTime = DateTime.Now
                 });
                 _logDB.SaveChanges();
@@ -90,7 +90,7 @@ namespace Samsonite.Library.Web.Core
                     UserID = this.GetCurrentUserID(),
                     UserIP = this.GetRequestIP(),
                     RecordID = record,
-                    LogMessage = JsonHelper.JsonSerialize(data),
+                    LogMessage = JsonSerializer.Serialize(data),
                     AddTime = DateTime.Now
                 });
                 _logDB.SaveChanges();
@@ -118,7 +118,7 @@ namespace Samsonite.Library.Web.Core
                     UserID = this.GetCurrentUserID(),
                     UserIP = this.GetRequestIP(),
                     RecordID = record,
-                    LogMessage = JsonHelper.JsonSerialize(data),
+                    LogMessage = JsonSerializer.Serialize(data),
                     AddTime = DateTime.Now
                 });
                 _logDB.SaveChanges();

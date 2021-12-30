@@ -19,7 +19,7 @@ namespace GlobalIT.Helper
         public List<object[]> QuickTimeOption()
         {
             //加载语言包
-            var _languagePack = _baseService.CurrentLanguagePack();
+            var _languagePack = _baseService.CurrentLanguagePack;
 
             List<object[]> _result = new List<object[]>()
             {

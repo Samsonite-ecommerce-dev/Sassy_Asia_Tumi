@@ -8,6 +8,7 @@ using Samsonite.Library.Utility;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.Json;
 
 namespace Samsonite.Library.Business.Web.Basic
 {
@@ -56,14 +57,14 @@ namespace Samsonite.Library.Business.Web.Basic
         public PostResponse Add(RolesAddRequest request)
         {
             //加载语言包
-            var _languagePack = _baseService.CurrentLanguagePack();
+            var _languagePack = _baseService.CurrentLanguagePack;
 
             using (var Trans = _appDB.Database.BeginTransaction())
             {
                 try
                 {
                     List<RolesFunctionAttr> _rolesFunctionAttrs = new List<RolesFunctionAttr>();
-                    foreach (var item in JsonHelper.JsonDeserialize<List<string>>(request.RoleFunctions))
+                    foreach (var item in JsonSerializer.Deserialize<List<string>>(request.RoleFunctions))
                     {
                         if (item.IndexOf('|') > -1)
                         {
@@ -155,14 +156,14 @@ namespace Samsonite.Library.Business.Web.Basic
         public PostResponse Edit(RolesEditRequest request)
         {
             //加载语言包
-            var _languagePack = _baseService.CurrentLanguagePack();
+            var _languagePack = _baseService.CurrentLanguagePack;
 
             using (var Trans = _appDB.Database.BeginTransaction())
             {
                 try
                 {
                     List<RolesFunctionAttr> _rolesFunctionAttrs = new List<RolesFunctionAttr>();
-                    foreach (var item in JsonHelper.JsonDeserialize<List<string>>(request.RoleFunctions))
+                    foreach (var item in JsonSerializer.Deserialize<List<string>>(request.RoleFunctions))
                     {
                         if (item.IndexOf('|') > -1)
                         {
@@ -257,7 +258,7 @@ namespace Samsonite.Library.Business.Web.Basic
         public PostResponse Delete(int[] ids)
         {
             //加载语言包
-            var _languagePack = _baseService.CurrentLanguagePack();
+            var _languagePack = _baseService.CurrentLanguagePack;
 
             using (var Trans = _appDB.Database.BeginTransaction())
             {

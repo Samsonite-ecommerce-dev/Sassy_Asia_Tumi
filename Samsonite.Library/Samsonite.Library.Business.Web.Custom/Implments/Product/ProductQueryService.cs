@@ -116,7 +116,7 @@ namespace Samsonite.Library.Business.Web.Custom
         public PostResponse Delete(int[] ids)
         {
             //加载语言包
-            var _languagePack = _baseService.CurrentLanguagePack();
+            var _languagePack = _baseService.CurrentLanguagePack;
 
             try
             {

@@ -33,7 +33,7 @@ namespace Samsonite.Library.APP.Controllers
         {
             var _languagePack = this.GetLanguagePack;
             var _languageFunctionList = _languageService.GetLanguageGroupObject();
-            var _languageList = _appLanguageService.LanguageTypeOption().Where(p => _baseService.CurrentApplicationConfig().SysConfig.LanguagePacks.Contains(p.ID)).Select(o => new DefineSelectOption() { Label = o.LanguageName, Value = o.ID });
+            var _languageList = _appLanguageService.LanguageTypeOption().Where(p => _baseService.CurrentApplicationConfig.SysConfig.LanguagePacks.Contains(p.ID)).Select(o => new DefineSelectOption() { Label = o.LanguageName, Value = o.ID });
 
             if (type == "index")
             {
@@ -82,7 +82,7 @@ namespace Samsonite.Library.APP.Controllers
                     //语言包值
                     List<LanguagePackValue> languagePackValues = _appDB.LanguagePackValue.Where(p => p.KeyID == objLanguagePackKey.ID).ToList();
                     //语言包配置列表
-                    var languages = _appLanguageService.LanguageTypeOption().Where(p => _baseService.CurrentApplicationConfig().SysConfig.LanguagePacks.Contains(p.ID)).ToList();
+                    var languages = _appLanguageService.LanguageTypeOption().Where(p => _baseService.CurrentApplicationConfig.SysConfig.LanguagePacks.Contains(p.ID)).ToList();
 
                     return Json(new
                     {

@@ -1,6 +1,6 @@
-﻿using Newtonsoft.Json;
-using Samsonite.Library.Web.Core.Models;
+﻿using Samsonite.Library.Web.Core.Models;
 using System.Collections.Generic;
+using System.Text.Json.Serialization;
 
 namespace Samsonite.Library.Business.Web.Basic.Models
 {
@@ -49,25 +49,25 @@ namespace Samsonite.Library.Business.Web.Basic.Models
 
     public class LanguagePackAttr
     {
-        [JsonProperty(PropertyName = "index")]
+        [JsonPropertyName("index")]
         public int Index { get; set; }
 
-        [JsonProperty(PropertyName = "value")]
+        [JsonPropertyName("value")]
         public string PackKey { get; set; }
 
-        [JsonProperty(PropertyName = "languages")]
+        [JsonPropertyName("languages")]
         public List<LanguagePackValueAttr> Languages { get; set; }
     }
 
     public class LanguagePackValueAttr
     {
-        [JsonProperty(PropertyName = "id")]
+        [JsonPropertyName("id")]
         public int LanguageTypeID { get; set; }
 
-        [JsonProperty(PropertyName = "label")]
+        [JsonPropertyName("label")]
         public string LanguageName { get; set; }
 
-        [JsonProperty(PropertyName = "value")]
+        [JsonPropertyName("value")]
         public string LanguageValue { get; set; }
     }
 }

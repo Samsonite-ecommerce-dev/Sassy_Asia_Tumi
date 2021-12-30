@@ -1,4 +1,4 @@
-﻿using Newtonsoft.Json;
+﻿using System.Text.Json.Serialization;
 using Samsonite.Library.Web.Core.Models;
 
 namespace Samsonite.Library.Business.Web.Basic.Models
@@ -30,10 +30,10 @@ namespace Samsonite.Library.Business.Web.Basic.Models
 
     public class MailAddressesAttr
     {
-        [JsonProperty(PropertyName = "index")]
+        [JsonPropertyName("index")]
         public int Index { get; set; }
 
-        [JsonProperty(PropertyName = "value")]
+        [JsonPropertyName("value")]
         public string Value { get; set; }
     }
 }

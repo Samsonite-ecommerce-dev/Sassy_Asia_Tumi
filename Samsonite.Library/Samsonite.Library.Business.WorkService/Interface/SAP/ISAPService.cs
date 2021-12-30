@@ -1,5 +1,5 @@
 ﻿using Samsonite.Library.Business.WorkService.Models;
-using Samsonite.Library.Web.Core.Models;
+using Samsonite.Library.Web.WorkService.Models;
 
 namespace Samsonite.Library.Business.WorkService
 {

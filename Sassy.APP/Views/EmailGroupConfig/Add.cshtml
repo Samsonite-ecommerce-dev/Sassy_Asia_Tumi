@@ -76,7 +76,7 @@
                     if (this.subForm.mailAddresses.length > 1) {
                         this.subForm.mailAddresses.splice(index, 1);
                         for (let i in this.subForm.mailAddresses) {
-                            this.subForm.mailAddresses[i].index = i;
+                            this.subForm.mailAddresses[i].index = parseInt(i);
                         }
                     }
                     else {

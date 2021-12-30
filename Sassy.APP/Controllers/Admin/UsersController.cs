@@ -37,7 +37,7 @@ namespace Samsonite.Library.APP.Controllers
         {
             var _languagePack = this.GetLanguagePack;
             //只显示当前用户等额的权重分组权限
-            var _roleList = _rolesService.GetRoleObject(_baseService.CurrentLoginUser().RoleWeight).Select(p => new { label = p.RoleName, value = p.Roleid }).ToList();
+            var _roleList = _rolesService.GetRoleObject(_baseService.CurrentLoginUser.RoleWeight).Select(p => new { label = p.RoleName, value = p.Roleid }).ToList();
             var _languageList = _appLanguageService.CurrentLanguageOption().Select(p => new { label = p.LanguageName, value = p.ID }).ToList();
             var _userTypeList = _userHelper.UserTypeObject().ToList();
 

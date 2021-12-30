@@ -33,7 +33,9 @@ namespace Samsonite.Library.Service.WorkService
         public Worker(ILogger<Worker> logger)
         {
             //读取配置文件
-            var builder = new ConfigurationBuilder().SetBasePath(Directory.GetCurrentDirectory())
+            //注:Directory.GetCurrentDirectory()此方法不是真正的获取应用程序的当前方法，而是执行dotnet命令所在目录
+            string _currentDirectory = Path.GetDirectoryName(Assembly.GetEntryAssembly().Location);
+            var builder = new ConfigurationBuilder().SetBasePath(_currentDirectory)
                .AddJsonFile("appsettings.json", false, true);
             var configurationRoot = builder.Build();
             var connectionStrings = configurationRoot.GetSection("ConnectionStrings");

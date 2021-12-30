@@ -2,7 +2,6 @@
 using Samsonite.Library.Business.Web.Basic.Models;
 using Samsonite.Library.Data.Entity.Models;
 using Samsonite.Library.Utility;
-using Samsonite.Library.Web.Core;
 using Samsonite.Library.Web.Core.Models;
 using System.Linq;
 
@@ -10,11 +9,9 @@ namespace Samsonite.Library.Business.Web.Basic
 {
     public class ApiLogService : IApiLogService
     {
-        private IAppLogService _appLogService;
         private logEntities _logDB;
-        public ApiLogService(IAppLogService appLogService, logEntities logEntities)
+        public ApiLogService(logEntities logEntities)
         {
-            _appLogService = appLogService;
             _logDB = logEntities;
         }
 
@@ -28,9 +25,9 @@ namespace Samsonite.Library.Business.Web.Basic
             QueryResponse<WebApiAccessLog> _result = new QueryResponse<WebApiAccessLog>();
             var _list = _logDB.WebApiAccessLog.AsQueryable();
 
-            if (request.LogType>0)
+            if (request.LogType > 0)
             {
-                _list = _list.Where(p => p.LogType== request.LogType);
+                _list = _list.Where(p => p.LogType == request.LogType);
             }
 
             if (!string.IsNullOrEmpty(request.Keyword))

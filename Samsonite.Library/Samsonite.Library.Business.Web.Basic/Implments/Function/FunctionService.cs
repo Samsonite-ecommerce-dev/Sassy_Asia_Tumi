@@ -6,6 +6,7 @@ using Samsonite.Library.Web.Core.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.Json;
 
 namespace Samsonite.Library.Business.Web.Basic
 {
@@ -57,7 +58,7 @@ namespace Samsonite.Library.Business.Web.Basic
         {
             try
             {
-                var _funcPowersArray = JsonHelper.JsonDeserialize<List<FuncPowerAttr>>(request.FuncPowers);
+                var _funcPowersArray = JsonSerializer.Deserialize<List<FuncPowerAttr>>(request.FuncPowers);
 
                 if (string.IsNullOrEmpty(request.FuncName))
                 {
@@ -100,7 +101,7 @@ namespace Samsonite.Library.Business.Web.Basic
                     FuncType = request.FuncType,
                     FuncSign = request.FuncSign,
                     FuncUrl = request.FuncUrl,
-                    FuncPower = JsonHelper.JsonSerialize(_defineUserPowers),
+                    FuncPower = JsonSerializer.Serialize(_defineUserPowers),
                     FuncTarget = request.FuncTarget,
                     IsShow = request.IsShow,
                     FuncMemo = request.FuncMemo,
@@ -137,7 +138,7 @@ namespace Samsonite.Library.Business.Web.Basic
         {
             try
             {
-                var _funcPowersArray = JsonHelper.JsonDeserialize<List<FuncPowerAttr>>(request.FuncPowers);
+                var _funcPowersArray = JsonSerializer.Deserialize<List<FuncPowerAttr>>(request.FuncPowers);
 
                 if (string.IsNullOrEmpty(request.FuncName))
                 {
@@ -178,7 +179,7 @@ namespace Samsonite.Library.Business.Web.Basic
                     objData.FuncType = request.FuncType;
                     objData.FuncSign = request.FuncSign;
                     objData.FuncUrl = request.FuncUrl;
-                    objData.FuncPower = JsonHelper.JsonSerialize(_defineUserPowers);
+                    objData.FuncPower = JsonSerializer.Serialize(_defineUserPowers);
                     objData.FuncTarget = request.FuncTarget;
                     objData.IsShow = request.IsShow;
                     objData.FuncMemo = request.FuncMemo;

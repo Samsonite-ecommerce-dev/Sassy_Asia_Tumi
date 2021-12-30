@@ -27,7 +27,7 @@ public class UserLoginAuthorize : BaseAuthorize
 
         try
         {
-            UserSessionModel objUserSession = _baseService.CurrentLoginUser();
+            UserSessionModel objUserSession = _baseService.CurrentLoginUser;
             if (objUserSession != null)
             {
                 //开启CSRF攻击防御

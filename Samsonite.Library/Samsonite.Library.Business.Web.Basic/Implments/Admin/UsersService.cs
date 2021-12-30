@@ -8,6 +8,7 @@ using Samsonite.Library.Web.Core.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.Json;
 
 namespace Samsonite.Library.Business.Web.Basic
 {
@@ -29,7 +30,7 @@ namespace Samsonite.Library.Business.Web.Basic
             _appDB = appEntities;
             _logDB = logEntities;
             _httpContextAccessor = httpContextAccessor;
-            _currentApplicationConfig = _baseService.CurrentApplicationConfig();
+            _currentApplicationConfig = _baseService.CurrentApplicationConfig;
         }
 
         /// <summary>
@@ -76,13 +77,13 @@ namespace Samsonite.Library.Business.Web.Basic
         public PostResponse Add(UsersAddRequest request)
         {
             //加载语言包
-            var _languagePack = _baseService.CurrentLanguagePack();
+            var _languagePack = _baseService.CurrentLanguagePack;
 
             using (var Trans = _appDB.Database.BeginTransaction())
             {
                 try
                 {
-                    var _rolesArray = JsonHelper.JsonDeserialize<List<int>>(request.Roles);
+                    var _rolesArray = JsonSerializer.Deserialize<List<int>>(request.Roles);
 
                     if (string.IsNullOrEmpty(request.UserName))
                     {
@@ -139,7 +140,7 @@ namespace Samsonite.Library.Business.Web.Basic
                     //添加相关角色组
                     UserRoles objUserRoles = new UserRoles();
                     //允许添加的权限组
-                    List<SysRole> objSysRoleList = _appDB.SysRole.Where(p => _rolesArray.Contains(p.Roleid) && p.RoleWeight >= _baseService.CurrentLoginUser().RoleWeight).ToList();
+                    List<SysRole> objSysRoleList = _appDB.SysRole.Where(p => _rolesArray.Contains(p.Roleid) && p.RoleWeight >= _baseService.CurrentLoginUser.RoleWeight).ToList();
                     foreach (var item in objSysRoleList)
                     {
                         objUserRoles = new UserRoles()
@@ -191,13 +192,13 @@ namespace Samsonite.Library.Business.Web.Basic
         public PostResponse Edit(UsersEditRequest request)
         {
             //加载语言包
-            var _languagePack = _baseService.CurrentLanguagePack();
+            var _languagePack = _baseService.CurrentLanguagePack;
 
             using (var Trans = _appDB.Database.BeginTransaction())
             {
                 try
                 {
-                    var _rolesArray = JsonHelper.JsonDeserialize<List<int>>(request.Roles);
+                    var _rolesArray = JsonSerializer.Deserialize<List<int>>(request.Roles);
 
                     if (_rolesArray.Count == 0)
                     {
@@ -226,7 +227,7 @@ namespace Samsonite.Library.Business.Web.Basic
                         //添加相关角色组
                         UserRoles objUserRoles = new UserRoles();
                         //允许添加的权限组
-                        List<SysRole> objSysRoleList = _appDB.SysRole.Where(p => _rolesArray.Contains(p.Roleid) && p.RoleWeight >= _baseService.CurrentLoginUser().RoleWeight).ToList();
+                        List<SysRole> objSysRoleList = _appDB.SysRole.Where(p => _rolesArray.Contains(p.Roleid) && p.RoleWeight >= _baseService.CurrentLoginUser.RoleWeight).ToList();
                         foreach (var item in objSysRoleList)
                         {
                             objUserRoles = new UserRoles()
@@ -273,7 +274,7 @@ namespace Samsonite.Library.Business.Web.Basic
         public PostResponse Delete(int[] ids)
         {
             //加载语言包
-            var _languagePack = _baseService.CurrentLanguagePack();
+            var _languagePack = _baseService.CurrentLanguagePack;
 
             try
             {
@@ -323,7 +324,7 @@ namespace Samsonite.Library.Business.Web.Basic
         public PostResponse Restore(int[] ids)
         {
             //加载语言包
-            var _languagePack = _baseService.CurrentLanguagePack();
+            var _languagePack = _baseService.CurrentLanguagePack;
 
             try
             {
@@ -373,7 +374,7 @@ namespace Samsonite.Library.Business.Web.Basic
         public PostResponse EditPassword(UsersPasswordEditRequest request)
         {
             //加载语言包
-            var _languagePack = _baseService.CurrentLanguagePack();
+            var _languagePack = _baseService.CurrentLanguagePack;
 
             try
             {
@@ -402,7 +403,7 @@ namespace Samsonite.Library.Business.Web.Basic
                 {
                     string _encryptPassword = _loginService.EncryptPassword(request.Password, objData.PrivateKey);
                     //检查是否存在N次密码修改存在重复
-                    List<string> objWebAppPasswordLogs = _logDB.WebAppPasswordLog.Where(p => p.UserID == objData.Userid).OrderByDescending(p => p.LogID).Select(p => p.Password).Take(_baseService.CurrentApplicationConfig().GlobalConfig.PwdPastNum).ToList();
+                    List<string> objWebAppPasswordLogs = _logDB.WebAppPasswordLog.Where(p => p.UserID == objData.Userid).OrderByDescending(p => p.LogID).Select(p => p.Password).Take(_baseService.CurrentApplicationConfig.GlobalConfig.PwdPastNum).ToList();
                     if (objWebAppPasswordLogs.Contains(_encryptPassword))
                     {
                         throw new Exception(_languagePack["users_editpassword_message_password_repeat_error"]);

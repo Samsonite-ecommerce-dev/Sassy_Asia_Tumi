@@ -1,4 +1,4 @@
-﻿using Newtonsoft.Json;
+﻿
 using Newtonsoft.Json.Linq;
 using Samsonite.Library.Utility;
 using Samsonite.Library.WebApi.Core.Utils;
@@ -10,6 +10,7 @@ using System.Net.Security;
 using System.Security.Cryptography;
 using System.Security.Cryptography.X509Certificates;
 using System.Text;
+using System.Text.Json;
 
 namespace Samsonite.Sassy.Test
 {
@@ -25,8 +26,8 @@ namespace Samsonite.Sassy.Test
         public TestApi()
         {
             //测试
-            //this.localSite = "http://tumisassyapitest.tumi-asia.com/";
-            this.localSite = "http://127.0.0.1:5001/";
+            this.localSite = "http://tumisassyapitest.tumi-asia.com/";
+            //this.localSite = "http://127.0.0.1:5001/";
             this.secret = "c83QnLScml1nn544uXwO55JgdVQ4Bf9h";
 
             //正式
@@ -224,7 +225,7 @@ namespace Samsonite.Sassy.Test
             req.ReadWriteTimeout = 5 * 1000;
             req.Method = WebRequestMethods.Http.Post;
             req.ContentType = "application/json";
-            var _data = JsonHelper.JsonSerialize(objPostData);
+            var _data = JsonSerializer.Serialize(objPostData);
 
             using (var sw = new StreamWriter(req.GetRequestStream()))
             {
@@ -236,7 +237,7 @@ namespace Samsonite.Sassy.Test
                 {
                     string responseText = sr.ReadToEnd();
                     Console.WriteLine(responseText);
-                    JObject obj = JsonConvert.DeserializeObject<JObject>(responseText);
+                    JObject obj = JsonHelper.JsonDeserialize<JObject>(responseText);
                     if (obj.GetValue("Code").ToString() == "100")
                     {
                         Console.WriteLine("success");

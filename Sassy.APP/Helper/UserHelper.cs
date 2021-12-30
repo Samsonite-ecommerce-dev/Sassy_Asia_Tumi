@@ -21,7 +21,7 @@ namespace Samsonite.Library.APP.Helper
         private List<DefineEnum> UserTypeReflect()
         {
             //加载语言包
-            var _LanguagePack = _baseService.CurrentLanguagePack();
+            var _LanguagePack = _baseService.CurrentLanguagePack;
 
             List<DefineEnum> _result = new List<DefineEnum>()
             {

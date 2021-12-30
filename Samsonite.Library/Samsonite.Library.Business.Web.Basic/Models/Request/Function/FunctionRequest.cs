@@ -1,4 +1,4 @@
-﻿using Newtonsoft.Json;
+﻿using System.Text.Json.Serialization;
 using Samsonite.Library.Web.Core.Models;
 using System;
 
@@ -57,13 +57,13 @@ namespace Samsonite.Library.Business.Web.Basic.Models
 
     public class FuncPowerAttr
     {
-        [JsonProperty(PropertyName = "index")]
+        [JsonPropertyName("index")]
         public int Index { get; set; }
 
-        [JsonProperty(PropertyName = "name")]
+        [JsonPropertyName("name")]
         public string Name { get; set; }
 
-        [JsonProperty(PropertyName = "value")]
+        [JsonPropertyName("value")]
         public string Value { get; set; }
     }
 }

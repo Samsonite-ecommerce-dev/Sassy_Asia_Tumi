@@ -8,6 +8,7 @@ using Samsonite.Library.Web.Core.Models;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.Json;
 
 namespace Samsonite.Library.APP.Controllers
 {
@@ -64,7 +65,7 @@ namespace Samsonite.Library.APP.Controllers
                                                       {
                                                           funcID = fc.Funcid,
                                                           funcName = _languagePack[$"menu_function_{fc.Funcid}"],
-                                                          funcPermissions = from item in JsonHelper.JsonDeserialize<List<DefineUserPower>>(fc.FuncPower)
+                                                          funcPermissions = from item in JsonSerializer.Deserialize<List<DefineUserPower>>(fc.FuncPower)
                                                                             select new
                                                                             {
                                                                                 label = item.Name,
@@ -112,7 +113,7 @@ namespace Samsonite.Library.APP.Controllers
                                                           {
                                                               funcID = fc.Funcid,
                                                               funcName = _languagePack[$"menu_function_{fc.Funcid}"],
-                                                              funcPermissions = from item in JsonHelper.JsonDeserialize<List<DefineUserPower>>(fc.FuncPower)
+                                                              funcPermissions = from item in JsonSerializer.Deserialize<List<DefineUserPower>>(fc.FuncPower)
                                                                                 select new
                                                                                 {
                                                                                     label = item.Name,

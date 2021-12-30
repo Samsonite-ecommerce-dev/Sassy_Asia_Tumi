@@ -7,6 +7,7 @@ using Samsonite.Library.Web.Core;
 using Samsonite.Library.Web.Core.Models;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.Json;
 
 namespace Samsonite.Library.APP.Controllers
 {
@@ -60,7 +61,7 @@ namespace Samsonite.Library.APP.Controllers
                 if (objSysFunction != null)
                 {
                     //权限
-                    List<DefineUserPower> _funcPowerAttrs = JsonHelper.JsonDeserialize<List<DefineUserPower>>(objSysFunction.FuncPower);
+                    List<DefineUserPower> _funcPowerAttrs = JsonSerializer.Deserialize<List<DefineUserPower>>(objSysFunction.FuncPower);
 
                     int _index = 0;
                     //返回数据

@@ -20,7 +20,7 @@ namespace Samsonite.Library.APP.Controllers
         {
             get
             {
-                return _baseService.CurrentApplicationConfig();
+                return _baseService.CurrentApplicationConfig;
             }
         }
 
@@ -31,7 +31,7 @@ namespace Samsonite.Library.APP.Controllers
         {
             get
             {
-                return _baseService.CurrentLanguagePack();
+                return _baseService.CurrentLanguagePack;
             }
         }
 
@@ -42,7 +42,7 @@ namespace Samsonite.Library.APP.Controllers
         {
             get
             {
-                return _baseService.CurrentLoginUser();
+                return _baseService.CurrentLoginUser;
             }
         }
 
@@ -53,7 +53,7 @@ namespace Samsonite.Library.APP.Controllers
         {
             get
             {
-                return _baseService.CurrentFunctionID();
+                return _baseService.CurrentFunctionID;
             }
         }
 

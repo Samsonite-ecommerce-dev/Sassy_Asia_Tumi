@@ -95,7 +95,7 @@ namespace Samsonite.Library.APP.Controllers
         [ServiceFilter(typeof(UserLoginAuthorize))]
         public JsonResult Main_Info()
         {
-            var objUserInfo = _appDB.UserInfo.Where(p => p.Userid == _baseService.CurrentLoginUser().Userid).SingleOrDefault();
+            var objUserInfo = _appDB.UserInfo.Where(p => p.Userid == _baseService.CurrentLoginUser.Userid).SingleOrDefault();
             if (objUserInfo != null)
             {
                 return Json(new
@@ -120,7 +120,7 @@ namespace Samsonite.Library.APP.Controllers
         {
             string _result = string.Empty;
             //上次登录时间
-            var _loginLogs = _logDB.WebAppLoginLog.Where(p => p.UserID == _baseService.CurrentLoginUser().Userid).Take(2).OrderByDescending(p => p.LogID).ToList();
+            var _loginLogs = _logDB.WebAppLoginLog.Where(p => p.UserID == _baseService.CurrentLoginUser.Userid).Take(2).OrderByDescending(p => p.LogID).ToList();
             string _lastLoginTime = string.Empty;
             if (_loginLogs.Count == 2)
             {
@@ -152,7 +152,7 @@ namespace Samsonite.Library.APP.Controllers
                     value = p.ID
                 }).ToList(),
                 //当前默认语言
-                languageType = _baseService.CurrentLanguage()
+                languageType = _baseService.CurrentLanguage
             });
         }
 
