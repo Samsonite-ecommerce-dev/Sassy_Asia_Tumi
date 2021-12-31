@@ -1,4 +1,5 @@
-﻿using Samsonite.Library.Bussness.WebApi.Models;
+﻿using Microsoft.EntityFrameworkCore;
+using Samsonite.Library.Bussness.WebApi.Models;
 using Samsonite.Library.Data.Entity.Models;
 using System.Collections.Generic;
 using System.Linq;
@@ -25,7 +26,7 @@ namespace Samsonite.Library.Bussness.WebApi
 
             //返回数据
             _result.TotalRecord = _list.Count();
-            _result.Data = (from item in _list.Skip((request.CurrentPage - 1) * request.CurrentPage).Take(request.PageSize)
+            _result.Data = (from item in _list.AsNoTracking().Skip((request.CurrentPage - 1) * request.CurrentPage).Take(request.PageSize)
                             select new SparePartInfo()
                             {
                                 SparePartID = item.SparePartID,
@@ -48,7 +49,7 @@ namespace Samsonite.Library.Bussness.WebApi
         public GetSparePartGroupsResponse GetSparePartGroups(GetSparePartGroupsRequest request)
         {
             GetSparePartGroupsResponse _result = new GetSparePartGroupsResponse();
-            _result.Data = (from item in _appDB.GroupInfo
+            _result.Data = (from item in _appDB.GroupInfo.AsNoTracking()
                             select new SparePartGroupInfo()
                             {
                                 GroupID = item.GroupID,
@@ -84,7 +85,7 @@ namespace Samsonite.Library.Bussness.WebApi
                 _datas.Add(new SkuRelated()
                 {
                     Sku = item,
-                    SpareParts = (from sp in _list.Where(p => p.SKU == item)
+                    SpareParts = (from sp in _list.Where(p => p.SKU == item).AsNoTracking()
                                   select new SparePartInfo()
                                   {
                                       SparePartID = sp.SparePartID,

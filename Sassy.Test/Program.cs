@@ -12,6 +12,7 @@ using Samsonite.Library.Web.Core;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Text.Json;
 
 namespace Samsonite.Sassy.Test
@@ -44,7 +45,7 @@ namespace Samsonite.Sassy.Test
             var connectionStrings = configurationRoot.GetSection("ConnectionStrings").GetSection("appConnection").Value;
 
             var services = new ServiceCollection();
-            services.AddDbContext<appEntities>(o => o.UseSqlServer(connectionStrings));
+            services.AddDbContext<appEntities>(o => o.UseSqlServer(connectionStrings),ServiceLifetime.Transient);
 
             services.AddHttpContextAccessor();
             services.AddMemoryCache();
@@ -84,16 +85,29 @@ namespace Samsonite.Sassy.Test
             //}
 
 
-            //string x = "[{\"index\":0,\"value\":\"127.0.0.1\"},{\"index\":1,\"value\":\"::1\"},{\"index\":2,\"value\":\"1321\"}]";
-            string x = "[{\"index\":\"0\",\"value\":\"127.0.0.1\"},{\"index\":\"1\",\"value\":\"::1\"}]";
-            var y=JsonSerializer.Deserialize<List<MailAddressesAttr>>(x);
-            foreach(var item in y)
-            {
-                Console.WriteLine($"{item.Index}-{item.Value}");
-            }
+            ////string x = "[{\"index\":0,\"value\":\"127.0.0.1\"},{\"index\":1,\"value\":\"::1\"},{\"index\":2,\"value\":\"1321\"}]";
+            //string x = "[{\"index\":\"0\",\"value\":\"127.0.0.1\"},{\"index\":\"1\",\"value\":\"::1\"}]";
+            //var y=JsonSerializer.Deserialize<List<MailAddressesAttr>>(x);
+            //foreach(var item in y)
+            //{
+            //    Console.WriteLine($"{item.Index}-{item.Value}");
+            //}
 
+            System.Timers.Timer objTimer = new System.Timers.Timer();
+            objTimer.Enabled = true;
+            objTimer.Interval = 1000 * 10;
+            objTimer.Elapsed += DoWork;
 
             Console.WriteLine("finish!");
+        }
+
+        private static void DoWork(object sender, EventArgs e)
+        {
+            ServiceModuleInfo objServiceModuleInfo = _appEntities.ServiceModuleInfo.AsNoTracking().Where(p => p.ModuleID == 1).SingleOrDefault();
+            if (objServiceModuleInfo != null)
+            {
+                Console.WriteLine($"{DateTime.Now}:{objServiceModuleInfo.ModuleTitle}");
+            }
         }
 
         private static AntiforgeryTokenModel Deserialize(string serializedToken)

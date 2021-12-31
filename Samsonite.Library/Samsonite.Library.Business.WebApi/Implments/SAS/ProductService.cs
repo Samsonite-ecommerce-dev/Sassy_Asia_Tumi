@@ -1,4 +1,5 @@
-﻿using Samsonite.Library.Bussness.WebApi.Models;
+﻿using Microsoft.EntityFrameworkCore;
+using Samsonite.Library.Bussness.WebApi.Models;
 using Samsonite.Library.Data.Entity.Models;
 using System.Linq;
 
@@ -24,7 +25,7 @@ namespace Samsonite.Library.Bussness.WebApi
 
             //返回数据
             _result.TotalRecord = _list.Count();
-            _result.Data = (from item in _list.Skip((request.CurrentPage - 1) * request.CurrentPage).Take(request.PageSize)
+            _result.Data = (from item in _list.AsNoTracking().Skip((request.CurrentPage - 1) * request.CurrentPage).Take(request.PageSize)
                             select new ProductInfo()
                             {
                                 Sku = item.SKU,

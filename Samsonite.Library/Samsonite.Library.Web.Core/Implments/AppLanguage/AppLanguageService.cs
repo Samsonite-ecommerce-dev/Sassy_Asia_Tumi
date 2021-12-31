@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Http;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Caching.Memory;
 using Samsonite.Library.Data.Entity.Models;
 using Samsonite.Library.Utility;
@@ -77,7 +78,7 @@ namespace Samsonite.Library.Web.Core
         public void LoadLanguagePacks()
         {
             //从数据库读取语言包
-            List<View_LanguagePack> objView_LanguagePack_List = _appDB.View_LanguagePack.Where(p => !p.IsDelete).ToList();
+            List<View_LanguagePack> objView_LanguagePack_List = _appDB.View_LanguagePack.Where(p => !p.IsDelete).AsNoTracking().ToList();
             foreach (var _O in this.LanguageTypeOption())
             {
                 if (_LoadLanguages.Contains(_O.ID))
@@ -102,7 +103,7 @@ namespace Samsonite.Library.Web.Core
         public void ResetLanguagePacks()
         {
             //从数据库读取语言包
-            List<View_LanguagePack> objView_LanguagePack_List = _appDB.View_LanguagePack.Where(p => !p.IsDelete).ToList();
+            List<View_LanguagePack> objView_LanguagePack_List = _appDB.View_LanguagePack.Where(p => !p.IsDelete).AsNoTracking().ToList();
             foreach (var _O in this.LanguageTypeOption())
             {
                 if (_LoadLanguages.Contains(_O.ID))

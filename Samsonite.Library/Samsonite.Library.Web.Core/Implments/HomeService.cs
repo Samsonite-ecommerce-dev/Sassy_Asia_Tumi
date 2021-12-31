@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Http;
+using Microsoft.EntityFrameworkCore;
 using Samsonite.Library.Data.Entity.Models;
 using Samsonite.Library.Utility;
 using Samsonite.Library.Web.Core.Models;
@@ -40,8 +41,8 @@ namespace Samsonite.Library.Web.Core
 
             List<DefineMenu> _result = new List<DefineMenu>();
             List<DefineMenu.MenuChild> _children = new List<DefineMenu.MenuChild>();
-            List<SysFunctionGroup> _SysFunctionGroups = _appDB.SysFunctionGroup.Where(p => p.Parentid == 0).OrderBy(p => p.Rootid).ToList();
-            List<SysFunction> _SysFunctions = _appDB.SysFunction.Where(p => p.FuncType == 1 && p.IsShow && powers.Contains(p.Funcid)).OrderBy(p => p.SeqNumber).ToList();
+            List<SysFunctionGroup> _SysFunctionGroups = _appDB.SysFunctionGroup.Where(p => p.Parentid == 0).OrderBy(p => p.Rootid).AsNoTracking().ToList();
+            List<SysFunction> _SysFunctions = _appDB.SysFunction.Where(p => p.FuncType == 1 && p.IsShow && powers.Contains(p.Funcid)).AsNoTracking().OrderBy(p => p.SeqNumber).ToList();
             List<SysFunction> _SysFunction_Nexts = new List<SysFunction>();
             foreach (SysFunctionGroup _SysFunctionGroup in _SysFunctionGroups)
             {

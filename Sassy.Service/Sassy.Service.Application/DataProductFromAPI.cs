@@ -126,7 +126,6 @@ namespace Sassy.Service.Application
             Thread Thread_Run = new System.Threading.Thread(new System.Threading.ThreadStart(RunMethod));
             Thread_Run.Name = baseModel.ThreadName;
             Thread_Run.Start();
-
         }
 
         private void RunMethod()

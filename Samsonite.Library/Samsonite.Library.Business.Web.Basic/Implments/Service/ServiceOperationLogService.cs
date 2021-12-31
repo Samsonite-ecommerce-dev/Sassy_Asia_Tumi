@@ -66,7 +66,7 @@ namespace Samsonite.Library.Business.Web.Basic
             }
 
             List<ServiceOperationLogSearchResponse> _res = new List<ServiceOperationLogSearchResponse>();
-            var _data = _list.OrderByDescending(p => p.JobID).Skip((request.Page - 1) * request.Rows).Take(request.Rows).ToList();
+            var _data = _list.AsNoTracking().OrderByDescending(p => p.JobID).Skip((request.Page - 1) * request.Rows).Take(request.Rows).ToList();
             foreach (var item in _data)
             {
                 _res.Add(new ServiceOperationLogSearchResponse()

@@ -45,7 +45,7 @@ namespace Samsonite.Library.Business.Web.Basic
             //返回数据
             request.Page = VariableHelper.SaferequestPage(request.Page);
             _result.TotalRecord = _list.Count();
-            _result.Items = _list.OrderBy(p => p.SeqNumber).Skip((request.Page - 1) * request.Rows).Take(request.Rows).ToList();
+            _result.Items = _list.AsNoTracking().OrderBy(p => p.SeqNumber).Skip((request.Page - 1) * request.Rows).Take(request.Rows).ToList();
             return _result;
         }
 

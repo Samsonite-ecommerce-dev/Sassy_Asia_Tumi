@@ -69,9 +69,10 @@ namespace Samsonite.Library.Service.WorkService
         {
             while (!stoppingToken.IsCancellationRequested)
             {
-                //JobThread();
+                //初始化工作流定时器
+                JobThread();
 
-                await Task.Delay(GlobalConfig.JobIntervalTime, stoppingToken);
+                await Task.Delay(1000 * 20, stoppingToken);
             }
         }
 
@@ -118,7 +119,7 @@ namespace Samsonite.Library.Service.WorkService
             {
                 this.WriteLogger(LogLevel.Information, "Loading the list of services which is used.", "Service");
                 //读取需要开启的服务列表
-                var objServiceModuleInfo_List = _appDB.ServiceModuleInfo.Where(p => p.IsRun).ToList();
+                var objServiceModuleInfo_List = _appDB.ServiceModuleInfo.Where(p => p.IsRun).AsNoTracking().ToList();
                 if (objServiceModuleInfo_List.Count > 0)
                 {
                     foreach (ServiceModuleInfo objServiceModuleInfo in objServiceModuleInfo_List)
@@ -157,7 +158,7 @@ namespace Samsonite.Library.Service.WorkService
             try
             {
                 //待处理和处理中工作流列表
-                List<ServiceModuleJob> objServiceModuleJob_List = _appDB.ServiceModuleJob.Where(p => (new List<int>() { (int)JobStatus.Wait, (int)JobStatus.Processing }).Contains(p.Status)).OrderBy(p => p.ID).ToList();
+                List<ServiceModuleJob> objServiceModuleJob_List = _appDB.ServiceModuleJob.Where(p => (new List<int>() { (int)JobStatus.Wait, (int)JobStatus.Processing }).Contains(p.Status)).AsNoTracking().OrderBy(p => p.ID).ToList();
                 //每个服务按照队列,每次只执行一条工作流,取队列中最前面的一条工作流
                 List<IGrouping<int, ServiceModuleJob>> tmpModuleIDs = objServiceModuleJob_List.GroupBy(p => p.ModuleID).ToList();
                 foreach (var tmpID in tmpModuleIDs)
@@ -170,7 +171,7 @@ namespace Samsonite.Library.Service.WorkService
                 }
                 if (objWait_List.Count > 0)
                 {
-                    this.WriteLogger(LogLevel.Information, $"Loading the list of services job which is waiting.Total Job:{objServiceModuleJob_List.Count}", "Service");
+                    this.WriteLogger(LogLevel.Information, $"Loading the list of services job which is waiting.Total Job:{objServiceModuleJob_List.Count}", "Service_Job");
                 }
                 //循环工作流队列
                 foreach (var item in objWait_List)
@@ -180,7 +181,8 @@ namespace Samsonite.Library.Service.WorkService
                         try
                         {
                             //读取当前服务状态
-                            ServiceModuleInfo objServiceModuleInfo = _appDB.ServiceModuleInfo.Where(p => p.ModuleID == item.ModuleID).SingleOrDefault();
+                            //注:AsNoTracking防止生命周期内无法读取到最新数据
+                            ServiceModuleInfo objServiceModuleInfo = _appDB.ServiceModuleInfo.AsNoTracking().Where(p => p.ModuleID == item.ModuleID).SingleOrDefault();
                             if (objServiceModuleInfo != null)
                             {
                                 //查看当前服务是否允许运行

@@ -1,4 +1,5 @@
-﻿using Samsonite.Library.Business.Web.Custom.Models;
+﻿using Microsoft.EntityFrameworkCore;
+using Samsonite.Library.Business.Web.Custom.Models;
 using Samsonite.Library.Data.Entity.Models;
 using Samsonite.Library.Utility;
 using Samsonite.Library.Web.Core;
@@ -49,7 +50,7 @@ namespace Samsonite.Library.Business.Web.Custom
             //返回数据
             request.Page = VariableHelper.SaferequestPage(request.Page);
             _result.TotalRecord = _list.Count();
-            _result.Items = _list.OrderBy(p => p.SparePartID).Skip((request.Page - 1) * request.Rows).Take(request.Rows).ToList();
+            _result.Items = _list.AsNoTracking().OrderBy(p => p.SparePartID).Skip((request.Page - 1) * request.Rows).Take(request.Rows).ToList();
             return _result;
         }
 
@@ -71,7 +72,7 @@ namespace Samsonite.Library.Business.Web.Custom
             //返回数据
             request.Page = VariableHelper.SaferequestPage(request.Page);
             _result.TotalRecord = _list.Count();
-            _result.Items = _list.OrderBy(p => p.LineID).Skip((request.Page - 1) * request.Rows).Take(request.Rows).ToList();
+            _result.Items = _list.AsNoTracking().OrderBy(p => p.LineID).Skip((request.Page - 1) * request.Rows).Take(request.Rows).ToList();
             return _result;
         }
 
@@ -88,7 +89,7 @@ namespace Samsonite.Library.Business.Web.Custom
                 _list = _list.Where(p => p.LineID == request.LineID);
             }
 
-            return _list.ToList();
+            return _list.AsNoTracking().ToList();
         }
 
         /// <summary>
@@ -105,7 +106,7 @@ namespace Samsonite.Library.Business.Web.Custom
                 _list = _list.Where(p => p.LineID == request.LineID);
             }
 
-            return _list.ToList();
+            return _list.AsNoTracking().ToList();
         }
 
         /// <summary>
@@ -176,7 +177,7 @@ namespace Samsonite.Library.Business.Web.Custom
             if (_list.Any())
             {
                 var _groupIDs = _list.GroupBy(p => p.GroupID).Select(o => o.Key);
-                _result = _appDB.GroupInfo.Where(p => _groupIDs.Contains(p.GroupID)).ToList();
+                _result = _appDB.GroupInfo.Where(p => _groupIDs.Contains(p.GroupID)).AsNoTracking().ToList();
             }
 
             return _result;

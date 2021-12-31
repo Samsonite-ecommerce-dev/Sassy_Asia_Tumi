@@ -1,4 +1,5 @@
-﻿using Samsonite.Library.Data.Entity.Models;
+﻿using Microsoft.EntityFrameworkCore;
+using Samsonite.Library.Data.Entity.Models;
 using Samsonite.Library.Utility;
 using Samsonite.Library.WebApi.Core.Models;
 using Samsonite.Library.WebApi.Core.Utils;
@@ -28,9 +29,9 @@ namespace Samsonite.Library.WebApi.Core
         {
             List<AuthorizeUser> _result = new List<AuthorizeUser>();
             //账号列表
-            var _webApiAccounts = _appDB.WebApiAccount.Where(p => p.IsUsed).ToList();
+            var _webApiAccounts = _appDB.WebApiAccount.Where(p => p.IsUsed).AsNoTracking().ToList();
             //关联权限
-            var _webApiRoles = _appDB.WebApiRoles.ToList();
+            var _webApiRoles = _appDB.WebApiRoles.AsNoTracking().ToList();
 
             foreach (var item in _webApiAccounts)
             {
