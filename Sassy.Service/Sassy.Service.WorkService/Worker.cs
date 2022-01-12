@@ -72,7 +72,7 @@ namespace Samsonite.Library.Service.WorkService
                 //初始化工作流定时器
                 JobThread();
 
-                await Task.Delay(1000 * 20, stoppingToken);
+                await Task.Delay(GlobalConfig.JobIntervalTime, stoppingToken);
             }
         }
 

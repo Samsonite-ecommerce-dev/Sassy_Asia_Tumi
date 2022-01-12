@@ -27,10 +27,10 @@ namespace Samsonite.Sassy.Test
         {
             Init();
 
-            TestBug();
+            //TestBug();
 
             //TestApi
-            //(new TestApi()).TestSAS();
+            (new TestApi()).TestSAS();
 
             Console.ReadLine();
         }

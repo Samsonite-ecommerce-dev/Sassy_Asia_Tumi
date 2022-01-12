@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Samsonite.Library.Business.Web.Custom;
 using Samsonite.Library.Business.Web.Custom.Models;
 using Samsonite.Library.Data.Entity.Models;
@@ -41,12 +42,12 @@ namespace Samsonite.Library.APP.Controllers
                     searchTypeList = new List<DefineSelectOption>()
                     {
                         new DefineSelectOption{
-                            Label = "SKU",
+                            Label = "Mat+Grid",
                             Value = 0
                         },
                         new DefineSelectOption
                         {
-                            Label = "Mat+Grid",
+                            Label = "SKU",
                             Value = 1
                         }
                     }
@@ -142,6 +143,9 @@ namespace Samsonite.Library.APP.Controllers
 
             //查询
             var _list = _productQueryService.GetQuery(request);
+            var _productIDs = _list.Items.Select(p => p.MaterialId + "-" + p.Gridval).ToList();
+            //产品集合
+            var _products = _appDB.Product.Where(p => _productIDs.Contains(p.MaterialId + "-" + p.Gridval)).AsNoTracking().ToList();
             var _result = new
             {
                 total = _list.TotalRecord,
@@ -152,12 +156,14 @@ namespace Samsonite.Library.APP.Controllers
                            s1 = $"<a href=\"javascript:appVue.sparepartDetail('{dy.SparePartID}')\" class=\"href-blue-line\">" + dy.SparePartID + "</a>",
                            s2 = dy.SparePartDescription,
                            s3 = _sparePartQueryService.GetImageHtml(dy.ImageUrl, 75),
-                           s4 = dy.SKU,
-                           s5 = dy.VersionID,
-                           s6 = $"{VariableHelper.FormateMoney(dy.BasicPrice)} {dy.Currency}",
-                           s7 = dy.UnitofMeasure,
-                           s8 = dy.Status,
-                           s9 = dy.AvailableStock
+                           s4 = dy.MaterialId,
+                           s5 = dy.Gridval,
+                           s6 = _products.Where(p => p.MaterialId == dy.MaterialId && p.Gridval == dy.Gridval).SingleOrDefault()?.SKU,
+                           s7 = dy.VersionID,
+                           s8 = $"{VariableHelper.FormateMoney(dy.BasicPrice)} {dy.Currency}",
+                           s9 = dy.UnitofMeasure,
+                           s10 = dy.Status,
+                           s11 = dy.AvailableStock
                        }
             };
             return Json(_result);

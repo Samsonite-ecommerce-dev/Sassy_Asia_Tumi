@@ -38,12 +38,12 @@ namespace Samsonite.Library.Business.Web.Custom
                 if (request.SearchType == 1)
                 {
                     //查询sku
-                    var products = _appDB.Product.Where(p => (p.MaterialId + "-" + p.Gridval).Contains(request.Keyword)).GroupBy(p => p.SKU).Select(o => o.Key).ToList();
-                    _list = _list.Where(p => products.Contains(p.SKU));
+                    var products = _appDB.Product.Where(p => p.SKU.Contains(request.Keyword)).GroupBy(p => new { p.MaterialId, p.Gridval }).Select(o => o.Key).ToList();
+                    _list = _list.Where(p => products.Select(p => p.MaterialId + "-" + p.Gridval).Contains(p.MaterialId + "-" + p.Gridval));
                 }
                 else
                 {
-                    _list = _list.Where(p => p.SKU.Contains(request.Keyword));
+                    _list = _list.Where(p => (p.MaterialId + "-" + p.Gridval).Contains(request.Keyword));
                 }
             }
 

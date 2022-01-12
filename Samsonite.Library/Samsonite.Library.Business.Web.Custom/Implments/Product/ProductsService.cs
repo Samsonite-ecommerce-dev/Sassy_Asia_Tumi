@@ -28,15 +28,15 @@ namespace Samsonite.Library.Business.Web.Custom
             if (!string.IsNullOrEmpty(request.Keyword))
             {
                 //搜索条件
-                //0.sku(默认)
-                //1.mat+grid
+                //0.mat+grid(默认)
+                //1.sku
                 if (request.SearchType == 1)
                 {
-                    _list = _list.Where(p => (p.MaterialId + "-" + p.Gridval).Contains(request.Keyword));
+                    _list = _list.Where(p => p.SKU.Contains(request.Keyword));
                 }
                 else
                 {
-                    _list = _list.Where(p => p.SKU.Contains(request.Keyword));
+                    _list = _list.Where(p => (p.MaterialId + "-" + p.Gridval).Contains(request.Keyword));
                 }
             }
 

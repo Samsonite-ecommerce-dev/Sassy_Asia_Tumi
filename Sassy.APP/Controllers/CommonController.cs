@@ -119,8 +119,8 @@ namespace Samsonite.Library.APP.Controllers
                 rows = from dy in _list.Items
                        select new
                        {
-                           sku = dy.SKU,
-                           code = $"{dy.MaterialId}-{dy.Gridval}"
+                           code = $"{dy.MaterialId}-{dy.Gridval}",
+                           sku = dy.SKU
                        }
             };
             return Json(_result);

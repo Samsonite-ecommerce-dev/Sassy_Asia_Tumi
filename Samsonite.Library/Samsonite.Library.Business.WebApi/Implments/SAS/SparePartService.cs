@@ -67,35 +67,56 @@ namespace Samsonite.Library.Bussness.WebApi
         {
             GetSparePartRelatedResponse _result = new GetSparePartRelatedResponse();
             List<SkuRelated> _datas = new List<SkuRelated>();
-            var _list = _appDB.View_ProductSparePart.AsQueryable();
+
+            var _productQueryable = _appDB.Product.AsQueryable();
+
+            if (!string.IsNullOrEmpty(request.Material))
+            {
+                _productQueryable = _productQueryable.Where(p => p.MaterialId.Contains(request.Material));
+            }
+
+            if (!string.IsNullOrEmpty(request.Grid))
+            {
+                _productQueryable = _productQueryable.Where(p => p.Gridval.Contains(request.Grid));
+            }
 
             if (!string.IsNullOrEmpty(request.Sku))
             {
-                _list = _list.Where(p => p.SKU.Contains(request.Sku));
+                _productQueryable = _productQueryable.Where(p => p.SKU.Contains(request.Sku));
             }
 
-            if (request.GroupID > 0)
+            var objProducts = _productQueryable.AsNoTracking().ToList();
+            var objProductArray = _productQueryable.AsNoTracking().GroupBy(p => new { p.MaterialId, p.Gridval }).Select(o => o.Key.MaterialId + "-" + o.Key.Gridval).ToList();
+            if (objProductArray.Any())
             {
-                _list = _list.Where(p => p.GroupID == request.GroupID);
-            }
+                var _list = _appDB.View_ProductSparePart.AsQueryable();
 
-            var _skuArray = _list.GroupBy(p => p.SKU).Select(o => o.Key).ToList();
-            foreach (var item in _skuArray)
-            {
-                _datas.Add(new SkuRelated()
+                _list = _list.Where(p => objProductArray.Contains(p.MaterialId + "-" + p.Gridval));
+
+                if (request.GroupID > 0)
                 {
-                    Sku = item,
-                    SpareParts = (from sp in _list.Where(p => p.SKU == item).AsNoTracking()
-                                  select new SparePartInfo()
-                                  {
-                                      SparePartID = sp.SparePartID,
-                                      SpartPartDesc = sp.SparePartDescription,
-                                      SpartPartImage = sp.ImageUrl,
-                                      GroupID = sp.GroupID,
-                                      GroupDesc = sp.GroupName
-                                  }).ToList()
+                    _list = _list.Where(p => p.GroupID == request.GroupID);
+                }
 
-                });
+                foreach (var item in objProducts)
+                {
+                    _datas.Add(new SkuRelated()
+                    {
+                        Material = item.MaterialId,
+                        Grid = item.Gridval,
+                        Sku = objProducts.Where(p => p.MaterialId == item.MaterialId && p.Gridval == item.Gridval).FirstOrDefault()?.SKU,
+                        SpareParts = (from sp in _list.Where(p => p.MaterialId == item.MaterialId && p.Gridval == item.Gridval).AsNoTracking()
+                                      select new SparePartInfo()
+                                      {
+                                          SparePartID = sp.SparePartID,
+                                          SpartPartDesc = sp.SparePartDescription,
+                                          SpartPartImage = sp.ImageUrl,
+                                          GroupID = sp.GroupID,
+                                          GroupDesc = sp.GroupName
+                                      }).ToList()
+
+                    });
+                }
             }
 
             //返回信息

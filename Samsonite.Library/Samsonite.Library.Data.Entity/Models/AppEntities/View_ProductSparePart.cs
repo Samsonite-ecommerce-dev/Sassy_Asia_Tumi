@@ -8,7 +8,12 @@ namespace Samsonite.Library.Data.Entity.Models
         /// <summary>
         /// 
         /// </summary>
-        public string SKU { get; set; }
+        public string MaterialId { get; set; }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public string Gridval { get; set; }
 
         /// <summary>
         /// 

@@ -43,7 +43,7 @@ namespace Samsonite.Library.Business.WorkService
                 LocalSavePath = @"\SAP\Material"
 
             };
-            var ftpResult = this.DownFileFormSAP(sapFTPDto);
+            var ftpResult = _ftpService.DownFileFromFTP(sapFTPDto);
             //遍历文件
             foreach (var file in ftpResult.SuccessFile)
             {
@@ -182,14 +182,14 @@ namespace Samsonite.Library.Business.WorkService
                             skuSqlBuilder = new StringBuilder();
                             foreach (var item in products.Skip(page * skuPageSize).Take(skuPageSize))
                             {
-                                skuSqlBuilder.AppendLine($"IF NOT EXISTS(SELECT * from [Product] WHERE SKU = N'{item.SKU}')");
+                                skuSqlBuilder.AppendLine($"IF NOT EXISTS(SELECT * from [Product] WHERE MaterialId = N'{item.MaterialId}' AND Gridval=N'{item.Gridval}')");
                                 skuSqlBuilder.AppendLine("BEGIN");
                                 skuSqlBuilder.AppendLine("INSERT INTO [Product](SKU,MaterialId,Gridval,MaterialDescription,ColorDescription,MaterialGroup,[Collection],ConstructionType,[Status],AddDate,EditDate)");
                                 skuSqlBuilder.AppendLine($" VALUES(N'{item.SKU}',N'{item.MaterialId}',N'{item.Gridval}',N'{item.MaterialDescription}',N'{item.ColorDescription}',N'{item.MaterialGroup}',N'{item.Collection}',N'{item.ConstructionType}',N'{item.Status}',getdate(),getdate())");
                                 skuSqlBuilder.AppendLine("END");
                                 skuSqlBuilder.AppendLine("ELSE");
                                 skuSqlBuilder.AppendLine("BEGIN");
-                                skuSqlBuilder.AppendLine($"UPDATE [Product] SET MaterialId=N'{item.MaterialId}',Gridval=N'{item.Gridval}',MaterialDescription=N'{item.MaterialDescription}',ColorDescription=N'{item.ColorDescription}',MaterialGroup=N'{item.MaterialGroup}',[Collection]=N'{item.Collection}',ConstructionType=N'{item.ConstructionType}',[Status]=N'{item.Status}',EditDate=getdate() WHERE SKU = N'{item.SKU}'");
+                                skuSqlBuilder.AppendLine($"UPDATE [Product] SET SKU=N'{item.SKU}',MaterialDescription=N'{item.MaterialDescription}',ColorDescription=N'{item.ColorDescription}',MaterialGroup=N'{item.MaterialGroup}',[Collection]=N'{item.Collection}',ConstructionType=N'{item.ConstructionType}',[Status]=N'{item.Status}',EditDate=getdate() WHERE MaterialId = N'{item.MaterialId}' AND Gridval=N'{item.Gridval}'");
                                 skuSqlBuilder.AppendLine("END");
                             }
                             var tmpResult = _appDB.Database.ExecuteSqlRaw(skuSqlBuilder.ToString());
@@ -405,7 +405,7 @@ namespace Samsonite.Library.Business.WorkService
                 LocalSavePath = @"\SAP\Inventory"
 
             };
-            var ftpResult = this.DownFileFormSAP(sapFTPDto);
+            var ftpResult = _ftpService.DownFileFromFTP(sapFTPDto);
             //遍历文件
             foreach (var file in ftpResult.SuccessFile)
             {
@@ -553,7 +553,7 @@ namespace Samsonite.Library.Business.WorkService
                 LocalSavePath = @"\SAP\Price"
 
             };
-            var ftpResult = this.DownFileFormSAP(sapFTPDto);
+            var ftpResult = _ftpService.DownFileFromFTP(sapFTPDto);
             //遍历文件
             foreach (var file in ftpResult.SuccessFile)
             {
@@ -681,24 +681,6 @@ namespace Samsonite.Library.Business.WorkService
             {
                 throw ex;
             }
-        }
-        #endregion
-
-        #region 函数
-        /// <summary>
-        /// 下载文件
-        /// </summary>
-        /// <param name="config"></param>
-        /// <returns></returns>
-        private FTPResult DownFileFormSAP(SapFTPDto config)
-        {
-            FtpDto _ftpDto = config.Ftp;
-            //FTP文件目录
-            SFTPHelper sftpHelper = new SFTPHelper(_ftpDto.FtpServerIp, _ftpDto.UserId, _ftpDto.Password);
-            //本地保存文件目录
-            string _localPath = $"{AppDomain.CurrentDomain.BaseDirectory + config.LocalSavePath}/{DateTime.Now.ToString("yyyy-MM")}/{DateTime.Now.ToString("yyyyMMdd")}";
-            //下载文件
-            return _ftpService.DownFileFromsFtp(sftpHelper, config.RemoteFilePath, _localPath, config.FileExt, _ftpDto.IsDeleteOriginalFile);
         }
         #endregion
     }

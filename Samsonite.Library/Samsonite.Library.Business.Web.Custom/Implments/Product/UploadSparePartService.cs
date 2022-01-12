@@ -173,9 +173,8 @@ namespace Samsonite.Library.Business.Web.Custom
                     var sparePartIds = _result.Select(p => p.SparePartId).Distinct().ToList();
 
                     //缓存校验数据到本地,提供性能
-                    var existsSparepart = _appDB.SparePart.Where(p => sparePartIds.Contains(p.SparePartID)).ToList();
-                    var existsSku = _appDB.Product.Where(p => skus.Contains(p.SKU)).Select(o => o.SKU).ToList();
-                    var existsSparepartIds = _appDB.SparePart.Where(p => sparePartIds.Contains(p.SparePartID)).Select(p => p.SparePartID).ToList();
+                    var existsProducts = _appDB.Product.Where(p => skus.Contains(p.SKU)).AsNoTracking().ToList();
+                    var existsSparepartIds = _appDB.SparePart.Where(p => sparePartIds.Contains(p.SparePartID)).AsNoTracking().Select(p => p.SparePartID).ToList();
 
                     int pageSize = 100;
                     int totalPage = (int)Math.Ceiling(_result.Count / (decimal)pageSize);
@@ -199,21 +198,24 @@ namespace Samsonite.Library.Business.Web.Custom
                                     var errSkus = new List<string>();
                                     foreach (var s in item.Skus)
                                     {
-                                        if (!existsSku.Contains(s.SKU))
+                                        var tmp = existsProducts.Where(p => p.SKU == s.SKU).FirstOrDefault();
+                                        if (tmp == null)
                                         {
                                             errSkus.Add(s.SKU);
                                             continue;
                                         }
-
-                                        spSqlBuilder.AppendLine($"IF NOT EXISTS(SELECT * from [ProductSparePart] WHERE SKU=N'{s.SKU}' AND VersionID=N'{item.VersionID}' AND SparePartID = {item.SparePartId})");
-                                        spSqlBuilder.AppendLine("BEGIN");
-                                        spSqlBuilder.AppendLine("INSERT INTO [ProductSparePart](SKU,LineID,SizeID,ColorID,GroupID,VersionID,SparePartID,AddDate,EditDate)");
-                                        spSqlBuilder.AppendLine($" VALUES(N'{s.SKU}',N'{s.LineID}',N'{s.SizeID}',N'{s.ColorID}',ISNULL((SELECT TOP 1 GroupID from SparePart WHERE SparePartID={item.SparePartId}),0),N'{item.VersionID}',{item.SparePartId},getdate(),getdate())");
-                                        spSqlBuilder.AppendLine("END");
-                                        spSqlBuilder.AppendLine("ELSE");
-                                        spSqlBuilder.AppendLine("BEGIN");
-                                        spSqlBuilder.AppendLine($"UPDATE [ProductSparePart] SET GroupID=ISNULL((SELECT TOP 1 GroupID from SparePart WHERE SparePartID={item.SparePartId}),0),EditDate=getdate() WHERE SKU=N'{s.SKU}' AND VersionID=N'{item.VersionID}' AND SparePartID = {item.SparePartId}");
-                                        spSqlBuilder.AppendLine("END");
+                                        else
+                                        {
+                                            spSqlBuilder.AppendLine($"IF NOT EXISTS(SELECT * from [ProductSparePart] WHERE MaterialId=N'{tmp.MaterialId}' AND Gridval=N'{tmp.Gridval}' AND VersionID=N'{item.VersionID}' AND SparePartID = {item.SparePartId})");
+                                            spSqlBuilder.AppendLine("BEGIN");
+                                            spSqlBuilder.AppendLine("INSERT INTO [ProductSparePart](MaterialId,Gridval,LineID,SizeID,ColorID,GroupID,VersionID,SparePartID,AddDate,EditDate)");
+                                            spSqlBuilder.AppendLine($" VALUES(N'{tmp.MaterialId}',N'{tmp.Gridval}',N'{s.LineID}',N'{s.SizeID}',N'{s.ColorID}',ISNULL((SELECT TOP 1 GroupID from SparePart WHERE SparePartID={item.SparePartId}),0),N'{item.VersionID}',{item.SparePartId},getdate(),getdate())");
+                                            spSqlBuilder.AppendLine("END");
+                                            spSqlBuilder.AppendLine("ELSE");
+                                            spSqlBuilder.AppendLine("BEGIN");
+                                            spSqlBuilder.AppendLine($"UPDATE [ProductSparePart] SET GroupID=ISNULL((SELECT TOP 1 GroupID from SparePart WHERE SparePartID={item.SparePartId}),0),EditDate=getdate() WHERE MaterialId=N'{tmp.MaterialId}' AND Gridval=N'{tmp.Gridval}' AND VersionID=N'{item.VersionID}' AND SparePartID = {item.SparePartId}");
+                                            spSqlBuilder.AppendLine("END");
+                                        }
                                     }
 
                                     if (errSkus.Any())

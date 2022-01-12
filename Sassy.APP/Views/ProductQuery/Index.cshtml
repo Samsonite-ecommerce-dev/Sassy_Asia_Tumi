@@ -18,8 +18,8 @@
                             </el-select>
                             <el-button slot="append" size="mini" type="primary" icon="el-icon-search" :loading="searchBar.searchBtn.loading" v-on:click="search">{{languagePack.common_search}}</el-button>
                             <template slot-scope="{ item }">
-                                <span class="float-left">{{item.sku}}</span>
-                                <span class="float-right text-gray">{{item.code}}</span>
+                                <span class="float-left">{{item.code}}</span>
+                                <span class="float-right text-gray">{{item.sku}}</span>
                             </template>
                         </el-autocomplete>
                         <br />
@@ -63,12 +63,14 @@
                         <span v-html="scope.row.s3"></span>
                     </template>
                 </el-table-column>
-                <el-table-column prop="s4" :label="languagePack.product_index_sku"></el-table-column>
-                <el-table-column prop="s5" :label="languagePack.product_index_version"></el-table-column>
-                <el-table-column prop="s6" :label="languagePack.product_index_price"></el-table-column>
-                <el-table-column prop="s7" :label="languagePack.product_index_unit"></el-table-column>
-                <el-table-column prop="s8" :label="languagePack.product_index_status"></el-table-column>
-                <el-table-column prop="s9" :label="languagePack.product_index_inventory"></el-table-column>
+                <el-table-column prop="s4" :label="languagePack.product_index_material"></el-table-column>
+                <el-table-column prop="s5" :label="languagePack.product_index_gridval"></el-table-column>
+                <el-table-column prop="s6" :label="languagePack.product_index_sku"></el-table-column>
+                <el-table-column prop="s7" :label="languagePack.product_index_version"></el-table-column>
+                <el-table-column prop="s8" :label="languagePack.product_index_price"></el-table-column>
+                <el-table-column prop="s9" :label="languagePack.product_index_unit"></el-table-column>
+                <el-table-column prop="s10" :label="languagePack.product_index_status"></el-table-column>
+                <el-table-column prop="s11" :label="languagePack.product_index_inventory"></el-table-column>
             </el-table>
         </div>
         <div class="main-list-pagination">
@@ -131,7 +133,7 @@
                             });
                             //数据集合
                             $vue.custom.searchTypeOptions = data.searchTypeList;
-                            //默认查询sku
+                            //默认查询material+Grid
                             $vue.searchParams.searchType = 0;
                             //查询信息
                             $vue.getGridList();
@@ -155,10 +157,10 @@
                 },
                 handleQuerySearch: function (item) {
                     if (this.searchParams.searchType == 1) {
-                        this.searchParams.keyword = item.code;
+                        this.searchParams.keyword = item.sku;
                     }
                     else {
-                        this.searchParams.keyword = item.sku;
+                        this.searchParams.keyword = item.code;
                     }
                 },
                 search: function () {

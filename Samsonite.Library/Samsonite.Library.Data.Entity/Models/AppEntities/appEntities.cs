@@ -24,11 +24,11 @@ namespace Samsonite.Library.Data.Entity.Models
         public virtual DbSet<SysUploadModel> SysUploadModel { get; set; }
         public virtual DbSet<UserInfo> UserInfo { get; set; }
         public virtual DbSet<UserRoles> UserRoles { get; set; }
-        public virtual DbSet<ProductSparePart> ProductSparePart { get; set; }
         public virtual DbSet<View_ProductSparePart> View_ProductSparePart { get; set; }
         public virtual DbSet<SysConfig> SysConfig { get; set; }
         public virtual DbSet<ServiceModuleInfo> ServiceModuleInfo { get; set; }
         public virtual DbSet<View_SysFunction> View_SysFunction { get; set; }
+        public virtual DbSet<ProductSparePart> ProductSparePart { get; set; }
         public virtual DbSet<FTPInfo> FTPInfo { get; set; }
         public virtual DbSet<LanguagePackKey> LanguagePackKey { get; set; }
         public virtual DbSet<LanguagePackValue> LanguagePackValue { get; set; }
@@ -570,70 +570,6 @@ namespace Samsonite.Library.Data.Entity.Models
 
             });
 
-            modelBuilder.Entity<ProductSparePart>(entity =>
-            {
-                entity.HasKey(e => e.ID);
-
-                entity.Property(e => e.ID)
-                    .HasColumnName("ID")
-                    .IsRequired();
-
-                entity.Property(e => e.SKU)
-                    .HasColumnName("SKU")
-                    .IsRequired()
-                    .HasMaxLength(50);
-
-                entity.Property(e => e.LineID)
-                    .HasColumnName("LineID")
-                    .IsRequired()
-                    .HasMaxLength(16)
-                    .IsUnicode(false)
-                    .HasComment("关联ProductLine表主键ID");
-
-                entity.Property(e => e.SizeID)
-                    .HasColumnName("SizeID")
-                    .IsRequired()
-                    .HasMaxLength(16)
-                    .IsUnicode(false);
-
-                entity.Property(e => e.ColorID)
-                    .HasColumnName("ColorID")
-                    .IsRequired()
-                    .HasMaxLength(16)
-                    .IsUnicode(false);
-
-                entity.Property(e => e.GroupID)
-                    .HasColumnName("GroupID")
-                    .IsRequired()
-                    .HasComment("关联GroupInfo表主键ID");
-
-                entity.Property(e => e.VersionID)
-                    .HasColumnName("VersionID")
-                    .IsRequired()
-                    .HasMaxLength(32)
-                    .IsUnicode(false)
-                    .HasComment("版本号");
-
-                entity.Property(e => e.SparePartID)
-                    .HasColumnName("SparePartID")
-                    .IsRequired()
-                    .HasDefaultValueSql("((0))")
-                    .HasComment("SparePart表主键ID");
-
-                entity.Property(e => e.AddDate)
-                    .HasColumnName("AddDate")
-                    .IsRequired()
-                    .HasColumnType("datetime")
-                    .HasDefaultValueSql("(getdate())")
-                    .HasComment("创建时间");
-
-                entity.Property(e => e.EditDate)
-                    .HasColumnName("EditDate")
-                    .HasColumnType("datetime")
-                    .HasComment("编辑时间");
-
-            });
-
             modelBuilder.Entity<SysConfig>(entity =>
             {
                 entity.HasKey(e => e.ConfigID);
@@ -757,6 +693,77 @@ namespace Samsonite.Library.Data.Entity.Models
                     .HasColumnType("datetime")
                     .HasDefaultValueSql("(getdate())")
                     .HasComment("创建时间");
+
+            });
+
+            modelBuilder.Entity<ProductSparePart>(entity =>
+            {
+                entity.HasKey(e => e.ID);
+
+                entity.Property(e => e.ID)
+                    .HasColumnName("ID")
+                    .IsRequired();
+
+                entity.Property(e => e.MaterialId)
+                    .HasColumnName("MaterialId")
+                    .IsRequired()
+                    .HasMaxLength(32)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.Gridval)
+                    .HasColumnName("Gridval")
+                    .IsRequired()
+                    .HasMaxLength(32)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.LineID)
+                    .HasColumnName("LineID")
+                    .IsRequired()
+                    .HasMaxLength(16)
+                    .IsUnicode(false)
+                    .HasComment("关联ProductLine表主键ID");
+
+                entity.Property(e => e.SizeID)
+                    .HasColumnName("SizeID")
+                    .IsRequired()
+                    .HasMaxLength(16)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.ColorID)
+                    .HasColumnName("ColorID")
+                    .IsRequired()
+                    .HasMaxLength(16)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.GroupID)
+                    .HasColumnName("GroupID")
+                    .IsRequired()
+                    .HasComment("关联GroupInfo表主键ID");
+
+                entity.Property(e => e.VersionID)
+                    .HasColumnName("VersionID")
+                    .IsRequired()
+                    .HasMaxLength(32)
+                    .IsUnicode(false)
+                    .HasComment("版本号");
+
+                entity.Property(e => e.SparePartID)
+                    .HasColumnName("SparePartID")
+                    .IsRequired()
+                    .HasDefaultValueSql("((0))")
+                    .HasComment("SparePart表主键ID");
+
+                entity.Property(e => e.AddDate)
+                    .HasColumnName("AddDate")
+                    .IsRequired()
+                    .HasColumnType("datetime")
+                    .HasDefaultValueSql("(getdate())")
+                    .HasComment("创建时间");
+
+                entity.Property(e => e.EditDate)
+                    .HasColumnName("EditDate")
+                    .HasColumnType("datetime")
+                    .HasComment("编辑时间");
 
             });
 

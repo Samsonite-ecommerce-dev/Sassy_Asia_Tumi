@@ -11,6 +11,14 @@ namespace Samsonite.Library.Bussness.WebApi.Models
 
     public class SkuRelated
     {
+        [JsonPropertyName("material")]
+
+        public string Material { get; set; }
+
+        [JsonPropertyName("grid")]
+
+        public string Grid { get; set; }
+
         [JsonPropertyName("sku")]
 
         public string Sku { get; set; }
