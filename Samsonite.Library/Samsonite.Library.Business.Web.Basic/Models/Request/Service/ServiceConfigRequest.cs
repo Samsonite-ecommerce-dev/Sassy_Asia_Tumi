@@ -1,4 +1,4 @@
-﻿using Samsonite.Library.Web.Core.Models;
+﻿using Samsonite.Library.Core.Web.Models;
 using System;
 
 namespace Samsonite.Library.Business.Web.Basic.Models

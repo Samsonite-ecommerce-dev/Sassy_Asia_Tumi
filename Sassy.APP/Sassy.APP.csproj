@@ -13,7 +13,7 @@
     <ProjectReference Include="..\Samsonite.Library\Samsonite.Library.Business.Web.Custom\Samsonite.Library.Business.Web.Custom.csproj" />
     <ProjectReference Include="..\Samsonite.Library\Samsonite.Library.DependencyInjection.WebApi\Samsonite.Library.DependencyInjection.WebApi.csproj" />
     <ProjectReference Include="..\Samsonite.Library\Samsonite.Library.DependencyInjection.Web\Samsonite.Library.DependencyInjection.Web.csproj" />
-    <ProjectReference Include="..\Samsonite.Library\Samsonite.Library.WebApi.Core\Samsonite.Library.WebApi.Core.csproj" />
+    <ProjectReference Include="..\Samsonite.Library\Samsonite.Library.Core.WebApi\Samsonite.Library.Core.WebApi.csproj" />
   </ItemGroup>
 
 </Project>

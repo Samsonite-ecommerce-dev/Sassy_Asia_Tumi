@@ -2,8 +2,8 @@
 using Microsoft.AspNetCore.Mvc.Filters;
 using Samsonite.Library.Data.Entity.Models;
 using Samsonite.Library.Utility;
-using Samsonite.Library.WebApi.Core;
-using Samsonite.Library.WebApi.Core.Models;
+using Samsonite.Library.Core.WebApi;
+using Samsonite.Library.Core.WebApi.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;

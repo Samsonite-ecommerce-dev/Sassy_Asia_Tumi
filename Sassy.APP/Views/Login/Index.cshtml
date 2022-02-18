@@ -1,7 +1,7 @@
 ﻿
 @{
     Layout = null;
-    @inject Samsonite.Library.Web.Core.IBaseService _baseService;
+    @inject Samsonite.Library.Core.Web.IBaseService _baseService;
     string _skinStyle = _baseService.CurrentApplicationConfig.SysConfig.SkinStyle;
 }
 <!DOCTYPE html>

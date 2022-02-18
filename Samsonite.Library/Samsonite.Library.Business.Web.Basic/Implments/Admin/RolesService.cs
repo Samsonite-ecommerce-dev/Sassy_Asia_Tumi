@@ -1,8 +1,8 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using Samsonite.Library.Business.Web.Basic.Models;
-using Samsonite.Library.Web.Core;
-using Samsonite.Library.Web.Core.Models;
+using Samsonite.Library.Core.Web;
+using Samsonite.Library.Core.Web.Models;
 using Samsonite.Library.Data.Entity.Models;
 using Samsonite.Library.Utility;
 using System;

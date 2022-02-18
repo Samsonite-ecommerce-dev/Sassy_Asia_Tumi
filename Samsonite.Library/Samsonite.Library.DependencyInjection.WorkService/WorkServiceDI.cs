@@ -1,7 +1,7 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using Samsonite.Library.Business.WorkService;
-using Samsonite.Library.Web.Core;
-using Samsonite.Library.WorkService.Core;
+using Samsonite.Library.Core.Web;
+using Samsonite.Library.Core.WorkService;
 
 namespace Samsonite.Library.DependencyInjection.WorkService
 {

@@ -33,27 +33,29 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "5.Test", "5.Test", "{D30BEA
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Sassy.Test", "Sassy.Test\Sassy.Test.csproj", "{CD3F5A25-FA8D-4507-8B15-2AF001F1ABC0}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Samsonite.Library.Web.Core", "Samsonite.Library\Samsonite.Library.Web.Core\Samsonite.Library.Web.Core.csproj", "{BA6D3B64-4C3F-4766-870B-F70473D3FD39}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Samsonite.Library.Business.WebApi", "Samsonite.Library\Samsonite.Library.Business.WebApi\Samsonite.Library.Business.WebApi.csproj", "{A1197DA7-6E1A-4913-B387-9934D8800BC6}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Samsonite.Library.WebApi.Core", "Samsonite.Library\Samsonite.Library.WebApi.Core\Samsonite.Library.WebApi.Core.csproj", "{FD24EA18-C5E3-4794-A697-E44B47183CAD}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DependencyInjection", "DependencyInjection", "{ABE7ADBF-F812-429C-B8A5-F4DDC4DB686A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Samsonite.Library.Business.WorkService", "Samsonite.Library\Samsonite.Library.Business.WorkService\Samsonite.Library.Business.WorkService.csproj", "{F04CBB0B-5387-4014-8507-B5AE15AA5EA1}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Samsonite.Library.Business.WorkService", "Samsonite.Library\Samsonite.Library.Business.WorkService\Samsonite.Library.Business.WorkService.csproj", "{F04CBB0B-5387-4014-8507-B5AE15AA5EA1}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Samsonite.Library.DependencyInjection.Web", "Samsonite.Library\Samsonite.Library.DependencyInjection.Web\Samsonite.Library.DependencyInjection.Web.csproj", "{FCCCFB2D-7555-4300-8A01-3599154D127A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Samsonite.Library.DependencyInjection.Web", "Samsonite.Library\Samsonite.Library.DependencyInjection.Web\Samsonite.Library.DependencyInjection.Web.csproj", "{FCCCFB2D-7555-4300-8A01-3599154D127A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Samsonite.Library.DependencyInjection.WebApi", "Samsonite.Library\Samsonite.Library.DependencyInjection.WebApi\Samsonite.Library.DependencyInjection.WebApi.csproj", "{0A0AD7D2-2501-4ECF-B05F-10F94069A9B6}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Samsonite.Library.DependencyInjection.WebApi", "Samsonite.Library\Samsonite.Library.DependencyInjection.WebApi\Samsonite.Library.DependencyInjection.WebApi.csproj", "{0A0AD7D2-2501-4ECF-B05F-10F94069A9B6}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Samsonite.Library.DependencyInjection.WorkService", "Samsonite.Library\Samsonite.Library.DependencyInjection.WorkService\Samsonite.Library.DependencyInjection.WorkService.csproj", "{88F6AF11-FB48-4B88-8B1E-3BE8180BF08C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Samsonite.Library.DependencyInjection.WorkService", "Samsonite.Library\Samsonite.Library.DependencyInjection.WorkService\Samsonite.Library.DependencyInjection.WorkService.csproj", "{88F6AF11-FB48-4B88-8B1E-3BE8180BF08C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Samsonite.Library.WorkService.Core", "Samsonite.Library\Samsonite.Library.WorkService.Core\Samsonite.Library.WorkService.Core.csproj", "{ABF4BCDC-E5F0-4CAD-AF5B-AD7E77E24CBA}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Samsonite.Library.Business.Web.Basic", "Samsonite.Library\Samsonite.Library.Business.Web.Basic\Samsonite.Library.Business.Web.Basic.csproj", "{7A5FC1E2-2317-46EE-8D19-DC6E835D89CC}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Samsonite.Library.Business.Web.Basic", "Samsonite.Library\Samsonite.Library.Business.Web.Basic\Samsonite.Library.Business.Web.Basic.csproj", "{7A5FC1E2-2317-46EE-8D19-DC6E835D89CC}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Samsonite.Library.Business.Web.Custom", "Samsonite.Library\Samsonite.Library.Business.Web.Custom\Samsonite.Library.Business.Web.Custom.csproj", "{3634DA82-A83B-4750-824F-7FE0220DF384}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Samsonite.Library.Business.Web.Custom", "Samsonite.Library\Samsonite.Library.Business.Web.Custom\Samsonite.Library.Business.Web.Custom.csproj", "{3634DA82-A83B-4750-824F-7FE0220DF384}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Core", "Core", "{C050772C-9C0A-4AD1-8CC7-BD638B2A7714}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Samsonite.Library.Core.WorkService", "Samsonite.Library\Samsonite.Library.Core.WorkService\Samsonite.Library.Core.WorkService.csproj", "{9BC95E00-3E2E-48CA-A237-283DBDB55D76}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Samsonite.Library.Core.Web", "Samsonite.Library\Samsonite.Library.Core.Web\Samsonite.Library.Core.Web.csproj", "{CD636635-925D-4D98-BD0B-1A20117173F2}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Samsonite.Library.Core.WebApi", "Samsonite.Library\Samsonite.Library.Core.WebApi\Samsonite.Library.Core.WebApi.csproj", "{517AE431-2B74-4705-B1C3-990546EDDEFB}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -93,18 +95,10 @@ Global
 		{CD3F5A25-FA8D-4507-8B15-2AF001F1ABC0}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{CD3F5A25-FA8D-4507-8B15-2AF001F1ABC0}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{CD3F5A25-FA8D-4507-8B15-2AF001F1ABC0}.Release|Any CPU.Build.0 = Release|Any CPU
-		{BA6D3B64-4C3F-4766-870B-F70473D3FD39}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{BA6D3B64-4C3F-4766-870B-F70473D3FD39}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{BA6D3B64-4C3F-4766-870B-F70473D3FD39}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{BA6D3B64-4C3F-4766-870B-F70473D3FD39}.Release|Any CPU.Build.0 = Release|Any CPU
 		{A1197DA7-6E1A-4913-B387-9934D8800BC6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{A1197DA7-6E1A-4913-B387-9934D8800BC6}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A1197DA7-6E1A-4913-B387-9934D8800BC6}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A1197DA7-6E1A-4913-B387-9934D8800BC6}.Release|Any CPU.Build.0 = Release|Any CPU
-		{FD24EA18-C5E3-4794-A697-E44B47183CAD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{FD24EA18-C5E3-4794-A697-E44B47183CAD}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{FD24EA18-C5E3-4794-A697-E44B47183CAD}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{FD24EA18-C5E3-4794-A697-E44B47183CAD}.Release|Any CPU.Build.0 = Release|Any CPU
 		{F04CBB0B-5387-4014-8507-B5AE15AA5EA1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{F04CBB0B-5387-4014-8507-B5AE15AA5EA1}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F04CBB0B-5387-4014-8507-B5AE15AA5EA1}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -121,10 +115,6 @@ Global
 		{88F6AF11-FB48-4B88-8B1E-3BE8180BF08C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{88F6AF11-FB48-4B88-8B1E-3BE8180BF08C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{88F6AF11-FB48-4B88-8B1E-3BE8180BF08C}.Release|Any CPU.Build.0 = Release|Any CPU
-		{ABF4BCDC-E5F0-4CAD-AF5B-AD7E77E24CBA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{ABF4BCDC-E5F0-4CAD-AF5B-AD7E77E24CBA}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{ABF4BCDC-E5F0-4CAD-AF5B-AD7E77E24CBA}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{ABF4BCDC-E5F0-4CAD-AF5B-AD7E77E24CBA}.Release|Any CPU.Build.0 = Release|Any CPU
 		{7A5FC1E2-2317-46EE-8D19-DC6E835D89CC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{7A5FC1E2-2317-46EE-8D19-DC6E835D89CC}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7A5FC1E2-2317-46EE-8D19-DC6E835D89CC}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -133,6 +123,18 @@ Global
 		{3634DA82-A83B-4750-824F-7FE0220DF384}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3634DA82-A83B-4750-824F-7FE0220DF384}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3634DA82-A83B-4750-824F-7FE0220DF384}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9BC95E00-3E2E-48CA-A237-283DBDB55D76}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9BC95E00-3E2E-48CA-A237-283DBDB55D76}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9BC95E00-3E2E-48CA-A237-283DBDB55D76}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9BC95E00-3E2E-48CA-A237-283DBDB55D76}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CD636635-925D-4D98-BD0B-1A20117173F2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CD636635-925D-4D98-BD0B-1A20117173F2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CD636635-925D-4D98-BD0B-1A20117173F2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CD636635-925D-4D98-BD0B-1A20117173F2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{517AE431-2B74-4705-B1C3-990546EDDEFB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{517AE431-2B74-4705-B1C3-990546EDDEFB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{517AE431-2B74-4705-B1C3-990546EDDEFB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{517AE431-2B74-4705-B1C3-990546EDDEFB}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -148,17 +150,18 @@ Global
 		{3F1CAAB4-543E-46BC-9016-7FF3C59ABC55} = {9B3C94AA-078E-4E02-8192-B1A5B70F6B65}
 		{22CB45E7-3E68-4803-9986-AAB1168FDDEF} = {9B3C94AA-078E-4E02-8192-B1A5B70F6B65}
 		{CD3F5A25-FA8D-4507-8B15-2AF001F1ABC0} = {D30BEA69-BAB1-4DD6-9C37-78114DE0216D}
-		{BA6D3B64-4C3F-4766-870B-F70473D3FD39} = {8ACF47DA-CF32-4B87-B7B6-C91A5CF1E8DE}
 		{A1197DA7-6E1A-4913-B387-9934D8800BC6} = {A2AB7B97-186D-433D-83A2-261912F590E3}
-		{FD24EA18-C5E3-4794-A697-E44B47183CAD} = {8ACF47DA-CF32-4B87-B7B6-C91A5CF1E8DE}
 		{ABE7ADBF-F812-429C-B8A5-F4DDC4DB686A} = {8ACF47DA-CF32-4B87-B7B6-C91A5CF1E8DE}
 		{F04CBB0B-5387-4014-8507-B5AE15AA5EA1} = {A2AB7B97-186D-433D-83A2-261912F590E3}
 		{FCCCFB2D-7555-4300-8A01-3599154D127A} = {ABE7ADBF-F812-429C-B8A5-F4DDC4DB686A}
 		{0A0AD7D2-2501-4ECF-B05F-10F94069A9B6} = {ABE7ADBF-F812-429C-B8A5-F4DDC4DB686A}
 		{88F6AF11-FB48-4B88-8B1E-3BE8180BF08C} = {ABE7ADBF-F812-429C-B8A5-F4DDC4DB686A}
-		{ABF4BCDC-E5F0-4CAD-AF5B-AD7E77E24CBA} = {8ACF47DA-CF32-4B87-B7B6-C91A5CF1E8DE}
 		{7A5FC1E2-2317-46EE-8D19-DC6E835D89CC} = {A2AB7B97-186D-433D-83A2-261912F590E3}
 		{3634DA82-A83B-4750-824F-7FE0220DF384} = {A2AB7B97-186D-433D-83A2-261912F590E3}
+		{C050772C-9C0A-4AD1-8CC7-BD638B2A7714} = {8ACF47DA-CF32-4B87-B7B6-C91A5CF1E8DE}
+		{9BC95E00-3E2E-48CA-A237-283DBDB55D76} = {C050772C-9C0A-4AD1-8CC7-BD638B2A7714}
+		{CD636635-925D-4D98-BD0B-1A20117173F2} = {C050772C-9C0A-4AD1-8CC7-BD638B2A7714}
+		{517AE431-2B74-4705-B1C3-990546EDDEFB} = {C050772C-9C0A-4AD1-8CC7-BD638B2A7714}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {5E43FA05-25C1-40F4-AD49-D7DB99D3B003}

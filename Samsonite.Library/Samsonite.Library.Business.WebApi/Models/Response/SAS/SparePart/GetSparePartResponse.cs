@@ -1,4 +1,4 @@
-﻿using Samsonite.Library.WebApi.Core.Models;
+﻿using Samsonite.Library.Core.WebApi.Models;
 using System.Collections.Generic;
 using System.Text.Json.Serialization;
 

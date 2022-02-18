@@ -1,7 +1,7 @@
 ﻿
 using Newtonsoft.Json.Linq;
 using Samsonite.Library.Utility;
-using Samsonite.Library.WebApi.Core.Utils;
+using Samsonite.Library.Core.WebApi.Utils;
 using System;
 using System.Collections.Generic;
 using System.IO;

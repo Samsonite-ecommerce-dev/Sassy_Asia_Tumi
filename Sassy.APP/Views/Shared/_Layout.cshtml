@@ -1,6 +1,6 @@
 ﻿@{
-    @inject Samsonite.Library.Web.Core.IBaseService _baseService;
-    @inject Samsonite.Library.Web.Core.IAntiforgeryService _antiforgeryService;
+    @inject Samsonite.Library.Core.Web.IBaseService _baseService;
+    @inject Samsonite.Library.Core.Web.IAntiforgeryService _antiforgeryService;
     string _skinStyle = _baseService.CurrentApplicationConfig.SysConfig.SkinStyle;
     string _lang = _baseService.CurrentLanguageFileExt;
 }
@@ -13,8 +13,8 @@
     <meta name="Description" content="" />
     <meta name="Keywords" content="" />
     <!--element ui-->
-    <link rel="stylesheet" href="~/Content/js/libs/elementUI/2.13.2/theme-chalk/index.css" />
-    <link rel="stylesheet" href="~/Content/css/element-ui-extend.css?v=20210701" />
+    <link rel="stylesheet" href="~/Content/js/libs/elementUI/2.15.7/theme-chalk/index.css" />
+    <link rel="stylesheet" href="~/Content/css/element-ui-extend.css?v=20220218" />
     <!--web-->
     <link rel="stylesheet" href="~/Content/css/style/@_skinStyle/default.css?v=20211123" />
     <link rel="stylesheet" href="~/Content/css/style.css?v=20210121" />
@@ -30,8 +30,8 @@
     <!--vue.js-->
     <script src="~/Content/js/libs/vueJS/2.6.10/vue.min.js"></script>
     <!--element ui-->
-    <script src="~/Content/js/libs/elementUI/2.13.2/js/index.js"></script>
-    <script src="~/Content/js/libs/elementUI/2.13.2/locale/lang/@(_lang).js"></script>
+    <script src="~/Content/js/libs/elementUI/2.15.7/js/index.js"></script>
+    <script src="~/Content/js/libs/elementUI/2.15.7/locale/lang/@(_lang).js"></script>
     <!--axios.js-->
     <script src="~/Content/js/libs/axios/0.21.1/axios.min.js"></script>
     <!--custom-->

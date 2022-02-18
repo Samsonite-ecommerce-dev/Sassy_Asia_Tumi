@@ -1,8 +1,8 @@
 ﻿using Samsonite.Library.Business.WorkService;
 using Samsonite.Library.Data.Entity.Models;
 using Samsonite.Library.Utility;
-using Samsonite.Library.WorkService.Core;
-using Samsonite.Library.WorkService.Core.Model;
+using Samsonite.Library.Core.WorkService;
+using Samsonite.Library.Core.WorkService.Model;
 using System;
 using System.Collections.Generic;
 using System.Linq;

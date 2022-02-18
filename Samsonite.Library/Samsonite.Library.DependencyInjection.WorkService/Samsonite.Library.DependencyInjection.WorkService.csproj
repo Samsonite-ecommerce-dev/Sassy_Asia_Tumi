@@ -6,7 +6,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Samsonite.Library.Business.WorkService\Samsonite.Library.Business.WorkService.csproj" />
-    <ProjectReference Include="..\Samsonite.Library.Web.Core\Samsonite.Library.Web.Core.csproj" />
   </ItemGroup>
 
 </Project>

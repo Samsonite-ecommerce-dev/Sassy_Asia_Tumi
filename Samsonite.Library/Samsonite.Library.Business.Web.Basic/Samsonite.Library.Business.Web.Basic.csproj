@@ -5,7 +5,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Samsonite.Library.Web.Core\Samsonite.Library.Web.Core.csproj" />
+    <ProjectReference Include="..\Samsonite.Library.Core.Web\Samsonite.Library.Core.Web.csproj" />
   </ItemGroup>
 
 </Project>

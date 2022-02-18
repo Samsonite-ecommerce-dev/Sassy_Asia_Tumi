@@ -1,5 +1,5 @@
 ﻿using System.Text.Json.Serialization;
-using Samsonite.Library.Web.Core.Models;
+using Samsonite.Library.Core.Web.Models;
 
 namespace Samsonite.Library.Business.Web.Basic.Models
 {

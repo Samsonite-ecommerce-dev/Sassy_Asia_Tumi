@@ -2,9 +2,9 @@
 using Samsonite.Library.Bussness.WebApi;
 using Samsonite.Library.Bussness.WebApi.Models;
 using Samsonite.Library.Utility;
-using Samsonite.Library.WebApi.Core;
-using Samsonite.Library.WebApi.Core.Models;
-using Samsonite.Library.WebApi.Core.Utils;
+using Samsonite.Library.Core.WebApi;
+using Samsonite.Library.Core.WebApi.Models;
+using Samsonite.Library.Core.WebApi.Utils;
 using System;
 
 namespace Samsonite.Library.API.Controllers

@@ -1,6 +1,6 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using Samsonite.Library.Bussness.WebApi;
-using Samsonite.Library.WebApi.Core;
+using Samsonite.Library.Core.WebApi;
 
 namespace Samsonite.Library.DependencyInjection.WebApi
 {

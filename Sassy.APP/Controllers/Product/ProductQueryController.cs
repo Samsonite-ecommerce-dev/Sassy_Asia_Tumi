@@ -4,8 +4,8 @@ using Samsonite.Library.Business.Web.Custom;
 using Samsonite.Library.Business.Web.Custom.Models;
 using Samsonite.Library.Data.Entity.Models;
 using Samsonite.Library.Utility;
-using Samsonite.Library.Web.Core;
-using Samsonite.Library.Web.Core.Models;
+using Samsonite.Library.Core.Web;
+using Samsonite.Library.Core.Web.Models;
 using System.Collections.Generic;
 using System.Linq;
 

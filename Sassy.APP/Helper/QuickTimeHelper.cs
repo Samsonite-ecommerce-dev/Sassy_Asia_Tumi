@@ -1,4 +1,4 @@
-﻿using Samsonite.Library.Web.Core;
+﻿using Samsonite.Library.Core.Web;
 using System;
 using System.Collections.Generic;
 

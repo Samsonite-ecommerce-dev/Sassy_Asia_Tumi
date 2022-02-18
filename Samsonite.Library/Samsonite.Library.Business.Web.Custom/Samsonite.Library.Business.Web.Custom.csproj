@@ -5,12 +5,12 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Samsonite.Library.Web.Core\Samsonite.Library.Web.Core.csproj" />
+    <Folder Include="Models\Enum\" />
+    <Folder Include="Models\Request\SAP\" />
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Models\Enum\" />
-    <Folder Include="Models\Request\SAP\" />
+    <ProjectReference Include="..\Samsonite.Library.Core.Web\Samsonite.Library.Core.Web.csproj" />
   </ItemGroup>
 
 </Project>

@@ -1,5 +1,5 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
-using Samsonite.Library.Web.Core;
+using Samsonite.Library.Core.Web;
 
 namespace Samsonite.Library.DependencyInjection.Web
 {

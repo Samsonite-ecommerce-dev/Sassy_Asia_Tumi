@@ -1,5 +1,5 @@
 ﻿using Samsonite.Library.Business.Web.Custom.Models;
-using Samsonite.Library.Web.Core.Models;
+using Samsonite.Library.Core.Web.Models;
 using System.Collections.Generic;
 
 namespace Samsonite.Library.Business.Web.Custom

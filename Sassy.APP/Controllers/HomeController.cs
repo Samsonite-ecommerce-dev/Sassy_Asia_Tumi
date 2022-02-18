@@ -3,8 +3,8 @@ using Samsonite.Library.APP.Helper;
 using Samsonite.Library.Business.Web.Basic;
 using Samsonite.Library.Data.Entity.Models;
 using Samsonite.Library.Utility;
-using Samsonite.Library.Web.Core;
-using Samsonite.Library.Web.Core.Models;
+using Samsonite.Library.Core.Web;
+using Samsonite.Library.Core.Web.Models;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -185,7 +185,7 @@ namespace Samsonite.Library.APP.Controllers
             if (objUserInfo != null)
             {
                 //如果是密码过期
-                if (objUserInfo.Status == (int)Samsonite.Library.Web.Core.Models.UserStatus.ExpiredPwd)
+                if (objUserInfo.Status == (int)Samsonite.Library.Core.Web.Models.UserStatus.ExpiredPwd)
                 {
                     _isExpired = true;
                     //如果是首次登入

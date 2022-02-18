@@ -6,7 +6,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Samsonite.Library.Data.Entity.Models;
-using Samsonite.Library.Web.Core;
+using Samsonite.Library.Core.Web;
 using Samsonite.Library.DependencyInjection.Web;
 using Samsonite.Library.DependencyInjection.WebApi;
 

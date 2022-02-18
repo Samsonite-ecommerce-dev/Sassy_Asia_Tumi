@@ -8,7 +8,7 @@ using Samsonite.Library.Business.WorkService;
 using Samsonite.Library.Data.Entity.Models;
 using Samsonite.Library.DependencyInjection.Web;
 using Samsonite.Library.Utility;
-using Samsonite.Library.Web.Core;
+using Samsonite.Library.Core.Web;
 using System;
 using System.Collections.Generic;
 using System.IO;
