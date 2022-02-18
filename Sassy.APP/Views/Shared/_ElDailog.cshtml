@@ -9,5 +9,8 @@
                v-on:open="dialogOpenCallback"
                v-on:closed="dialogClosedCallback">
         <iframe id="mainFrame" :src="dialog.url" scrolling="auto" style="width:100%;height:100%;" frameborder="0"></iframe>
+        <span slot="footer" class="dialog-footer" v-if="dialog.isSaveButtom">
+            <el-button type="primary" :loading="dialog.buttonLoading" v-on:click="dialogSave()">{{dialog.saveButtomText}}</el-button>
+        </span>
     </el-dialog>
 </template>

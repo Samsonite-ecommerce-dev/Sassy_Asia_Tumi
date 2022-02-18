@@ -81,6 +81,9 @@ elementExtend.Grid = {
 					saveUrl: '',
 					dialogLoading: false,
 					buttonLoading: false,
+					//是否存在Save按钮
+					isSaveButtom: false,
+					saveButtomText: 'Save',
 					//保存时是否确认框提示
 					isConfirm: false
 				}
@@ -303,6 +306,8 @@ elementExtend.Grid = {
 	 * url
 	 * title
 	 * width
+	 * dialogType
+	 * buttomText
 	 */
 	OpenDialog: function (settings) {
 		settings = settings || {};
@@ -313,6 +318,14 @@ elementExtend.Grid = {
 				$vue.dialog.title = settings.title;
 			if (settings.width != undefined)
 				$vue.dialog.width = settings.width;
+			if (settings.dialogType == 'add' || $vue.dialog.dialogType == 'edit') {
+				$vue.dialog.isSaveButtom = true;
+			}
+			else {
+				$vue.dialog.isSaveButtom = false;
+			}
+			if (settings.buttomText != undefined)
+				$vue.dialog.saveButtomText = settings.buttomText;
 			$vue.dialog.dialogVisible = true;
 		}
 		else {
@@ -337,6 +350,7 @@ elementExtend.Grid = {
 	 * url
 	 * width
 	 * height
+	 * buttomText
 	 * saveUrl
 	 * isConfirm
 	 */
@@ -357,6 +371,8 @@ elementExtend.Grid = {
 				title: settings.title,
 				width: settings.width,
 				height: settings.height,
+				dialogType: 'add',
+				buttomText: settings.buttomText
 			});
 			$vue.dialog.saveUrl = (settings.saveUrl === undefined) ? '' : settings.saveUrl;
 		}
@@ -370,6 +386,7 @@ elementExtend.Grid = {
 	 * title
 	 * width
 	 * height
+	 * buttomText
 	 * saveUrl
 	 * isConfirm
 	 */
@@ -392,6 +409,8 @@ elementExtend.Grid = {
 							title: settings.title,
 							width: settings.width,
 							height: settings.height,
+							dialogType: 'edit',
+							buttomText: settings.buttomText,
 							saveUrl: settings.saveUrl,
 							isConfirm: settings.isConfirm
 						});
@@ -608,6 +627,9 @@ elementExtend.Base = {
 					top: "3px",
 					width: '99%',
 					url: '',
+					//是否存在Save按钮
+					isSaveButtom: false,
+					saveButtomText: 'Save',
 					textarea: {
 						text: '',
 						readonly: false
