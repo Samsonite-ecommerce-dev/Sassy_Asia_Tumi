@@ -4,12 +4,12 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Samsonite.Library.Business.WorkService;
-using Samsonite.Library.Data.Entity.Models;
-using Samsonite.Library.DependencyInjection.WorkService;
-using Samsonite.Library.Utility;
 using Samsonite.Library.Core.WorkService;
 using Samsonite.Library.Core.WorkService.Model;
 using Samsonite.Library.Core.WorkService.Utils;
+using Samsonite.Library.Data.Entity.Models;
+using Samsonite.Library.DependencyInjection.WorkService;
+using Samsonite.Library.Utility;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -19,7 +19,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using LogLevel = Microsoft.Extensions.Logging.LogLevel;
 
-namespace Samsonite.Library.Service.WorkService
+namespace Sassy.Service.WorkService
 {
     public class Worker : BackgroundService
     {

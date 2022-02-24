@@ -1,7 +1,7 @@
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Hosting;
 
-namespace Samsonite.Library.APP
+namespace Sassy.APP
 {
     public class Program
     {

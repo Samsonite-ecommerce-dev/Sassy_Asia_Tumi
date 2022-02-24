@@ -1,14 +1,14 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Samsonite.Library.Business.Web.Basic;
 using Samsonite.Library.Business.Web.Basic.Models;
-using Samsonite.Library.Data.Entity.Models;
-using Samsonite.Library.Utility;
 using Samsonite.Library.Core.Web;
 using Samsonite.Library.Core.Web.Models;
+using Samsonite.Library.Data.Entity.Models;
+using Samsonite.Library.Utility;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Samsonite.Library.APP.Controllers
+namespace Sassy.APP.Controllers
 {
     public class SystemLogController : BaseController
     {

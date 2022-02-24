@@ -1,16 +1,16 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
-using Samsonite.Library.Data.Entity.Models;
-using Samsonite.Library.Utility;
 using Samsonite.Library.Core.WebApi;
 using Samsonite.Library.Core.WebApi.Models;
+using Samsonite.Library.Data.Entity.Models;
+using Samsonite.Library.Utility;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Text.Json;
 
-namespace Samsonite.Library.API
+namespace Sassy.API
 {
     public class CustomAuthorizeFilter : ActionFilterAttribute
     {

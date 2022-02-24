@@ -1,7 +1,7 @@
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 
-namespace Samsonite.Library.Service.WorkService
+namespace Sassy.Service.WorkService
 {
     public class Program
     {

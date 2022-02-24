@@ -1,6 +1,6 @@
 ﻿using Samsonite.Library.Business.Web.Basic.Models;
-using Samsonite.Library.Data.Entity.Models;
 using Samsonite.Library.Core.Web.Models;
+using Samsonite.Library.Data.Entity.Models;
 
 namespace Samsonite.Library.Business.Web.Basic
 {

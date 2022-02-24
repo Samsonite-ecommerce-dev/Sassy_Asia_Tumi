@@ -3,7 +3,7 @@ using Samsonite.Library.Core.Web.Models;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Samsonite.Library.APP.Helper
+namespace Sassy.APP.Helper
 {
     public class UserHelper
     {

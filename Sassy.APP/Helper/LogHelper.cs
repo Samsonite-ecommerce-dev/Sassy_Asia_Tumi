@@ -1,7 +1,7 @@
 ﻿using Samsonite.Library.Core.Web.Models;
 using System.Collections.Generic;
 
-namespace Samsonite.Library.APP.Helper
+namespace Sassy.APP.Helper
 {
     public class LogHelper
     {

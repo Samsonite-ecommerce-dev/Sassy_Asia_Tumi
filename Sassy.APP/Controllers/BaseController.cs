@@ -3,7 +3,7 @@ using Samsonite.Library.Core.Web;
 using Samsonite.Library.Core.Web.Models;
 using System.Collections.Generic;
 
-namespace Samsonite.Library.APP.Controllers
+namespace Sassy.APP.Controllers
 {
     public class BaseController : Controller
     {

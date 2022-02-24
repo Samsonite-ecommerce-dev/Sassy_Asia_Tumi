@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 
-namespace Samsonite.Library.API.Controllers
+namespace Sassy.API.Controllers
 {
     public class BaseController : ControllerBase
     {

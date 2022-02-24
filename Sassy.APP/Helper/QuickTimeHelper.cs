@@ -2,7 +2,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace GlobalIT.Helper
+namespace Sassy.APP.Helper
 {
     public class QuickTimeHelper
     {

@@ -10,7 +10,7 @@ using Samsonite.Library.Core.Web;
 using Samsonite.Library.DependencyInjection.Web;
 using Samsonite.Library.DependencyInjection.WebApi;
 
-namespace Samsonite.Library.APP
+namespace Sassy.APP
 {
     public class Startup
     {

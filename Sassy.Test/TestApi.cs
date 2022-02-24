@@ -12,7 +12,7 @@ using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Text.Json;
 
-namespace Samsonite.Sassy.Test
+namespace Sassy.Test
 {
     public class TestApi
     {

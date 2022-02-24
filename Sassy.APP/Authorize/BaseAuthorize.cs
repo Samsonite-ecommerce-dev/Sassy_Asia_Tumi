@@ -1,7 +1,7 @@
-﻿using Samsonite.Library.Core.Web;
-using Samsonite.Library.Core.Web.Models;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
+using Samsonite.Library.Core.Web;
+using Samsonite.Library.Core.Web.Models;
 using System;
 using System.Collections.Generic;
 using System.Web;

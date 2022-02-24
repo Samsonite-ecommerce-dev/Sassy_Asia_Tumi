@@ -1,7 +1,7 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using Samsonite.Library.Core.Web;
 
-namespace Samsonite.Library.APP
+namespace Sassy.APP
 {
     public class GlobalFilterDI
     {

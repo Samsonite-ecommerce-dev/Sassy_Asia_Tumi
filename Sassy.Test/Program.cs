@@ -15,7 +15,7 @@ using System.IO;
 using System.Linq;
 using System.Text.Json;
 
-namespace Samsonite.Sassy.Test
+namespace Sassy.Test
 {
     class Program
     {

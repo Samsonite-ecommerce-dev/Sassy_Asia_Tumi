@@ -9,7 +9,7 @@ using Microsoft.OpenApi.Models;
 using Samsonite.Library.Data.Entity.Models;
 using Samsonite.Library.DependencyInjection.WebApi;
 
-namespace Samsonite.Library.API
+namespace Sassy.API
 {
     public class Startup
     {

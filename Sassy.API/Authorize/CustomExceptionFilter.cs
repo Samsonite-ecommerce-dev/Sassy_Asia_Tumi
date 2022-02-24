@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Mvc.Filters;
 using Samsonite.Library.Core.WebApi.Models;
 
-namespace Samsonite.Library.API
+namespace Sassy.API
 {
     public class CustomExceptionFilter : ExceptionFilterAttribute
     {

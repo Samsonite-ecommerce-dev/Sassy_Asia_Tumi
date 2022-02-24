@@ -1,6 +1,6 @@
-﻿using System.Text.Json.Serialization;
-using Samsonite.Library.Core.Web.Models;
+﻿using Samsonite.Library.Core.Web.Models;
 using System;
+using System.Text.Json.Serialization;
 
 namespace Samsonite.Library.Business.Web.Basic.Models
 {

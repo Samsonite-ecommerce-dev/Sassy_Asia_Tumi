@@ -4,7 +4,7 @@ using Samsonite.Library.Core.Web;
 using Samsonite.Library.Core.Web.Models;
 using System.Web;
 
-namespace Samsonite.Library.APP.Controllers
+namespace Sassy.APP.Controllers
 {
     public class ErrorController : Controller
     {

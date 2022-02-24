@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Mvc.Filters;
 using Samsonite.Library.Core.Web;
 
-namespace Samsonite.Library.APP
+namespace Sassy.APP
 {
     public class GlobalExceptions : IExceptionFilter
     {
