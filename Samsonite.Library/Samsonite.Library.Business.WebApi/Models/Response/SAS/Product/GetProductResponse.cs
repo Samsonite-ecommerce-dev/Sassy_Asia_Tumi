@@ -30,6 +30,9 @@ namespace Samsonite.Library.Bussness.WebApi.Models
         [JsonPropertyName("material_Group")]
         public string MaterialGroup { get; set; }
 
+        [JsonPropertyName("ean")]
+        public string EAN { get; set; }
+
         [JsonPropertyName("collection")]
         public string Collection { get; set; }
     }

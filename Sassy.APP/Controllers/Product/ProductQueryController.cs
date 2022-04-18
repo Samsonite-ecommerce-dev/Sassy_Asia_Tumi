@@ -159,11 +159,12 @@ namespace Sassy.APP.Controllers
                            s4 = dy.MaterialId,
                            s5 = dy.Gridval,
                            s6 = _products.Where(p => p.MaterialId == dy.MaterialId && p.Gridval == dy.Gridval).SingleOrDefault()?.SKU,
-                           s7 = dy.VersionID,
-                           s8 = $"{VariableHelper.FormateMoney(dy.BasicPrice)} {dy.Currency}",
-                           s9 = dy.UnitofMeasure,
-                           s10 = dy.Status,
-                           s11 = dy.AvailableStock
+                           s7 = _products.Where(p => p.MaterialId == dy.MaterialId && p.Gridval == dy.Gridval).SingleOrDefault()?.EAN,
+                           s8 = dy.VersionID,
+                           s9 = $"{VariableHelper.FormateMoney(dy.BasicPrice)} {dy.Currency}",
+                           s10 = dy.UnitofMeasure,
+                           s11 = dy.Status,
+                           s12 = dy.AvailableStock
                        }
             };
             return Json(_result);

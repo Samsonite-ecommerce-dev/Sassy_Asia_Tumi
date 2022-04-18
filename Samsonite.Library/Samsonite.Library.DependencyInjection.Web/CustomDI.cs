@@ -12,6 +12,7 @@ namespace Samsonite.Library.DependencyInjection.Web
             //product
             services.AddScoped<IProductsService, ProductsService>();
             services.AddScoped<IProductQueryService, ProductQueryService>();
+            services.AddScoped<ISparePartGroupService, SparePartGroupService>();
             services.AddScoped<ISparePartQueryService, SparePartQueryService>();
             services.AddScoped<IUploadSparePartService, UploadSparePartService>();
         }

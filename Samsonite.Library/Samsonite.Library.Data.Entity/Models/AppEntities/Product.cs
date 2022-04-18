@@ -43,6 +43,11 @@ namespace Samsonite.Library.Data.Entity.Models
         /// <summary>
         /// 
         /// </summary>
+        public string EAN { get; set; }
+
+        /// <summary>
+        /// 
+        /// </summary>
         public string Collection { get; set; }
 
         /// <summary>

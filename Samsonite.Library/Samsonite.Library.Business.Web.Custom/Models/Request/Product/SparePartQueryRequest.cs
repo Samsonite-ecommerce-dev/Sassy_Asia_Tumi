@@ -6,6 +6,8 @@ namespace Samsonite.Library.Business.Web.Custom.Models
     {
         public string SparePartKey { get; set; }
 
+        public int GroupID { get; set; }
+
         public string Status { get; set; }
     }
 

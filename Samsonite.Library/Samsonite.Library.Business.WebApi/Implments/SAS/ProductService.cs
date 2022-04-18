@@ -34,6 +34,7 @@ namespace Samsonite.Library.Bussness.WebApi
                                 Grid = item.Gridval,
                                 GridDesc = item.ColorDescription,
                                 MaterialGroup = item.MaterialGroup,
+                                EAN = item.EAN,
                                 Collection = item.Collection
                             }).ToList();
             return _result;

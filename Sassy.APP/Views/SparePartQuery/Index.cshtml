@@ -11,6 +11,15 @@
                         <el-input size="small" prefix-icon="el-icon-search" class="input-xlarge" v-model="searchParams.sparepartKey" :placeholder="languagePack.common_search_key" clearable></el-input>
                     </li>
                     <li>
+                        <el-select size="small" v-model="searchParams.groupId" :placeholder="languagePack.sparepartquery_index_search_group" filterable remote :loading="custom.searchGroupLoading" :remote-method="searchGroup" clearable>
+                            <el-option v-for="item in custom.groupOptions"
+                                       :key="item.groupid"
+                                       :label="item.desc"
+                                       :value="item.groupid">
+                            </el-option>
+                        </el-select>
+                    </li>
+                    <li>
                         <el-select size="small" clearable :placeholder="languagePack.sparepartquery_index_search_status" v-model="searchParams.status">
                             <el-option v-for="item in custom.statusOptions"
                                        :key="item.value"
@@ -91,9 +100,12 @@
                 },
                 searchParams: {
                     sparepartKey: '',
+                    groupId:'',
                     status: ''
                 },
                 custom: {
+                    groupOptions: [],
+                    searchGroupLoading:false,
                     statusOptions:[]
                 }
             },
@@ -118,10 +130,31 @@
                             elementExtend.Grid.Toolbar({
                                 vue: $vue
                             });
+                            //默认分组
+                            $vue.searchGroup();
                             //数据集合
                             $vue.custom.statusOptions = data.statusList;
                             //查询信息
                             $vue.getGridList();
+                        }
+                    });
+                },
+                searchGroup: function (query) {
+                    let $vue = this;
+                    if (query == undefined)
+                        query = '';
+                    vueExtend.Ajax.Post({
+                        url: '@Url.Action("SearchSparePartGroup_Message", "Common")',
+                        params: {
+                            keyword: query
+                        },
+                        beforeSend: function () {
+                            $vue.custom.searchGroupLoading = true;
+                        },
+                        success: function (data) {
+                            $vue.custom.searchGroupLoading = false;
+                            //数据集合
+                            $vue.custom.groupOptions = data.rows;
                         }
                     });
                 },
@@ -151,7 +184,7 @@
                 },
                 previewImage: function (src) {
                     elementExtend.previewImage(this, src);
-                },
+                }
             }
         });
     </script>

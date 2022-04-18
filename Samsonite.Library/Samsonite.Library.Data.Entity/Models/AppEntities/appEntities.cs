@@ -31,6 +31,7 @@ namespace Samsonite.Library.Data.Entity.Models
         public virtual DbSet<ProductSparePart> ProductSparePart { get; set; }
         public virtual DbSet<FTPInfo> FTPInfo { get; set; }
         public virtual DbSet<LanguagePackKey> LanguagePackKey { get; set; }
+        public virtual DbSet<Product> Product { get; set; }
         public virtual DbSet<LanguagePackValue> LanguagePackValue { get; set; }
         public virtual DbSet<LanguageType> LanguageType { get; set; }
         public virtual DbSet<View_LanguagePack> View_LanguagePack { get; set; }
@@ -45,7 +46,6 @@ namespace Samsonite.Library.Data.Entity.Models
         public virtual DbSet<WebApiRoles> WebApiRoles { get; set; }
         public virtual DbSet<ProductLineColor> ProductLineColor { get; set; }
         public virtual DbSet<ProductLine> ProductLine { get; set; }
-        public virtual DbSet<Product> Product { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -870,6 +870,79 @@ namespace Samsonite.Library.Data.Entity.Models
 
             });
 
+            modelBuilder.Entity<Product>(entity =>
+            {
+                entity.HasKey(e => e.ID);
+
+                entity.Property(e => e.ID)
+                    .HasColumnName("ID")
+                    .IsRequired();
+
+                entity.Property(e => e.SKU)
+                    .HasColumnName("SKU")
+                    .IsRequired()
+                    .HasMaxLength(50);
+
+                entity.Property(e => e.MaterialId)
+                    .HasColumnName("MaterialId")
+                    .IsRequired()
+                    .HasMaxLength(32)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.Gridval)
+                    .HasColumnName("Gridval")
+                    .IsRequired()
+                    .HasMaxLength(32)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.MaterialDescription)
+                    .HasColumnName("MaterialDescription")
+                    .HasMaxLength(256);
+
+                entity.Property(e => e.ColorDescription)
+                    .HasColumnName("ColorDescription")
+                    .HasMaxLength(256);
+
+                entity.Property(e => e.MaterialGroup)
+                    .HasColumnName("MaterialGroup")
+                    .HasMaxLength(32)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.EAN)
+                    .HasColumnName("EAN")
+                    .IsRequired()
+                    .HasMaxLength(32)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.Collection)
+                    .HasColumnName("Collection")
+                    .HasMaxLength(256);
+
+                entity.Property(e => e.ConstructionType)
+                    .HasColumnName("ConstructionType")
+                    .HasMaxLength(32)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.Status)
+                    .HasColumnName("Status")
+                    .IsRequired()
+                    .HasMaxLength(16)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.AddDate)
+                    .HasColumnName("AddDate")
+                    .IsRequired()
+                    .HasColumnType("datetime")
+                    .HasDefaultValueSql("(getdate())")
+                    .HasComment("创建时间");
+
+                entity.Property(e => e.EditDate)
+                    .HasColumnName("EditDate")
+                    .HasColumnType("datetime")
+                    .HasComment("编辑时间");
+
+            });
+
             modelBuilder.Entity<LanguagePackValue>(entity =>
             {
                 entity.HasKey(e => e.ID);
@@ -1473,73 +1546,6 @@ namespace Samsonite.Library.Data.Entity.Models
                     .HasColumnName("LineText")
                     .HasMaxLength(500)
                     .HasComment("描述");
-
-                entity.Property(e => e.AddDate)
-                    .HasColumnName("AddDate")
-                    .IsRequired()
-                    .HasColumnType("datetime")
-                    .HasDefaultValueSql("(getdate())")
-                    .HasComment("创建时间");
-
-                entity.Property(e => e.EditDate)
-                    .HasColumnName("EditDate")
-                    .HasColumnType("datetime")
-                    .HasComment("编辑时间");
-
-            });
-
-            modelBuilder.Entity<Product>(entity =>
-            {
-                entity.HasKey(e => e.ID);
-
-                entity.Property(e => e.ID)
-                    .HasColumnName("ID")
-                    .IsRequired();
-
-                entity.Property(e => e.SKU)
-                    .HasColumnName("SKU")
-                    .IsRequired()
-                    .HasMaxLength(50);
-
-                entity.Property(e => e.MaterialId)
-                    .HasColumnName("MaterialId")
-                    .IsRequired()
-                    .HasMaxLength(32)
-                    .IsUnicode(false);
-
-                entity.Property(e => e.Gridval)
-                    .HasColumnName("Gridval")
-                    .IsRequired()
-                    .HasMaxLength(32)
-                    .IsUnicode(false);
-
-                entity.Property(e => e.MaterialDescription)
-                    .HasColumnName("MaterialDescription")
-                    .HasMaxLength(256);
-
-                entity.Property(e => e.ColorDescription)
-                    .HasColumnName("ColorDescription")
-                    .HasMaxLength(256);
-
-                entity.Property(e => e.MaterialGroup)
-                    .HasColumnName("MaterialGroup")
-                    .HasMaxLength(32)
-                    .IsUnicode(false);
-
-                entity.Property(e => e.Collection)
-                    .HasColumnName("Collection")
-                    .HasMaxLength(256);
-
-                entity.Property(e => e.ConstructionType)
-                    .HasColumnName("ConstructionType")
-                    .HasMaxLength(32)
-                    .IsUnicode(false);
-
-                entity.Property(e => e.Status)
-                    .HasColumnName("Status")
-                    .IsRequired()
-                    .HasMaxLength(16)
-                    .IsUnicode(false);
 
                 entity.Property(e => e.AddDate)
                     .HasColumnName("AddDate")

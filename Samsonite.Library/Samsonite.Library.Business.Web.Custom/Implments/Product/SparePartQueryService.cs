@@ -44,6 +44,11 @@ namespace Samsonite.Library.Business.Web.Custom
                 _list = _list.Where(p => p.SparePartID.ToString().Contains(request.SparePartKey) || p.SparePartDescription.Contains(request.SparePartKey));
             }
 
+            if (request.GroupID > 0)
+            {
+                _list = _list.Where(p => p.GroupID == request.GroupID);
+            }
+
             if (!string.IsNullOrEmpty(request.Status))
             {
                 _list = _list.Where(p => p.Status == request.Status);

@@ -15,11 +15,13 @@ namespace Sassy.APP.Controllers
     public class CommonController : BaseController
     {
         private IProductsService _productsService;
+        private ISparePartGroupService _sparePartGroupService;
         private IWebHostEnvironment _webHostEnvironment;
         private QuickTimeHelper _quickTimeHelper;
-        public CommonController(IBaseService baseService, IProductsService productsService, IWebHostEnvironment webHostEnvironment) : base(baseService)
+        public CommonController(IBaseService baseService, IProductsService productsService, ISparePartGroupService sparePartGroupService, IWebHostEnvironment webHostEnvironment) : base(baseService)
         {
             _productsService = productsService;
+            _sparePartGroupService = sparePartGroupService;
             _webHostEnvironment = webHostEnvironment;
             _quickTimeHelper = new QuickTimeHelper(baseService);
         }
@@ -121,6 +123,36 @@ namespace Sassy.APP.Controllers
                        {
                            code = $"{dy.MaterialId}-{dy.Gridval}",
                            sku = dy.SKU
+                       }
+            };
+            return Json(_result);
+        }
+        #endregion
+
+        #region 配件查询
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
+        [HttpPost]
+        [ServiceFilter(typeof(UserLoginAuthorize))]
+        public JsonResult SearchSparePartGroup_Message(SparePartGroupSearchRequest request)
+        {
+            //过滤参数
+            ValidateHelper.Validate(request);
+            //默认去前10条
+            request.Page = 1;
+            request.Rows = 10;
+
+            //查询
+            var _list = _sparePartGroupService.GetQuery(request);
+            var _result = new
+            {
+                rows = from dy in _list.Items
+                       select new
+                       {
+                           groupid = dy.GroupID,
+                           desc = dy.GroupDescription
                        }
             };
             return Json(_result);

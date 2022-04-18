@@ -50,6 +50,11 @@ namespace Samsonite.Library.Business.WorkService.Models
         public string SapConstructionType { get; set; }
 
         public string SapStatus { get; set; }
+
+        /// <summary>
+        /// ean
+        /// </summary>
+        public string SapEAN { get; set; }
     }
 
     public class SAPSparePartInventoryDto

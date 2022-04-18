@@ -94,6 +94,7 @@ namespace Samsonite.Library.Business.WorkService
                         sAPMaterialDto.SapCollection = columns.Length >= 8 ? columns[7] : "";
                         sAPMaterialDto.SapConstructionType = columns.Length >= 9 ? columns[8] : "";
                         sAPMaterialDto.SapStatus = columns.Length >= 10 ? columns[9] : "";
+                        sAPMaterialDto.SapEAN = columns.Length >= 11 ? columns[10] : "";
                         //ZFGS:Material
                         //ZSPA:SparePart
                         if (sAPMaterialDto.SapMaterialType == "ZFGS")
@@ -165,6 +166,7 @@ namespace Samsonite.Library.Business.WorkService
                         Status = item.SapStatus,
                         MaterialDescription = VariableHelper.SaferequestSQL(item.SapName),
                         MaterialGroup = VariableHelper.SaferequestSQL(item.SapMaterialGroup),
+                        EAN = VariableHelper.SaferequestSQL(item.SapEAN)
                     });
                 }
 
@@ -184,12 +186,12 @@ namespace Samsonite.Library.Business.WorkService
                             {
                                 skuSqlBuilder.AppendLine($"IF NOT EXISTS(SELECT * from [Product] WHERE MaterialId = N'{item.MaterialId}' AND Gridval=N'{item.Gridval}')");
                                 skuSqlBuilder.AppendLine("BEGIN");
-                                skuSqlBuilder.AppendLine("INSERT INTO [Product](SKU,MaterialId,Gridval,MaterialDescription,ColorDescription,MaterialGroup,[Collection],ConstructionType,[Status],AddDate,EditDate)");
-                                skuSqlBuilder.AppendLine($" VALUES(N'{item.SKU}',N'{item.MaterialId}',N'{item.Gridval}',N'{item.MaterialDescription}',N'{item.ColorDescription}',N'{item.MaterialGroup}',N'{item.Collection}',N'{item.ConstructionType}',N'{item.Status}',getdate(),getdate())");
+                                skuSqlBuilder.AppendLine("INSERT INTO [Product](SKU,MaterialId,Gridval,MaterialDescription,ColorDescription,MaterialGroup,EAN,[Collection],ConstructionType,[Status],AddDate,EditDate)");
+                                skuSqlBuilder.AppendLine($" VALUES(N'{item.SKU}',N'{item.MaterialId}',N'{item.Gridval}',N'{item.MaterialDescription}',N'{item.ColorDescription}',N'{item.MaterialGroup}',N'{item.EAN}',N'{item.Collection}',N'{item.ConstructionType}',N'{item.Status}',getdate(),getdate())");
                                 skuSqlBuilder.AppendLine("END");
                                 skuSqlBuilder.AppendLine("ELSE");
                                 skuSqlBuilder.AppendLine("BEGIN");
-                                skuSqlBuilder.AppendLine($"UPDATE [Product] SET SKU=N'{item.SKU}',MaterialDescription=N'{item.MaterialDescription}',ColorDescription=N'{item.ColorDescription}',MaterialGroup=N'{item.MaterialGroup}',[Collection]=N'{item.Collection}',ConstructionType=N'{item.ConstructionType}',[Status]=N'{item.Status}',EditDate=getdate() WHERE MaterialId = N'{item.MaterialId}' AND Gridval=N'{item.Gridval}'");
+                                skuSqlBuilder.AppendLine($"UPDATE [Product] SET SKU=N'{item.SKU}',MaterialDescription=N'{item.MaterialDescription}',ColorDescription=N'{item.ColorDescription}',MaterialGroup=N'{item.MaterialGroup}',EAN=N'{item.EAN}',[Collection]=N'{item.Collection}',ConstructionType=N'{item.ConstructionType}',[Status]=N'{item.Status}',EditDate=getdate() WHERE MaterialId = N'{item.MaterialId}' AND Gridval=N'{item.Gridval}'");
                                 skuSqlBuilder.AppendLine("END");
                             }
                             var tmpResult = _appDB.Database.ExecuteSqlRaw(skuSqlBuilder.ToString());
