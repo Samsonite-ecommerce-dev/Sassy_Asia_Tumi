@@ -11,6 +11,11 @@ namespace Samsonite.Library.Data.Entity.Models
         public int GroupID { get; set; }
 
         /// <summary>
+        /// 分组来源:1.SAP,2.客户自定义
+        /// </summary>
+        public int GroupType { get; set; }
+
+        /// <summary>
         /// 分组名称
         /// </summary>
         public string GroupDescription { get; set; }

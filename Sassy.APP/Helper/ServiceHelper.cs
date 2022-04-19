@@ -40,16 +40,16 @@ namespace Sassy.APP.Helper
         /// <summary>
         /// 服务状态显示值
         /// </summary>
-        /// <param name="objStatus"></param>
-        /// <param name="objCss"></param>
+        /// <param name="status"></param>
+        /// <param name="css"></param>
         /// <returns></returns>
-        public string GetServiceStatusDisplay(int objStatus, bool objCss = false)
+        public string GetServiceStatusDisplay(int status, bool css = false)
         {
             string _result = string.Empty;
-            DefineEnum _O = ServiceStatusReflect().Where(p => p.ID == objStatus).SingleOrDefault();
+            DefineEnum _O = ServiceStatusReflect().Where(p => p.ID == status).SingleOrDefault();
             if (_O != null)
             {
-                if (objCss)
+                if (css)
                 {
                     _result = string.Format("<label class=\"{0}\">{1}</label>", _O.Css, _O.Display);
                 }
@@ -95,14 +95,14 @@ namespace Sassy.APP.Helper
         /// <summary>
         /// 操作类型显示值
         /// </summary>
-        /// <param name="objStatus"></param>
+        /// <param name="status"></param>
         /// <returns></returns>
-        public string GetJobTypeDisplay(int objStatus)
+        public string GetJobTypeDisplay(int status)
         {
             string _result = string.Empty;
             foreach (var _O in JobTypeReflect())
             {
-                if ((int)_O[0] == objStatus)
+                if ((int)_O[0] == status)
                 {
                     _result = _O[1].ToString();
                     break;
@@ -146,16 +146,16 @@ namespace Sassy.APP.Helper
         /// <summary>
         /// 操作状态显示值
         /// </summary>
-        /// <param name="objStatus"></param>
-        /// <param name="objCss"></param>
+        /// <param name="status"></param>
+        /// <param name="css"></param>
         /// <returns></returns>
-        public string GetJobStatusDisplay(int objStatus, bool objCss = false)
+        public string GetJobStatusDisplay(int status, bool css = false)
         {
             string _result = string.Empty;
-            DefineEnum _O = JobStatusReflect().Where(p => p.ID == objStatus).SingleOrDefault();
+            DefineEnum _O = JobStatusReflect().Where(p => p.ID == status).SingleOrDefault();
             if (_O != null)
             {
-                if (objCss)
+                if (css)
                 {
                     _result = string.Format("<label class=\"{0}\">{1}</label>", _O.Css, _O.Display);
                 }

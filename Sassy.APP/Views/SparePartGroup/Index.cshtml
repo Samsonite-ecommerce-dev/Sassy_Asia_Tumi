@@ -11,6 +11,15 @@
                         <el-input size="small" prefix-icon="el-icon-search" class="input-xlarge" v-model="searchParams.keyword" :placeholder="languagePack.common_search_key" clearable></el-input>
                     </li>
                     <li>
+                        <el-select size="small" clearable :placeholder="languagePack.sparepartgroup_index_search_type" v-model="searchParams.groupType">
+                            <el-option v-for="item in custom.groupTypeOptions"
+                                       :key="item.value"
+                                       :label="item.label"
+                                       :value="item.value">
+                            </el-option>
+                        </el-select>
+                    </li>
+                    <li>
                         <el-button size="mini" type="primary" :loading="searchBar.searchBtn.loading" v-on:click="search">{{languagePack.common_search}}<i class="el-icon-search el-icon--right"></i></el-button>
                     </li>
                 </ul>
@@ -19,6 +28,7 @@
     </div>
     <div class="main-list">
         <div class="main-list-toolbar">
+            <a href="javascript:void(0)" v-if="toolbar.operate.add" v-on:click="add"><i class="el-icon-plus text-success"></i>{{languagePack.common_add}}</a>
             <a href="javascript:void(0)" v-if="toolbar.operate.edit" v-on:click="edit"><i class="el-icon-edit text-warning"></i>{{languagePack.common_edit}}</a>
             <span class="toolbar-separator"></span>
             <a href="javascript:void(0)" v-on:click="refresh"><i class="el-icon-refresh text-info"></i>{{languagePack.common_refresh}}</a>
@@ -35,7 +45,12 @@
                 <el-table-column type="selection" prop="ck" width="50"></el-table-column>
                 <el-table-column prop="s1" :label="languagePack.sparepartgroup_index_group_id"></el-table-column>
                 <el-table-column prop="s2" :label="languagePack.sparepartgroup_index_description"></el-table-column>
-                <el-table-column prop="s3" :label="languagePack.sparepartgroup_index_text"></el-table-column>
+                <el-table-column prop="s3" :label="languagePack.sparepartgroup_index_type">
+                    <template slot-scope="scope">
+                        <span v-html="scope.row.s3"></span>
+                    </template>
+                </el-table-column>
+                <el-table-column prop="s4" :label="languagePack.sparepartgroup_index_text"></el-table-column>
             </el-table>
         </div>
         <div class="main-list-pagination">
@@ -60,6 +75,7 @@
                 languagePack: JSON.parse(window.parent.frames.appFrame.languagePackCache),
                 toolbar: {
                     operate: {
+                        add:false,
                         edit: false
                     }
                 },
@@ -67,7 +83,11 @@
                     url:'@Url.Action("Index_Message", "SparePartGroup")'
                 },
                 searchParams: {
-                    keyword: ''
+                    keyword: '',
+                    groupType:''
+                },
+                custom: {
+                    groupTypeOptions: [],
                 }
             },
             created: function () {
@@ -91,6 +111,7 @@
                             elementExtend.Grid.Toolbar({
                                 vue: $vue
                             });
+                            $vue.custom.groupTypeOptions = data.groupTypeList;
                             //查询信息
                             $vue.getGridList();
                         }
@@ -99,6 +120,15 @@
                 search: function () {
                     elementExtend.Grid.Search({
                         vue: this
+                    });
+                },
+                add: function () {
+                    elementExtend.Grid.SaveDialog({
+                        vue: this,
+                        url: '@Url.Action("Add", "SparePartGroup")',
+                        title: this.languagePack.common_add,
+                        width: '99%',
+                        saveUrl: '@Url.Action("Add_Message", "SparePartGroup")'
                     });
                 },
                 edit: function() {

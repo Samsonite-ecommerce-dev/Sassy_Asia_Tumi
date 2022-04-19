@@ -5,6 +5,7 @@ using Samsonite.Library.Core.Web;
 using Samsonite.Library.Core.Web.Models;
 using Samsonite.Library.Data.Entity.Models;
 using Samsonite.Library.Utility;
+using Sassy.APP.Helper;
 using System.Linq;
 
 namespace Sassy.APP.Controllers
@@ -12,10 +13,12 @@ namespace Sassy.APP.Controllers
     public class SparePartGroupController : BaseController
     {
         private ISparePartGroupService _sparePartGroupService;
+        private SparePartHelper _sparePartHelper;
         private appEntities _appDB;
         public SparePartGroupController(IBaseService baseService, ISparePartGroupService sparePartGroupService, appEntities appEntities) : base(baseService)
         {
             _sparePartGroupService = sparePartGroupService;
+            _sparePartHelper = new SparePartHelper();
             _appDB = appEntities;
         }
 
@@ -25,6 +28,8 @@ namespace Sassy.APP.Controllers
         [AuthorizePropertyAttribute(Action = "index")]
         public JsonResult Initialize_Info(string type, int id)
         {
+            var _groupTypeList = _sparePartHelper.SparePartGroupTypeObject().Select(p => new { label = p.Label, value = p.Value }).ToList();
+
             if (type == "index")
             {
                 //返回数据
@@ -33,7 +38,9 @@ namespace Sassy.APP.Controllers
                     //菜单栏
                     navMenu = this.MenuBar(),
                     //功能权限
-                    userAuthorization = this.FunctionPowers()
+                    userAuthorization = this.FunctionPowers(),
+                    //分组类型
+                    groupTypeList = _groupTypeList
                 });
             }
             else if (type == "edit")
@@ -91,8 +98,34 @@ namespace Sassy.APP.Controllers
                            ck = dy.GroupID,
                            s1 = dy.GroupID,
                            s2 = dy.GroupDescription,
-                           s3 = dy.GroupText
+                           s3 = _sparePartHelper.GetSparePartGroupTypeDisplay(dy.GroupType, true),
+                           s4 = dy.GroupText
                        }
+            };
+            return Json(_result);
+        }
+        #endregion
+
+        #region 添加
+        [ServiceFilter(typeof(UserPowerAuthorize))]
+        public ActionResult Add()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        [ServiceFilter(typeof(UserPowerAuthorize))]
+        [AuthorizePropertyAttribute(IsAntiforgeryToken = true)]
+        public JsonResult Add_Message(SparePartGroupAddRequest request)
+        {
+            //过滤参数
+            ValidateHelper.Validate(request);
+
+            var _res = _sparePartGroupService.Add(request);
+            var _result = new
+            {
+                result = _res.Result,
+                msg = _res.Message
             };
             return Json(_result);
         }

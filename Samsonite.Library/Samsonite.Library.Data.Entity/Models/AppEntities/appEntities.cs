@@ -14,7 +14,6 @@ namespace Samsonite.Library.Data.Entity.Models
         {
         }
 
-        public virtual DbSet<GroupInfo> GroupInfo { get; set; }
         public virtual DbSet<SysFunction> SysFunction { get; set; }
         public virtual DbSet<SysFunctionGroup> SysFunctionGroup { get; set; }
         public virtual DbSet<SysRole> SysRole { get; set; }
@@ -34,6 +33,7 @@ namespace Samsonite.Library.Data.Entity.Models
         public virtual DbSet<Product> Product { get; set; }
         public virtual DbSet<LanguagePackValue> LanguagePackValue { get; set; }
         public virtual DbSet<LanguageType> LanguageType { get; set; }
+        public virtual DbSet<GroupInfo> GroupInfo { get; set; }
         public virtual DbSet<View_LanguagePack> View_LanguagePack { get; set; }
         public virtual DbSet<SendMailGroup> SendMailGroup { get; set; }
         public virtual DbSet<ServiceModuleJob> ServiceModuleJob { get; set; }
@@ -56,39 +56,6 @@ namespace Samsonite.Library.Data.Entity.Models
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<GroupInfo>(entity =>
-            {
-                entity.HasKey(e => e.GroupID);
-
-                entity.Property(e => e.GroupID)
-                    .HasColumnName("GroupID")
-                    .IsRequired();
-
-                entity.Property(e => e.GroupDescription)
-                    .HasColumnName("GroupDescription")
-                    .IsRequired()
-                    .HasMaxLength(256)
-                    .HasComment("分组名称");
-
-                entity.Property(e => e.GroupText)
-                    .HasColumnName("GroupText")
-                    .HasMaxLength(500)
-                    .HasComment("描述");
-
-                entity.Property(e => e.AddDate)
-                    .HasColumnName("AddDate")
-                    .IsRequired()
-                    .HasColumnType("datetime")
-                    .HasDefaultValueSql("(getdate())")
-                    .HasComment("创建时间");
-
-                entity.Property(e => e.EditDate)
-                    .HasColumnName("EditDate")
-                    .HasColumnType("datetime")
-                    .HasComment("编辑时间");
-
-            });
-
             modelBuilder.Entity<SysFunction>(entity =>
             {
                 entity.HasKey(e => e.Funcid);
@@ -1000,6 +967,45 @@ namespace Samsonite.Library.Data.Entity.Models
                     .HasColumnName("IsDefault")
                     .IsRequired()
                     .HasComment("是否默认:1.是,2:否");
+
+            });
+
+            modelBuilder.Entity<GroupInfo>(entity =>
+            {
+                entity.HasKey(e => e.GroupID);
+
+                entity.Property(e => e.GroupID)
+                    .HasColumnName("GroupID")
+                    .IsRequired();
+
+                entity.Property(e => e.GroupType)
+                    .HasColumnName("GroupType")
+                    .IsRequired()
+                    .HasDefaultValueSql("((0))")
+                    .HasComment("分组来源:1.SAP,2.客户自定义");
+
+                entity.Property(e => e.GroupDescription)
+                    .HasColumnName("GroupDescription")
+                    .IsRequired()
+                    .HasMaxLength(256)
+                    .HasComment("分组名称");
+
+                entity.Property(e => e.GroupText)
+                    .HasColumnName("GroupText")
+                    .HasMaxLength(500)
+                    .HasComment("描述");
+
+                entity.Property(e => e.AddDate)
+                    .HasColumnName("AddDate")
+                    .IsRequired()
+                    .HasColumnType("datetime")
+                    .HasDefaultValueSql("(getdate())")
+                    .HasComment("创建时间");
+
+                entity.Property(e => e.EditDate)
+                    .HasColumnName("EditDate")
+                    .HasColumnType("datetime")
+                    .HasComment("编辑时间");
 
             });
 

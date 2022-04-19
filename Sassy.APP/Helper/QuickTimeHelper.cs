@@ -38,13 +38,12 @@ namespace Sassy.APP.Helper
         /// <summary>
         /// 返回对应的SQL查询语句
         /// </summary>
-        /// <param name="objType">时间类型</param>
-        /// <param name="objParaTime">查询的时间字段</param>
+        /// <param name="type">时间类型</param>
         /// <returns></returns>
-        public string[] GetQuickTime(int objType)
+        public string[] GetQuickTime(int type)
         {
             string[] _result = new string[2];
-            switch (objType)
+            switch (type)
             {
                 case 1:
                     _result[0] = DateTime.Now.ToString("yyyy-MM-dd 00:00:00");

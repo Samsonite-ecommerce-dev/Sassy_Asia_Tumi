@@ -5,7 +5,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Models\Enum\" />
     <Folder Include="Models\Request\SAP\" />
   </ItemGroup>
 

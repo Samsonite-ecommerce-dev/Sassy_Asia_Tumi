@@ -1,44 +1,35 @@
-﻿using Samsonite.Library.Core.Web;
+﻿using Samsonite.Library.Business.Web.Custom.Models;
 using Samsonite.Library.Core.Web.Models;
 using System.Collections.Generic;
 using System.Linq;
 
 namespace Sassy.APP.Helper
 {
-    public class UserHelper
+    public class SparePartHelper
     {
-        private IBaseService _baseService;
-        public UserHelper(IBaseService baseService)
-        {
-            _baseService = baseService;
-        }
-
-        #region 账号类型
+        #region 分组类别
         /// <summary>
-        /// 账号类型集合
+        /// 分组类别集合
         /// </summary>
         /// <returns></returns>
-        private List<DefineEnum> UserTypeReflect()
+        private List<DefineEnum> SparePartGroupTypeReflect()
         {
-            //加载语言包
-            var _LanguagePack = _baseService.CurrentLanguagePack;
-
             List<DefineEnum> _result = new List<DefineEnum>()
             {
-                new DefineEnum() { ID = (int)UserType.InternalStaff, Display = _LanguagePack["users_index_type_1"], Css = "text-primary" },
-                new DefineEnum() { ID = (int)UserType.Customer, Display = _LanguagePack["users_index_type_2"], Css = "text-warning" }
+                new DefineEnum() { ID = (int)GroupType.SAP, Display = "SAP", Css = "text-info" },
+                new DefineEnum() { ID = (int)GroupType.Custom, Display = "Custom", Css = "text-success" }
             };
             return _result;
         }
 
         /// <summary>
-        /// 全部账号类型列表(包换客户)
+        /// 分组类别列表
         /// </summary>
         /// <returns></returns>
-        public List<DefineSelectOption> UserTypeObject()
+        public List<DefineSelectOption> SparePartGroupTypeObject()
         {
             List<DefineSelectOption> _result = new List<DefineSelectOption>();
-            foreach (var _o in UserTypeReflect())
+            foreach (var _o in SparePartGroupTypeReflect())
             {
                 _result.Add(new DefineSelectOption() { Label = _o.Display, Value = _o.ID });
             }
@@ -46,15 +37,15 @@ namespace Sassy.APP.Helper
         }
 
         /// <summary>
-        /// 账号类型显示值
+        /// 分组类别显示值
         /// </summary>
         /// <param name="status"></param>
         /// <param name="css"></param>
         /// <returns></returns>
-        public string GetUserTypeDisplay(int status, bool css = false)
+        public string GetSparePartGroupTypeDisplay(int status, bool css = false)
         {
             string _result = string.Empty;
-            DefineEnum _O = UserTypeReflect().Where(p => p.ID == status).SingleOrDefault();
+            DefineEnum _O = SparePartGroupTypeReflect().Where(p => p.ID == status).SingleOrDefault();
             if (_O != null)
             {
                 if (css)

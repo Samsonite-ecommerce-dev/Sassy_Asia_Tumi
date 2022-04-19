@@ -15,6 +15,13 @@ namespace Samsonite.Library.Business.Web.Custom
         QueryResponse<GroupInfo> GetQuery(SparePartGroupSearchRequest request);
 
         /// <summary>
+        /// 添加
+        /// </summary>
+        /// <param name="request"></param>
+        /// <returns></returns>
+        PostResponse Add(SparePartGroupAddRequest request);
+
+        /// <summary>
         /// 编辑
         /// </summary>
         /// <param name="request"></param>

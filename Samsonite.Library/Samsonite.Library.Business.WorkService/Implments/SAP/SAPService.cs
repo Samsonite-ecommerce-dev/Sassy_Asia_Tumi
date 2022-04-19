@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Samsonite.Library.Business.Web.Custom.Models;
 using Samsonite.Library.Business.WorkService.Models;
 using Samsonite.Library.Core.Web;
 using Samsonite.Library.Core.Web.Models;
@@ -264,6 +265,7 @@ namespace Samsonite.Library.Business.WorkService
                     groupInfos.Add(new GroupInfo
                     {
                         GroupID = groupID,
+                        GroupType = (int)GroupType.SAP,
                         GroupDescription = VariableHelper.SaferequestSQL(item.SapCollection),
                         GroupText = string.Empty
                     });
@@ -299,8 +301,8 @@ namespace Samsonite.Library.Business.WorkService
                         {
                             groupSqlBuilder.AppendLine($"IF NOT EXISTS(SELECT * from [GroupInfo] WHERE GroupID = {item.GroupID})");
                             groupSqlBuilder.AppendLine("BEGIN");
-                            groupSqlBuilder.AppendLine("INSERT INTO [GroupInfo](GroupID,GroupDescription,GroupText,AddDate,EditDate)");
-                            groupSqlBuilder.AppendLine($" VALUES('{item.GroupID}',N'{item.GroupDescription}',N'{item.GroupText}',getdate(),getdate())");
+                            groupSqlBuilder.AppendLine("INSERT INTO [GroupInfo](GroupID,GroupType,GroupDescription,GroupText,AddDate,EditDate)");
+                            groupSqlBuilder.AppendLine($" VALUES({item.GroupID},{item.GroupType},N'{item.GroupDescription}',N'{item.GroupText}',getdate(),getdate())");
                             groupSqlBuilder.AppendLine("END");
                             groupSqlBuilder.AppendLine("ELSE");
                             groupSqlBuilder.AppendLine("BEGIN");

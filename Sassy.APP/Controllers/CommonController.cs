@@ -17,12 +17,14 @@ namespace Sassy.APP.Controllers
         private IProductsService _productsService;
         private ISparePartGroupService _sparePartGroupService;
         private IWebHostEnvironment _webHostEnvironment;
+        private SparePartHelper _sparePartHelper;
         private QuickTimeHelper _quickTimeHelper;
         public CommonController(IBaseService baseService, IProductsService productsService, ISparePartGroupService sparePartGroupService, IWebHostEnvironment webHostEnvironment) : base(baseService)
         {
             _productsService = productsService;
             _sparePartGroupService = sparePartGroupService;
             _webHostEnvironment = webHostEnvironment;
+            _sparePartHelper = new SparePartHelper();
             _quickTimeHelper = new QuickTimeHelper(baseService);
         }
 
@@ -152,7 +154,9 @@ namespace Sassy.APP.Controllers
                        select new
                        {
                            groupid = dy.GroupID,
-                           desc = dy.GroupDescription
+                           desc = dy.GroupDescription,
+                           type = dy.GroupType,
+                           typeDesc = _sparePartHelper.GetSparePartGroupTypeDisplay(dy.GroupType)
                        }
             };
             return Json(_result);

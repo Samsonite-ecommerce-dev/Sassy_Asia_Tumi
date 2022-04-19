@@ -11,11 +11,13 @@
                         <el-input size="small" prefix-icon="el-icon-search" class="input-xlarge" v-model="searchParams.sparepartKey" :placeholder="languagePack.common_search_key" clearable></el-input>
                     </li>
                     <li>
-                        <el-select size="small" v-model="searchParams.groupId" :placeholder="languagePack.sparepartquery_index_search_group" filterable remote :loading="custom.searchGroupLoading" :remote-method="searchGroup" clearable>
+                        <el-select size="small" class="input-xlarge" v-model="searchParams.groupId" :placeholder="languagePack.sparepartquery_index_search_group" filterable remote :loading="custom.searchGroupLoading" :remote-method="searchGroup" clearable>
                             <el-option v-for="item in custom.groupOptions"
                                        :key="item.groupid"
                                        :label="item.desc"
                                        :value="item.groupid">
+                                <span class="float-left">{{item.desc}}</span>
+                                <span class="float-right text-gray">{{item.typeDesc}}</span>
                             </el-option>
                         </el-select>
                     </li>

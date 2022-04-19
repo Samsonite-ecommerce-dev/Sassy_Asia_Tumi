@@ -43,14 +43,14 @@ namespace Sassy.APP.Helper
         /// <summary>
         /// 日志等级显示值
         /// </summary>
-        /// <param name="objState"></param>
+        /// <param name="status"></param>
         /// <returns></returns>
-        public string GetLogTypeDisplay(int objStatus)
+        public string GetLogTypeDisplay(int status)
         {
             string _result = string.Empty;
             foreach (var _O in LogLevelReflect())
             {
-                if ((int)_O[0] == objStatus)
+                if ((int)_O[0] == status)
                 {
                     _result = _O[1].ToString();
                     break;
