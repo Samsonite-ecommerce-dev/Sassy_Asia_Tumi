@@ -20,7 +20,7 @@
                     </li>
                     <li class="form-group">
                         <div class="col-3 group-label">
-                            {{languagePack.sparepartgroup_edit_description}}
+                            <span class="text-danger">*</span>{{languagePack.sparepartgroup_edit_description}}
                         </div>
                         <div class="col-9 group-text">
                             <el-input type="input" size="small" class="input-xlarge" v-model="subForm.groupDescription"></el-input>
@@ -29,7 +29,7 @@
                     </li>
                     <li class="form-group">
                         <div class="col-3 group-label">
-                            <span class="text-danger">*</span>{{languagePack.sparepartgroup_edit_text}}
+                            {{languagePack.sparepartgroup_edit_text}}
                         </div>
                         <div class="col-9 group-text">
                             <el-input type="textarea" :rows="5" class="input-xlarge" v-model="subForm.groupText"></el-input>

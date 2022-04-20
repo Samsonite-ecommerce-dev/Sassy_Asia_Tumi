@@ -62,6 +62,83 @@ namespace Samsonite.Library.Business.Web.Custom
         }
 
         /// <summary>
+        /// 添加
+        /// </summary>
+        /// <param name="request"></param>
+        /// <returns></returns>
+        public PostResponse Add(SparePartQueryAddRequest request)
+        {
+            //加载语言包
+            var _languagePack = _baseService.CurrentLanguagePack;
+
+            try
+            {
+                if (request.ID < 1000000)
+                    request.ID = 1000000;
+                if (request.ID > 9999999)
+                    request.ID = 9999999;
+
+                SparePart objSparePart = _appDB.SparePart.Where(p => p.SparePartID == request.ID).SingleOrDefault();
+                if (objSparePart != null)
+                {
+                    throw new Exception(_languagePack["sparepartquery_edit_error_exist_id"]);
+                }
+
+                if (string.IsNullOrEmpty(request.SparePartDesc))
+                {
+                    throw new Exception(_languagePack["sparepartquery_edit_error_no_description"]);
+                }
+
+                if (request.GroupID == 0)
+                {
+                    throw new Exception(_languagePack["sparepartquery_edit_error_no_group"]);
+                }
+
+                SparePart objData = new SparePart()
+                {
+                    SparePartID = request.ID,
+                    SparePartDescription = request.SparePartDesc,
+                    GroupID = request.GroupID,
+                    CustomizeSparePart = string.Empty,
+                    ImageUrl = request.ImageUrl,
+                    BasicPrice = 0,
+                    CostPrice = 0,
+                    Currency = string.Empty,
+                    UnitofMeasure = string.Empty,
+                    ValidFrom = null,
+                    ValidTo = null,
+                    PriceUpdateDate = null,
+                    AvailableStock = 0,
+                    InventoryStock = 0,
+                    InventoryUpdateDate = null,
+                    Status = "Current",
+                    Remark = string.Empty,
+                    AddDate = DateTime.Now,
+                    EditDate = DateTime.Now
+                };
+                _appDB.SparePart.Add(objData);
+                _appDB.SaveChanges();
+                //添加日志
+                _appLogService.InsertLog<SparePart>(objData, objData.SparePartID.ToString());
+                //返回信息
+                return new PostResponse()
+                {
+                    Result = true,
+                    Message = _languagePack["common_data_save_success"]
+                };
+            }
+            catch (Exception ex)
+            {
+                //返回信息
+                return new PostResponse()
+                {
+                    Result = false,
+                    Message = ex.Message
+                };
+            }
+        }
+
+        /// <summary>
         /// 编辑
         /// </summary>
         /// <param name="request"></param>
@@ -73,9 +150,21 @@ namespace Samsonite.Library.Business.Web.Custom
 
             try
             {
+                if (string.IsNullOrEmpty(request.SparePartDesc))
+                {
+                    throw new Exception(_languagePack["sparepartquery_edit_error_no_description"]);
+                }
+
+                if (request.GroupID == 0)
+                {
+                    throw new Exception(_languagePack["sparepartquery_edit_error_no_group"]);
+                }
+
                 SparePart objData = _appDB.SparePart.Where(p => p.SparePartID == request.ID).SingleOrDefault();
                 if (objData != null)
                 {
+                    objData.SparePartDescription = request.SparePartDesc;
+                    objData.GroupID = request.GroupID;
                     objData.ImageUrl = request.ImageUrl;
 
                     _appDB.SaveChanges();

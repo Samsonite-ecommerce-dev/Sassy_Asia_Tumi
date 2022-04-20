@@ -62,10 +62,17 @@ namespace Samsonite.Library.Business.Web.Custom
 
             try
             {
-                var groupInfo = _appDB.GroupInfo.Where(p => p.GroupDescription == request.GroupDescription).FirstOrDefault();
-                if (groupInfo != null)
+                if (!string.IsNullOrEmpty(request.GroupDescription))
                 {
-                    throw new Exception(_languagePack["sparepartgroup_edit_error_exsit_description"]);
+                    var groupInfo = _appDB.GroupInfo.Where(p => p.GroupDescription == request.GroupDescription).FirstOrDefault();
+                    if (groupInfo != null)
+                    {
+                        throw new Exception(_languagePack["sparepartgroup_edit_error_exsit_description"]);
+                    }
+                }
+                else
+                {
+                    throw new Exception(_languagePack["sparepartgroup_edit_error_no_description"]);
                 }
 
                 //自定义的Group的ID为了防止和SAP的冲突使用10000后的数字
@@ -85,7 +92,7 @@ namespace Samsonite.Library.Business.Web.Custom
                 _appDB.GroupInfo.Add(objData);
                 _appDB.SaveChanges();
                 //添加日志
-                _appLogService.UpdateLog<GroupInfo>(objData, objData.GroupID.ToString());
+                _appLogService.InsertLog<GroupInfo>(objData, objData.GroupID.ToString());
                 //返回信息
                 return new PostResponse()
                 {
@@ -116,10 +123,17 @@ namespace Samsonite.Library.Business.Web.Custom
 
             try
             {
-                var groupInfo = _appDB.GroupInfo.Where(p => p.GroupDescription == request.GroupDescription && p.GroupID != request.ID).FirstOrDefault();
-                if (groupInfo != null)
+                if (!string.IsNullOrEmpty(request.GroupDescription))
                 {
-                    throw new Exception(_languagePack["sparepartgroup_edit_error_exsit_description"]);
+                    var groupInfo = _appDB.GroupInfo.Where(p => p.GroupDescription == request.GroupDescription && p.GroupID != request.ID).FirstOrDefault();
+                    if (groupInfo != null)
+                    {
+                        throw new Exception(_languagePack["sparepartgroup_edit_error_exsit_description"]);
+                    }
+                }
+                else
+                {
+                    throw new Exception(_languagePack["sparepartgroup_edit_error_no_description"]);
                 }
 
                 GroupInfo objData = _appDB.GroupInfo.Where(p => p.GroupID == request.ID).SingleOrDefault();

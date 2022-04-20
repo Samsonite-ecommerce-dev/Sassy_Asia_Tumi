@@ -44,7 +44,7 @@ namespace Sassy.APP.Controllers
             {
                 //过滤参数
                 long _sparePartID = VariableHelper.SaferequestInt64(id);
-                SparePart objSparePart = _appDB.SparePart.Where(p => p.SparePartID == _sparePartID).SingleOrDefault();
+                View_SparePart objSparePart = _appDB.View_SparePart.Where(p => p.SparePartID == _sparePartID).SingleOrDefault();
                 if (objSparePart != null)
                 {
                     //返回数据
@@ -54,6 +54,8 @@ namespace Sassy.APP.Controllers
                         {
                             id = objSparePart.SparePartID,
                             sparepartDesc = objSparePart.SparePartDescription,
+                            groupId = objSparePart.GroupID,
+                            groupName = objSparePart.GroupName,
                             imageUrl = objSparePart.ImageUrl
                         }
                     });
@@ -67,7 +69,7 @@ namespace Sassy.APP.Controllers
             {
                 //过滤参数
                 long _sparePartID = VariableHelper.SaferequestInt64(id);
-                SparePart objSparePart = _appDB.SparePart.Where(p => p.SparePartID == _sparePartID).SingleOrDefault();
+                View_SparePart objSparePart = _appDB.View_SparePart.Where(p => p.SparePartID == _sparePartID).SingleOrDefault();
                 if (objSparePart != null)
                 {
                     //返回数据
@@ -77,6 +79,7 @@ namespace Sassy.APP.Controllers
                         {
                             id = objSparePart.SparePartID,
                             sparepartDesc = objSparePart.SparePartDescription,
+                            groupId = objSparePart.GroupName,
                             imageUrl = _sparePartQueryService.GetImageHtml(objSparePart.ImageUrl, 225),
                             price = $"{VariableHelper.FormateMoney(objSparePart.BasicPrice)} {objSparePart.Currency}",
                             unit = objSparePart.UnitofMeasure,
@@ -131,6 +134,31 @@ namespace Sassy.APP.Controllers
                            s8 = dy.InventoryUpdateDate?.ToString("yyyy-MM-dd HH:mm:ss"),
                            s9 = dy.Status
                        }
+            };
+            return Json(_result);
+        }
+        #endregion
+
+        #region 添加
+        [ServiceFilter(typeof(UserPowerAuthorize))]
+        public ActionResult Add(int id)
+        {
+            return View();
+        }
+
+        [HttpPost]
+        [ServiceFilter(typeof(UserPowerAuthorize))]
+        [AuthorizePropertyAttribute(IsAntiforgeryToken = true)]
+        public JsonResult Add_Message(SparePartQueryAddRequest request)
+        {
+            //过滤参数
+            ValidateHelper.Validate(request);
+
+            var _res = _sparePartQueryService.Add(request);
+            var _result = new
+            {
+                result = _res.Result,
+                msg = _res.Message
             };
             return Json(_result);
         }

@@ -26,6 +26,15 @@
                     </li>
                     <li class="form-group">
                         <div class="col-2 group-label">
+                            {{languagePack.sparepartquery_edit_group}}
+                        </div>
+                        <div class="col-10 group-text">
+                            {{subForm.groupId}}
+                        </div>
+                        <div class="form-line-dashed"></div>
+                    </li>
+                    <li class="form-group">
+                        <div class="col-2 group-label">
                             {{languagePack.sparepartquery_edit_imageurl}}
                         </div>
                         <div class="col-10 group-text" v-html="subForm.imageUrl">
@@ -86,6 +95,7 @@
                 subForm: {
                     id: '',
                     sparepartDesc: '',
+                    groupId:'',
                     imageUrl: '',
                     price: '',
                     unit: '',

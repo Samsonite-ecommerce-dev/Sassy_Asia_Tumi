@@ -39,6 +39,7 @@
     </div>
     <div class="main-list">
         <div class="main-list-toolbar">
+            <a href="javascript:void(0)" v-if="toolbar.operate.add" v-on:click="add"><i class="el-icon-plus text-success"></i>{{languagePack.common_add}}</a>
             <a href="javascript:void(0)" v-if="toolbar.operate.edit" v-on:click="edit"><i class="el-icon-edit text-warning"></i>{{languagePack.common_edit}}</a>
             <span class="toolbar-separator"></span>
             <a href="javascript:void(0)" v-on:click="refresh"><i class="el-icon-refresh text-info"></i>{{languagePack.common_refresh}}</a>
@@ -94,6 +95,7 @@
                 languagePack: JSON.parse(window.parent.frames.appFrame.languagePackCache),
                 toolbar: {
                     operate: {
+                        add: false,
                         edit: false
                     }
                 },
@@ -163,6 +165,15 @@
                 search: function () {
                     elementExtend.Grid.Search({
                         vue: this
+                    });
+                },
+                add: function () {
+                    elementExtend.Grid.SaveDialog({
+                        vue: this,
+                        url: '@Url.Action("Add", "SparePartQuery")',
+                        title: this.languagePack.common_add,
+                        width: '99%',
+                        saveUrl: '@Url.Action("Add_Message", "SparePartQuery")'
                     });
                 },
                 edit: function() {

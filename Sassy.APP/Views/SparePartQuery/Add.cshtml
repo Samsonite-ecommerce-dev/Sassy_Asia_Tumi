@@ -11,16 +11,16 @@
                 <ul>
                     <li class="form-group">
                         <div class="col-3 group-label">
-                            {{languagePack.sparepartquery_edit_sparepart_id}}
+                            <span class="text-danger">*</span>{{languagePack.sparepartquery_edit_sparepart_id}}
                         </div>
                         <div class="col-9 group-text">
-                            {{subForm.id}}
+                            <el-input-number :controls="false" min="1000000" max="9999999" size="small" class="input-medium" v-model="subForm.id" v-on:change="changeSPId"></el-input-number>
                         </div>
                         <div class="form-line-dashed"></div>
                     </li>
                     <li class="form-group">
                         <div class="col-3 group-label">
-                            {{languagePack.sparepartquery_edit_sparepart_name}}
+                            <span class="text-danger">*</span>{{languagePack.sparepartquery_edit_sparepart_name}}
                         </div>
                         <div class="col-9 group-text">
                             <el-input type="input" size="small" class="input-xlarge" v-model="subForm.sparepartDesc"></el-input>
@@ -29,7 +29,7 @@
                     </li>
                     <li class="form-group">
                         <div class="col-3 group-label">
-                            {{languagePack.sparepartquery_edit_group}}
+                            <span class="text-danger">*</span>{{languagePack.sparepartquery_edit_group}}
                         </div>
                         <div class="col-9 group-text">
                             <el-select size="small" class="input-xlarge" v-model="subForm.groupId" placeholder="" filterable remote :loading="custom.searchGroupLoading" :remote-method="searchGroup" clearable>
@@ -76,25 +76,20 @@
                     searchGroupLoading: false
                 }
             },
-            created: function(){
+            created: function () {
                 this.initData();
             },
             methods: {
                 initData() {
-                    let $vue = this;
-                    elementExtend.Base.ParseData({
-                        url: '@Url.Action("Initialize_Info", "SparePartQuery")',
-                        params: {
-                            type: 'edit',
-                            id: $.requestQueryString('id')
-                        },
-                        success: function (data) {
-                            //默认分组
-                            $vue.searchGroup(data.model.groupName);
-                            //数据集合
-                            $vue.subForm = data.model;
-                        }
-                    });
+                    //默认值
+                    this.subForm.id = "1000000";
+                    this.subForm.imageUrl="SP1000000.jpg"
+                    //默认分组
+                    this.searchGroup();
+                },
+                changeSPId: function (value) {
+                    if (value != '')
+                        this.subForm.imageUrl = 'SP' + value + '.jpg';
                 },
                 searchGroup: function (query) {
                     let $vue = this;
