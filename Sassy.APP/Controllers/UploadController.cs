@@ -109,13 +109,13 @@ namespace Sassy.APP.Controllers
             //过滤参数
             ValidateHelper.Validate<UploadSaveRequest>(request);
 
-            var _res = _uploadService.SaveFile(request);
+            var _res = _uploadService.SaveFileAsync(request);
             var _result = new
             {
-                filename = _res.FileName,
-                filepath = _res.FilePath,
-                result = _res.Result,
-                msg = _res.Message
+                filename = _res.Result.FileName,
+                filepath = _res.Result.FilePath,
+                result = _res.Result.Result,
+                msg = _res.Result.Message
             };
             return Json(_result);
         }

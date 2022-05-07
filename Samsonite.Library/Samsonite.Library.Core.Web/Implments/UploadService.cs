@@ -1,12 +1,12 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.Extensions.Hosting;
+﻿using Microsoft.Extensions.Hosting;
+using Samsonite.Library.Core.Web.Models;
 using Samsonite.Library.Data.Entity.Models;
 using Samsonite.Library.Utility;
-using Samsonite.Library.Core.Web.Models;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace Samsonite.Library.Core.Web
 {
@@ -15,14 +15,12 @@ namespace Samsonite.Library.Core.Web
         private IBaseService _baseService;
         private IAppConfigService _appConfigService;
         private IHostEnvironment _hostEnvironment;
-        private IHttpContextAccessor _httpContextAccessor;
         private appEntities _appDB;
-        public UploadService(IBaseService baseService, IAppConfigService appConfigService, IHostEnvironment hostEnvironment, IHttpContextAccessor httpContextAccessor, appEntities appEntities)
+        public UploadService(IBaseService baseService, IAppConfigService appConfigService, IHostEnvironment hostEnvironment, appEntities appEntities)
         {
             _baseService = baseService;
             _appConfigService = appConfigService;
             _hostEnvironment = hostEnvironment;
-            _httpContextAccessor = httpContextAccessor;
             _appDB = appEntities;
         }
 
@@ -119,7 +117,7 @@ namespace Samsonite.Library.Core.Web
         /// </summary>
         /// <param name="request"></param>
         /// <returns></returns>
-        public UploadSaveResponse SaveFile(UploadSaveRequest request)
+        public async Task<UploadSaveResponse> SaveFileAsync(UploadSaveRequest request)
         {
             //加载语言包
             var _languagePack = _baseService.CurrentLanguagePack;
@@ -138,7 +136,7 @@ namespace Samsonite.Library.Core.Web
                         objSysUploadModel.SaveCatalog = request.Catalog;
                     }
 
-                    if (_httpContextAccessor.HttpContext.Request.Form.Files.Count == 0)
+                    if (request.file.Count == 0)
                     {
                         throw new Exception("Please select a file to upload!");
                     }
@@ -147,7 +145,7 @@ namespace Samsonite.Library.Core.Web
                     string _oFileName = string.Empty;
                     string _oFileExt = string.Empty;
                     string _nFileName = string.Empty;
-                    if (_httpContextAccessor.HttpContext.Request.Form.Files.Count <= objSysUploadModel.MaxFileCount)
+                    if (request.file.Count <= objSysUploadModel.MaxFileCount)
                     {
                         if (objSysUploadModel.SaveStyle == "fileorder")
                         {
@@ -163,12 +161,12 @@ namespace Samsonite.Library.Core.Web
                         if (!Directory.Exists(_physicalDirectoryPath))
                             Directory.CreateDirectory(_physicalDirectoryPath);
                         //循环上传文件
-                        foreach (var file in _httpContextAccessor.HttpContext.Request.Form.Files)
+                        foreach (var formFile in request.file)
                         {
-                            _fileSize = file.Length;
+                            _fileSize = formFile.Length;
                             if (_fileSize > 0)
                             {
-                                _oFileName = file.FileName;
+                                _oFileName = formFile.FileName;
                                 if (_fileSize <= objSysUploadModel.MaxFileSize)
                                 {
                                     _oFileExt = Path.GetExtension(_oFileName).Substring(1);
@@ -188,8 +186,9 @@ namespace Samsonite.Library.Core.Web
                                         //保存文件
                                         using (var stream = new FileStream($"{_physicalDirectoryPath}/{_nFileName}", FileMode.Create))
                                         {
-                                            file.CopyTo(stream);
-                                            stream.Flush();
+                                            await formFile.CopyToAsync(stream);
+                                            //formFile.CopyTo(stream);
+                                            //stream.Flush();
                                         }
                                     }
                                     else

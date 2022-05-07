@@ -17,6 +17,6 @@ namespace Samsonite.Library.Core.Web
         /// </summary>
         /// <param name="request"></param>
         /// <returns></returns>
-        UploadSaveResponse SaveFile(UploadSaveRequest request);
+        Task<UploadSaveResponse> SaveFileAsync(UploadSaveRequest request);
     }
 }
