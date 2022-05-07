@@ -40,7 +40,7 @@ namespace Samsonite.Library.Business.Web.Custom
             if (System.IO.File.Exists(_filePath))
             {
                 //读取文件
-                var _excelHelper = new ExcelHelper(_filePath);
+                var _excelHelper = new NPOIExcelHelper(_filePath);
                 int skuCloumnSrartIndex = 3;
                 MergeTitleRow mergeTitleRow = new MergeTitleRow();
                 mergeTitleRow.Rows.Add(new MergeRow
@@ -109,7 +109,7 @@ namespace Samsonite.Library.Business.Web.Custom
             if (System.IO.File.Exists(_filePath))
             {
                 //读取文件
-                var _excelHelper = new ExcelHelper(_filePath);
+                var _excelHelper = new NPOIExcelHelper(_filePath);
                 int skuCloumnSrartIndex = 3;
                 MergeTitleRow mergeTitleRow = new MergeTitleRow();
                 mergeTitleRow.Rows.Add(new MergeRow
